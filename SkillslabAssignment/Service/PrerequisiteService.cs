@@ -16,7 +16,6 @@ namespace SkillslabAssignment.Service
         {
             _prerequisiteRepository = prerequisiteRepository;
         }
-
         public IEnumerable<Prerequisite> GetAllByTrainingId(int trainingId)
         {
             return _prerequisiteRepository.GetAllByTrainingId(trainingId);

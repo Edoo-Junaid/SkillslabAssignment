@@ -14,22 +14,18 @@ namespace SkillslabAssignment.WebApi.Attribute
     public class AllowRoleAttribute : AuthorizeAttribute
     {
         private readonly RoleEnum _role;
-
         public AllowRoleAttribute(RoleEnum role)
         {
             _role = role;
         }
-
         protected override bool IsAuthorized(HttpActionContext actionContext)
         {
             var token = GetTokenFromHeader(actionContext.Request.Headers.Authorization);
             var principal = JwtManager.GetPrincipal(token);
-
             if (principal != null && principal.IsInRole(_role.ToString()))
             {
                 return true;
             }
-
             return false;
         }
 
@@ -39,7 +35,6 @@ namespace SkillslabAssignment.WebApi.Attribute
             {
                 return authenticationHeaderValue.Parameter;
             }
-
             return null;
         }
     }

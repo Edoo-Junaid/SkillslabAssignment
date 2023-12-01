@@ -23,12 +23,11 @@ namespace SkillslabAssignment.WebApi.Controllers
     public class PendingAccountController : ApiController
     {
         private readonly IPendingAccountService _pendingAccountService;
-
         public PendingAccountController(IPendingAccountService pendingAccountService)
         {
             _pendingAccountService = pendingAccountService;
         }
-        // GET: api/PendingAccount
+        // GET: api/pendingAccount
         [HttpGet]
         [Route("")]
         public IHttpActionResult Get()
@@ -43,16 +42,14 @@ namespace SkillslabAssignment.WebApi.Controllers
                 return InternalServerError(ex);
             }
         }
-
-        // GET: api/PendingAccount/5
+        // GET: api/pendingAccount/5
         [HttpGet]
         [Route("{id:int}")]
         public PendingAccount Get(int id)
         {
             return _pendingAccountService.GetById(id);
         }
-
-        // POST: api/PendingAccount
+        // POST: api/pendingAccount
         [HttpPost]
         [Route("")]
         public IHttpActionResult Post([FromBody] PendingAccount account)
@@ -70,10 +67,8 @@ namespace SkillslabAssignment.WebApi.Controllers
             {
                 return InternalServerError(ex);
             }
-
         }
-
-        // PUT: api/PendingAccount/5
+        // PUT: api/pendingAccount/5
         [HttpPut]
         [Route("{id:int}")]
         public void Put(int id, [FromBody] PendingAccount account)
@@ -81,8 +76,7 @@ namespace SkillslabAssignment.WebApi.Controllers
             account.Id = id;
             _pendingAccountService.Update(account);
         }
-
-        // DELETE: api/PendingAccount/5
+        // DELETE: api/pendingAccount/5
         [HttpDelete]
         [Route("{id:int}")]
         public void Delete(int id)

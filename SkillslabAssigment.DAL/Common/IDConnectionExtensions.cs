@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Data.Common;
+using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -11,7 +13,6 @@ namespace SkillslabAssigment.DAL.Common
 {
     public static class IDConnectionExtensions
     {
-
         public static void ExecuteNonQuery(this IDbConnection connection, string query, object parameters = null)
         {
             using (var command = connection.CreateCommand())
@@ -20,22 +21,13 @@ namespace SkillslabAssigment.DAL.Common
                 {
                     connection.OpenConnection();
                     command.CommandText = query;
-
-                    if (parameters != null)
-                    {
-                        foreach (var property in parameters.GetType().GetProperties())
-                        {
-                            IDbDataParameter parameter = command.CreateParameter();
-                            parameter.ParameterName = $"@{property.Name}";
-                            parameter.Value = property.GetValue(parameters);
-                            command.Parameters.Add(parameter);
-                        }
-                    }
+                    AddParametersToCommand(command, parameters);
                     command.ExecuteNonQuery();
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Exception: {ex.Message}");
+                    throw;
                 }
             }
         }
@@ -52,29 +44,20 @@ namespace SkillslabAssigment.DAL.Common
                         {
                             command.CommandText = transactionQuery;
                             command.Transaction = transaction;
-                            if (parameters != null)
-                            {
-                                foreach (var property in parameters.GetType().GetProperties())
-                                {
-                                    IDbDataParameter parameter = command.CreateParameter();
-                                    parameter.ParameterName = $"@{property.Name}";
-                                    parameter.Value = property.GetValue(parameters);
-                                    command.Parameters.Add(parameter);
-                                }
-                            }
+                            AddParametersToCommand(command, parameters);
                             command.ExecuteNonQuery();
                             transaction.Commit();
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine($"Exception: {ex.Message}");
+                            Debug.WriteLine($"Exception: {ex.Message}");
                             transaction.Rollback();
                         }
                     }
                 }
                 finally
                 {
-                    connection.Close(); // Make sure to close the connection after the transaction
+                    connection.Close();
                 }
             }
         }
@@ -85,23 +68,19 @@ namespace SkillslabAssigment.DAL.Common
                 try
                 {
                     connection.OpenConnection();
-
                     Type type = parameters.GetType();
                     string tableName = GetTableName(type);
                     var insertQuery = CreateInsertQuery(type, parameters, command);
                     command.CommandText = insertQuery;
-                    //command.ExecuteNonQuery();
                     using (var reader = command.ExecuteReader())
                     {
-                        return ReadSingleResult<T>(type, reader);
+                        return ReadResultSet<T>(type, reader).FirstOrDefault();
                     }
-
-
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Exception: {ex.Message}");
-                    return default(T);
+                    Debug.WriteLine($"Exception: {ex.Message}");
+                    throw;
                 }
                 finally
                 {
@@ -145,18 +124,18 @@ namespace SkillslabAssigment.DAL.Common
                     Type type = typeof(T);
                     string tableName = GetTableName(type);
                     string primaryKeyColumnName = GetPrimaryKeyColumnName(type);
-                    command.CommandText = $"SELECT * FROM {tableName} WHERE {primaryKeyColumnName} = @Id";
+                    command.CommandText = $"SELECT * FROM [{tableName}] WHERE {primaryKeyColumnName} = @Id";
                     var idParameter = CreateParameter(command, "Id", id);
                     command.Parameters.Add(idParameter);
                     using (var reader = command.ExecuteReader())
                     {
-                        return ReadSingleResult<T>(type, reader);
+                        return ReadResultSet<T>(type, reader).FirstOrDefault();
                     }
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Exception: {ex.Message}");
-                    return default(T);
+                    throw;
                 }
                 finally
                 {
@@ -174,7 +153,7 @@ namespace SkillslabAssigment.DAL.Common
                     Type type = typeof(T);
                     string tableName = GetTableName(type);
                     string primaryKeyColumnName = GetPrimaryKeyColumnName(type);
-                    command.CommandText = $"DELETE FROM {tableName} WHERE {primaryKeyColumnName} = @Id";
+                    command.CommandText = $"DELETE FROM [{tableName}] WHERE {primaryKeyColumnName} = @Id";
                     var idParameter = command.CreateParameter();
                     idParameter.ParameterName = "@Id";
                     idParameter.Value = id;
@@ -226,13 +205,7 @@ namespace SkillslabAssigment.DAL.Common
                 {
                     connection.OpenConnection();
                     command.CommandText = sqlQuery;
-                    if (parameters != null)
-                    {
-                        foreach (var parameter in parameters.ToParameters(command))
-                        {
-                            command.Parameters.Add(parameter);
-                        }
-                    }
+                    AddParametersToCommand(command, parameters);
                     using (var reader = command.ExecuteReader())
                     {
                         return ReadResultSet<T>(typeof(T), reader);
@@ -257,16 +230,9 @@ namespace SkillslabAssigment.DAL.Common
                 {
                     connection.OpenConnection();
                     Type type = typeof(T);
-                    var selectQuery = new StringBuilder($"SELECT * FROM [{type.Name}] WHERE {whereClause}");
-
-                    if (parameters != null)
-                    {
-                        foreach (var parameter in parameters.ToParameters(command))
-                        {
-                            command.Parameters.Add(parameter);
-                        }
-                    }
-                    command.CommandText = selectQuery.ToString();
+                    string selectQuery = new StringBuilder($"SELECT * FROM [{type.Name}] WHERE {whereClause}").ToString();
+                    AddParametersToCommand(command, parameters);
+                    command.CommandText = selectQuery;
                     using (var reader = command.ExecuteReader())
                     {
                         return ReadResultSet<T>(type, reader);
@@ -285,8 +251,6 @@ namespace SkillslabAssigment.DAL.Common
         }
 
 
-
-
         private static void OpenConnection(this IDbConnection connection)
         {
             if (connection.State != ConnectionState.Open)
@@ -301,25 +265,18 @@ namespace SkillslabAssigment.DAL.Common
         {
             var insertQuery = new StringBuilder($"INSERT INTO [{GetTableName(type)}] (");
             var valuesQuery = new StringBuilder("VALUES (");
-
             foreach (var property in type.GetProperties())
             {
                 if (property.Name == "Id") continue;
-
                 string columnName = GetColumnName(property);
-
                 IDbDataParameter parameter = CreateParameter(command, columnName, property.GetValue(parameters));
                 command.Parameters.Add(parameter);
-
                 insertQuery.Append($"{columnName}, ");
                 valuesQuery.Append($"@{columnName}, ");
             }
-
             insertQuery.Remove(insertQuery.Length - 2, 2).Append(")");
             valuesQuery.Remove(valuesQuery.Length - 2, 2).Append(")");
-
             insertQuery.Append(" OUTPUT INSERTED.*");
-
             return $"{insertQuery} {valuesQuery}";
         }
         private static string GetTableName(Type type)
@@ -359,24 +316,16 @@ namespace SkillslabAssigment.DAL.Common
                 if (property != null)
                 {
                     var value = reader.GetValue(i);
-
                     if (value != DBNull.Value)
                     {
-                        // If the property type is nullable, use the underlying type for comparison
                         Type propertyType = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
-
-                        // Convert the value to the property type
                         object convertedValue = Convert.ChangeType(value, propertyType);
-
-                        // Set the property value
                         property.SetValue(item, convertedValue);
                     }
                     else
                     {
-                        // Handle DBNull for non-nullable value types 
-                        if (!property.PropertyType.IsValueType || Nullable.GetUnderlyingType(property.PropertyType) != null)
+                        if (IsPropertyTypeNullable(property))
                         {
-                            // Set the property to its default value
                             property.SetValue(item, null);
                         }
                     }
@@ -391,7 +340,7 @@ namespace SkillslabAssigment.DAL.Common
                     (Attribute.GetCustomAttribute(p, typeof(ColumnAttribute)) as ColumnAttribute)?.Name == propertyName
                     || p.Name == propertyName);
         }
-        private static IDbDataParameter[] ToParameters(this object parameters, IDbCommand command)
+        private static IEnumerable<IDbDataParameter> ToParameters(this object parameters, IDbCommand command)
         {
             return parameters.GetType()
                 .GetProperties()
@@ -401,19 +350,7 @@ namespace SkillslabAssigment.DAL.Common
                     parameter.ParameterName = $"@{property.Name}";
                     parameter.Value = property.GetValue(parameters);
                     return parameter;
-                })
-                .ToArray();
-        }
-        private static T ReadSingleResult<T>(Type type, IDataReader reader)
-        {
-            if (reader.Read())
-            {
-                return CreateInstance<T>(type, reader);
-            }
-            else
-            {
-                return default(T);
-            }
+                });
         }
         private static string GetPrimaryKeyColumnName(Type type)
         {
@@ -428,8 +365,7 @@ namespace SkillslabAssigment.DAL.Common
         }
         private static string CreateUpdateQuery(object updatedData, Type type, string primaryKeyColumnName, IDbCommand command)
         {
-            var updateQuery = new StringBuilder($"UPDATE {GetTableName(type)} SET ");
-
+            var updateQuery = new StringBuilder($"UPDATE [{GetTableName(type)}] SET ");
             foreach (var property in updatedData.GetType().GetProperties())
             {
                 if (property.Name != "Id")
@@ -440,13 +376,24 @@ namespace SkillslabAssigment.DAL.Common
                     updateQuery.Append($"{columnName} = @{property.Name}, ");
                 }
             }
-
             updateQuery.Remove(updateQuery.Length - 2, 2);
             updateQuery.Append($" WHERE {primaryKeyColumnName} = @Id");
-
             return updateQuery.ToString();
         }
-
+        private static void AddParametersToCommand(IDbCommand command, object parameters)
+        {
+            if (parameters != null)
+            {
+                foreach (var parameter in parameters.ToParameters(command))
+                {
+                    command.Parameters.Add(parameter);
+                }
+            }
+        }
+        private static bool IsPropertyTypeNullable(PropertyInfo property)
+        {
+            return !property.PropertyType.IsValueType || Nullable.GetUnderlyingType(property.PropertyType) != null;
+        }
     }
 
 }

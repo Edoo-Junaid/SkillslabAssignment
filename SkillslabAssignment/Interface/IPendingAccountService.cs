@@ -13,6 +13,4 @@ namespace SkillslabAssignment.Interface
     {
         IEnumerable<PendingAccountDTO> GetAllPendingAccountDTOs();
     }
-
-
 }

@@ -19,24 +19,21 @@ namespace SkillslabAssignment.WebApi.Controllers
         {
             _prerequisiteService = prerequisiteService;
         }
-
-        // GET: api/PreRequisite
+        // GET: api/prerequisite
         [HttpGet]
         [Route("")]
         public IEnumerable<Prerequisite> Get()
         {
             return _prerequisiteService.GetAll();
         }
-
-        // GET: api/PreRequisite/5
+        // GET: api/prerequisite/5
         [HttpGet]
         [Route("{id:int}")]
         public Prerequisite Get(int id)
         {
             return _prerequisiteService.GetById(id);
         }
-
-        // POST: api/PreRequisite
+        // POST: api/prerequisite
         [HttpPost]
         [Route("")]
         public IHttpActionResult Post([FromBody] Prerequisite prerequisite)
@@ -52,8 +49,7 @@ namespace SkillslabAssignment.WebApi.Controllers
             }
 
         }
-
-        // PUT: api/PreRequisite/5
+        // PUT: api/prerequisite/5
         [HttpPut]
         [Route("{id:int}")]
         public void Put(int id, [FromBody] Prerequisite prerequisite)
@@ -61,8 +57,7 @@ namespace SkillslabAssignment.WebApi.Controllers
             prerequisite.Id = id;
             _prerequisiteService.Update(prerequisite);
         }
-
-        // DELETE: api/PreRequisite/5
+        // DELETE: api/prerequisite/5
         [HttpDelete]
         [Route("{id:int}")]
         public IHttpActionResult Delete(int id)
@@ -77,7 +72,6 @@ namespace SkillslabAssignment.WebApi.Controllers
                 return InternalServerError(ex);
             }
         }
-
         [HttpGet]
         [Route("getAllPrerequisiteByTrainingId/{id:int}")]
         public IHttpActionResult GetAllPrerequisiteByTrainingId(int id)

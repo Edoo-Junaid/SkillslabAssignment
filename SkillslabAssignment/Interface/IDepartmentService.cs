@@ -9,6 +9,5 @@ namespace SkillslabAssignment.Interface
 {
     public interface IDepartmentService : IGenericService<Department>
     {
-
     }
 }

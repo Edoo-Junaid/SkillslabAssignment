@@ -15,7 +15,6 @@ namespace SkillslabAssignment.WebApi
     public static class UnityConfig
     {
         public static IUnityContainer Container { get; internal set; }
-
         public static void RegisterComponents()
         {
             var container = new UnityContainer();
@@ -34,7 +33,6 @@ namespace SkillslabAssignment.WebApi
             container.RegisterType<ITrainingService, TrainingService>();
             container.RegisterType<IPrerequisiteService, PrerequisiteService>();
             container.RegisterType<IPrerequisiteRepository, PrerequisiteRepository>();
-
             Container = container;
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
         }

@@ -1,19 +1,14 @@
-﻿using SkillslabAssignment.Common.Enums;
-using SkillslabAssignment.Common.Interface;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SkillslabAssignment.Common.Entities
+namespace SkillslabAssignment.Common.DTO
 {
-    [Table("user")]
-    public class User : IEntity
+    public class UserDto
     {
-        [Column("id")]
-        public int Id { get; set; }
         [Column("first_name")]
         public string FirstName { get; set; }
         [Column("last_name")]
@@ -24,11 +19,14 @@ namespace SkillslabAssignment.Common.Entities
         public int DepartmentId { get; set; }
         [Column("manager_id")]
         public int? ManagerId { get; set; }
-        [Column("account_id")]
-        public int AccountId { get; set; }
         [Column("role_id")]
         public int RoleId { get; set; }
         [Column("phone_number")]
         public string PhoneNumber { get; set; }
+        [Column("email")]
+        public string Email { get; set; }
+        [Column("password")]
+        public string Password { get; set; }
+        public int PendingAccountId { get; set; }
     }
 }

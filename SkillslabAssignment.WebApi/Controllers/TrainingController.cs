@@ -14,36 +14,33 @@ namespace SkillslabAssignment.WebApi.Controllers
     [RoutePrefix("api/training")]
     public class TrainingController : ApiController
     {
-        public readonly ITrainingService _trainingService;
+        private readonly ITrainingService _trainingService;
         public TrainingController(ITrainingService trainingService)
         {
             _trainingService = trainingService;
         }
-        // GET: api/Training
+        // GET: api/training
         [HttpGet]
         [Route("")]
         public IEnumerable<Training> Get()
         {
             return _trainingService.GetAll();
         }
-
-        // GET: api/Training/5
+        // GET: api/training/5
         [HttpGet]
         [Route("{id:int}")]
         public Training Get(int id)
         {
             return _trainingService.GetById(id);
         }
-
-        // POST: api/Training
+        // POST: api/training
         [HttpPost]
         [Route("")]
         public void Post([FromBody] Training training)
         {
             _trainingService.Add(training);
         }
-
-        // PUT: api/Training/5
+        // PUT: api/training/5
         [HttpPut]
         [Route("{id:int}")]
         public void Put(int id, [FromBody] Training training)
@@ -51,8 +48,7 @@ namespace SkillslabAssignment.WebApi.Controllers
             training.Id = id;
             _trainingService.Update(training);
         }
-
-        // DELETE: api/Training/5
+        // DELETE: api/training/5
         [HttpDelete]
         [Route("{id:int}")]
         public void Delete(int id)

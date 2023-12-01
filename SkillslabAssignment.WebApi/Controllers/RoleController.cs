@@ -14,44 +14,37 @@ namespace SkillslabAssignment.WebApi.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class RoleController : ApiController
     {
-
         private readonly IGenericService<Role> _roleService;
-
         public RoleController(IGenericService<Role> roleService)
         {
             _roleService = roleService;
         }
-
         // GET: api/Role
         public IHttpActionResult Get()
         {
             try
             {
                 IEnumerable<Role> roles = _roleService.GetAll();
-                return Created(Request.RequestUri, roles);
+                return Ok(roles);
             }
             catch (Exception ex)
             {
                 return InternalServerError(ex);
             }
         }
-
         // GET: api/Role/5
-        public string Get(int id)
+        public IHttpActionResult Get(int id)
         {
-            return "value";
+            return Ok(_roleService.GetById(id));
         }
-
         // POST: api/Role
         public void Post([FromBody] string value)
         {
         }
-
         // PUT: api/Role/5
         public void Put(int id, [FromBody] string value)
         {
         }
-
         // DELETE: api/Role/5
         public void Delete(int id)
         {

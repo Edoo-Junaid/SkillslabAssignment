@@ -23,7 +23,6 @@ namespace SkillslabAssignment.WebApi.Controllers
         {
             _accountService = accountService;
         }
-
         [HttpPost]
         [Route("authenticate")]
         public IHttpActionResult Authenticate([FromBody] LoginRequestDTO loginRequest)
@@ -49,7 +48,6 @@ namespace SkillslabAssignment.WebApi.Controllers
                 Debug.WriteLine(ex.Message);
                 return InternalServerError(ex);
             }
-
         }
     }
 

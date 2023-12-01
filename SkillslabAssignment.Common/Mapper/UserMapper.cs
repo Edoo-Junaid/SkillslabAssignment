@@ -14,7 +14,6 @@ namespace SkillslabAssignment.Common.Mapper
         {
             return new ManagerDTO { Name = $"{user.FirstName} {user.LastName}", Id = user.Id };
         }
-
         public static User CreateUserDtoToUser(CreateUserDTO createUserDTO)
         {
             return new User()
@@ -33,21 +32,23 @@ namespace SkillslabAssignment.Common.Mapper
                 LastName = pendingAccount.LastName,
                 NIC = pendingAccount.Nic,
                 PhoneNumber = pendingAccount.PhoneNumber,
-
             };
         }
 
-        public static User CreateUserFromPendingAccountAndDTO(PendingAccount pendingAccount, CreateUserDTO createUserDTO)
+        public static UserDto CreateUserDtoFromPendingAccountAndDTO(PendingAccount pendingAccount, CreateUserDTO createUserDTO)
         {
-            return new User()
+            return new UserDto()
             {
+                DepartmentId = (int)createUserDTO.DepartmentId,
+                ManagerId = createUserDTO.ManagerId,
+                RoleId = (int)createUserDTO.RoleId,
+                NIC = pendingAccount.Nic,
                 FirstName = pendingAccount.FirstName,
                 LastName = pendingAccount.LastName,
-                NIC = pendingAccount.Nic,
                 PhoneNumber = pendingAccount.PhoneNumber,
-                RoleId = (int)createUserDTO.RoleId,
-                DepartmentId = (int)createUserDTO.DepartmentId,
-                ManagerId = createUserDTO.ManagerId
+                Email = pendingAccount.Email,
+                Password = pendingAccount.Password,
+                PendingAccountId = pendingAccount.Id
             };
         }
     }

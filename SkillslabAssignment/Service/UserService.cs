@@ -20,19 +20,14 @@ namespace SkillslabAssignment.Service
         {
             _userRepository = repository;
             _pendingAccountRepository = pendingAccountRepository;
-
         }
-
         public bool CreateUserAndAccount(CreateUserDTO createUserDTO)
         {
             try
             {
-                PendingAccount pendingAccount = _pendingAccountRepository.GetById((int)createUserDTO.PendingAccountId);
-                if (pendingAccount == null)
-                {
-                    throw new Exception("Pending account not found");
-                }
-                _userRepository.CreateUser(createUserDTO, pendingAccount);
+                PendingAccount pendingAccount = _pendingAccountRepository.GetById((int)createUserDTO.PendingAccountId) ?? throw new Exception("Pending account not found");
+                UserDto user = UserMapper.CreateUserDtoFromPendingAccountAndDTO(pendingAccount, createUserDTO);
+                _userRepository.CreateUser(user);
                 return true;
             }
             catch (Exception ex)
@@ -41,12 +36,10 @@ namespace SkillslabAssignment.Service
                 throw;
             }
         }
-
         public IEnumerable<ManagerDTO> GetAllManagerByDepartment(int departmentId)
         {
             IEnumerable<User> managers = _userRepository.GetUsersByDepartmentAndRole(departmentId, RoleEnum.Manager.ToString());
             return managers.Select(manager => UserMapper.UserToManagerDTO(manager));
         }
-
     }
 }

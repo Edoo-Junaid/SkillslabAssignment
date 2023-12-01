@@ -10,6 +10,5 @@ namespace SkillslabAssignment.Interface
 {
     public interface IEnrollementService : IGenericService<Enrollement>
     {
-
     }
 }

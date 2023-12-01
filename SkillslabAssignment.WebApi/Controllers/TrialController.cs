@@ -23,7 +23,6 @@ namespace SkillslabAssignment.WebApi.Controllers
         {
             return Ok("Hello World");
         }
-
         [HttpGet]
         [Route("{username}/{role}")]
         [AllowAnonymous]

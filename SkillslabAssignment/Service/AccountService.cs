@@ -17,34 +17,23 @@ namespace SkillslabAssignment.Service
             this._userRepository = userRepository;
             _roleRepository = roleRepository;
         }
-
         public LoginResponseDTO Authenticate(LoginRequestDTO loginDTO)
         {
             Account account = _accountRepository.GetByEmail(loginDTO.Email);
-
             if (account != null && _accountRepository.IsAuthenticated(loginDTO.Email, loginDTO.Password))
             {
                 User user = _userRepository.GetByAccountId(account.Id);
                 Role role = _roleRepository.GetById(user.RoleId);
-
-                if (role != null)
+                return new LoginResponseDTO
                 {
-                    return new LoginResponseDTO
-                    {
-                        UserId = user.Id,
-                        RoleName = role.Name,
-                    };
-                }
-                else
-                {
-                    throw new Exception("Role not found for the user.");
-                }
+                    UserId = user.Id,
+                    RoleName = role.Name,
+                };
             }
             else
             {
                 throw new AuthenticationException("Invalid credentials");
             }
         }
-
     }
 }

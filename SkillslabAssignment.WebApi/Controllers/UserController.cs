@@ -21,20 +21,17 @@ namespace SkillslabAssignment.WebApi.Controllers
     public class UserController : ApiController
     {
         private readonly IUserService _userService;
-
         public UserController(IUserService userService)
         {
             _userService = userService;
         }
-
         // GET: api/user
         [HttpGet]
         [Route("")]
-        public IEnumerable<User> Get()
+        public IHttpActionResult Get()
         {
-            return _userService.GetAll();
+            return Ok(_userService.GetAll());
         }
-
         // GET: api/user/5
         [HttpGet]
         [Route("{id:int}")]
@@ -42,7 +39,6 @@ namespace SkillslabAssignment.WebApi.Controllers
         {
             return _userService.GetById(id);
         }
-
         // POST: api/user
         [HttpPost]
         [Route("")]
@@ -62,9 +58,7 @@ namespace SkillslabAssignment.WebApi.Controllers
             {
                 return InternalServerError(ex);
             }
-
         }
-
         // PUT: api/user/5
         [HttpPut]
         [Route("{id:int}")]
@@ -73,7 +67,6 @@ namespace SkillslabAssignment.WebApi.Controllers
             user.Id = id;
             _userService.Update(user);
         }
-
         // DELETE: api/user/5
         [HttpDelete]
         [Route("{id:int}")]
@@ -81,7 +74,6 @@ namespace SkillslabAssignment.WebApi.Controllers
         {
             _userService.Delete(id);
         }
-
         // Custom action with a different route
         [HttpGet]
         [Route("getAllManagerByDepartment/{id:int}")]
@@ -97,7 +89,5 @@ namespace SkillslabAssignment.WebApi.Controllers
                 return InternalServerError(ex);
             }
         }
-
-
     }
 }

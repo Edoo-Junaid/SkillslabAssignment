@@ -12,7 +12,6 @@ namespace SkillslabAssignment.Interface
     public interface IUserService : IGenericService<User>
     {
         IEnumerable<ManagerDTO> GetAllManagerByDepartment(int departmentId);
-
         bool CreateUserAndAccount(CreateUserDTO createUserDTO);
     }
 }
