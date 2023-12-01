@@ -1,0 +1,26 @@
+﻿using SkillslabAssignment.Common.Enums;
+using SkillslabAssignment.Common.Interface;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SkillslabAssignment.Common.Entities
+{
+    [Table("enrollment")]
+    public class Enrollement : IEntity
+    {
+        [Column("id")]
+        public int Id { get; set; }
+        [Column("user_id")]
+        public int UserId { get; set; }
+        [Column("training_id")]
+        public int TrainingId { get; set; }
+        [Column("date")]
+        public DateTime Date { get; set; }
+        [Column("status")]
+        public EnrollementStatus Status { get; set; }
+    }
+}
