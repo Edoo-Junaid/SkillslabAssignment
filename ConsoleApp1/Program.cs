@@ -10,24 +10,44 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            var validator = new Validator<PendingAccount>();
-
-            var account = new PendingAccount { };
-
-            if (validator.TryValidate(account, out var validationResults))
+            try
             {
-                Console.WriteLine("Validation passed!");
+                Test();
             }
-            else
+            catch (Exception ex)
             {
-                Console.WriteLine("Validation failed:");
-                foreach (var validationResult in validationResults)
-                {
-                    Console.WriteLine($"- {validationResult.ErrorMessage}");
-                }
+                Console.WriteLine(ex.Message);
             }
 
-            Console.ReadKey();
+            Console.ReadLine();
         }
+
+        private static void Test()
+        {
+            try
+            {
+                Test2();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
+        private static void Test2()
+        {
+            try
+            {
+                int a = 0;
+                int test = 1 / a;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
     }
 }
