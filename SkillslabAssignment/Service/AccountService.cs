@@ -2,7 +2,6 @@
 using SkillslabAssignment.Common.DTO;
 using SkillslabAssignment.Common.Entities;
 using SkillslabAssignment.Interface;
-using System;
 using System.Security.Authentication;
 namespace SkillslabAssignment.Service
 {

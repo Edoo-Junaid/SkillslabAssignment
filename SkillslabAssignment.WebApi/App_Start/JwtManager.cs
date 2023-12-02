@@ -1,13 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using Microsoft.Owin.Builder;
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Jwt;
-using Owin;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System;
-using System.Text;
-using System.Web.Http;
 
 namespace SkillslabAssignment.WebApi.App_Start
 {

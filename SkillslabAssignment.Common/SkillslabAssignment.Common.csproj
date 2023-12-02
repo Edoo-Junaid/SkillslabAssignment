@@ -71,6 +71,7 @@
     <Compile Include="DTO\LoginResponseDTO.cs" />
     <Compile Include="DTO\ManagerDTO.cs" />
     <Compile Include="DTO\PendingAccountDTO.cs" />
+    <Compile Include="DTO\TrainingSumarryDTO.cs" />
     <Compile Include="DTO\UserDto.cs" />
     <Compile Include="Entities\Account.cs" />
     <Compile Include="Entities\Attachment.cs" />

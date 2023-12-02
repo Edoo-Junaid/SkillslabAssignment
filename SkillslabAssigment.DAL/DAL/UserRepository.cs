@@ -2,13 +2,9 @@
 using SkillslabAssigment.DAL.Interface;
 using SkillslabAssignment.Common.DTO;
 using SkillslabAssignment.Common.Entities;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SkillslabAssigment.DAL.DAL
 {

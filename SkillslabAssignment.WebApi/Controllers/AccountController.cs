@@ -2,12 +2,8 @@
 using SkillslabAssignment.Common.Validatora;
 using SkillslabAssignment.Interface;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Security.Authentication;
 using System.Web.Http;
 using System.Web.Http.Cors;

@@ -1,18 +1,8 @@
-﻿using SkillslabAssigment.DAL.DAL;
-using SkillslabAssigment.DAL.Interface;
-using SkillslabAssignment.Common.Entities;
-using SkillslabAssignment.Service;
+﻿using SkillslabAssignment.Common.Entities;
 using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Data;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using SkillslabAssignment.Interface;
 using System.Web.Http.Cors;
-using System.Security.Principal;
 using SkillslabAssignment.Common.Validatora;
 using System.ComponentModel.DataAnnotations;
 

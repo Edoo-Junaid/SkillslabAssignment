@@ -1,13 +1,8 @@
-﻿using SkillslabAssigment.DAL.Common;
-using SkillslabAssigment.DAL.Interface;
+﻿using SkillslabAssigment.DAL.Interface;
 using SkillslabAssignment.Common.Entities;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SkillslabAssigment.DAL.DAL
 {
