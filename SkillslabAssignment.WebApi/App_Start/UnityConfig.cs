@@ -33,6 +33,9 @@ namespace SkillslabAssignment.WebApi
             container.RegisterType<ITrainingService, TrainingService>();
             container.RegisterType<IPrerequisiteService, PrerequisiteService>();
             container.RegisterType<IPrerequisiteRepository, PrerequisiteRepository>();
+            container.RegisterType<IEnrollmentRepository, EnrollmentRepository>();
+            container.RegisterType<IEnrollementService, EnrollmentService>();
+            container.RegisterType<IStorrageService, FirebaseStorageService>();
             Container = container;
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
         }

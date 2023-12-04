@@ -1,4 +1,5 @@
 ﻿using Firebase.Storage;
+using SkillslabAssignment.Interface;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SkillslabAssignment.Service
 {
-    public class FirebaseStorageService
+    public class FirebaseStorageService : IStorrageService
     {
         private readonly FirebaseStorage _storage;
 
@@ -14,31 +15,22 @@ namespace SkillslabAssignment.Service
         {
             _storage = new FirebaseStorage("skillslab-9e0a3.appspot.com");
         }
-
-        public async Task<string> SaveImageAsync(Stream stream, string pathname)
+        public async Task<string> UploadFileAsync(Stream stream, int trainingId, string fileName)
         {
             try
             {
-
-
-
-
                 var task = _storage
-                    .Child("iamges")
-                    .Child(pathname) // Use the random file name
+                    .Child($"training_{trainingId}")
+                    .Child(fileName)
                     .PutAsync(stream);
-
                 var downloadUrl = await task;
-                task.Progress.ProgressChanged += (s, e) => Debug.WriteLine($"Progress: {e.Percentage} %");
                 Debug.WriteLine($"Finished uploading: {downloadUrl}");
                 return downloadUrl;
-
             }
             catch (Exception ex)
             {
-                // Handle exceptions appropriately
                 Debug.WriteLine($"Error uploading image: {ex.Message}");
-                throw; // Re-throw the exception to propagate it to the caller
+                throw;
             }
         }
     }

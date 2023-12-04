@@ -202,11 +202,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interface\IAccountService.cs" />
+    <Compile Include="Interface\IAttachmentService.cs" />
     <Compile Include="Interface\IPendingAccountService.cs" />
     <Compile Include="Interface\IPrerequisiteService.cs" />
     <Compile Include="Interface\IStorrageService.cs" />
     <Compile Include="Interface\ITrainingService.cs" />
     <Compile Include="Service\AccountService.cs" />
+    <Compile Include="Service\AttachmentService.cs" />
     <Compile Include="Service\DepartmentService.cs" />
     <Compile Include="Service\EnrollmentService.cs" />
     <Compile Include="Service\FirebaseStorageService.cs" />

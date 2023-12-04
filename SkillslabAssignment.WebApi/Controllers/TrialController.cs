@@ -49,7 +49,7 @@ namespace SkillslabAssignment.WebApi.Controllers
                 var fileName = fileData.Headers.ContentDisposition.FileName.Trim('\"');
                 var fileStream = await fileData.ReadAsStreamAsync();
                 FirebaseStorageService storageService = new FirebaseStorageService();
-                string downloadUrl = await storageService.SaveImageAsync(fileStream, fileName);
+                string downloadUrl = await storageService.UploadFileAsync(fileStream, 1, fileName);
                 return Ok(downloadUrl);
             }
             catch (Exception ex)

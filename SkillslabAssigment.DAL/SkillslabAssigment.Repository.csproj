@@ -44,11 +44,13 @@
   <ItemGroup>
     <Compile Include="Common\IDConnectionExtensions.cs" />
     <Compile Include="DAL\AccountRepository.cs" />
+    <Compile Include="DAL\AttachmentRepository.cs" />
     <Compile Include="DAL\EnrollmentRepository.cs" />
     <Compile Include="DAL\GenericRepository.cs" />
     <Compile Include="DAL\PrerequisiteRepository.cs" />
     <Compile Include="DAL\UserRepository.cs" />
     <Compile Include="Interface\IAccountRepository.cs" />
+    <Compile Include="Interface\IAttachmentRepository.cs" />
     <Compile Include="Interface\IEnrollmentRepository.cs" />
     <Compile Include="Interface\IGenericRepository.cs" />
     <Compile Include="Interface\IPrerequisiteRepository.cs" />

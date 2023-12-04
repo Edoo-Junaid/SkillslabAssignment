@@ -1,4 +1,6 @@
-﻿using SkillslabAssigment.DAL.Interface;
+﻿using SkillslabAssigment.DAL.Common;
+using SkillslabAssigment.DAL.Interface;
+using SkillslabAssignment.Common.DTO;
 using SkillslabAssignment.Common.Entities;
 using System;
 using System.Collections.Generic;
@@ -11,11 +13,19 @@ namespace SkillslabAssigment.DAL.DAL
         public EnrollmentRepository(IDbConnection connection) : base(connection)
         {
         }
-        public IEnumerable<Enrollement> GetAllByManagerId(int managerId)
+        public IEnumerable<EnrollementDTO> GetAllByManagerId(int managerId)
         {
-            //return _connection.ExecuteQuery<Enrollement>("SELECT * FROM Enrollement WHERE ManagerId = @ManagerId", new { ManagerId = managerId });
-            throw new NotImplementedException();
-            //todo: implement this method
+            const string GET_ALL_ENROLLMENTS_BY_MANAGER_ID = @"
+            SELECT [user].first_name,[user].last_name ,training.name AS training_name,enrollment.id AS enrollement_id 
+            FROM [user] 
+            INNER JOIN enrollment on
+            [user].id = [enrollment].user_id
+            INNER JOIN training on
+            training.id = enrollment.training_id
+            WHERE enrollment.status='pending'";
+
+
+            return _connection.ExecuteQuery<EnrollementDTO>(GET_ALL_ENROLLMENTS_BY_MANAGER_ID);
         }
     }
 }

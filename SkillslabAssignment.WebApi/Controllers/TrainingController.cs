@@ -18,9 +18,9 @@ namespace SkillslabAssignment.WebApi.Controllers
         // GET: api/training
         [HttpGet]
         [Route("")]
-        public IEnumerable<Training> Get()
+        public IHttpActionResult Get()
         {
-            return _trainingService.GetAll();
+            return Ok(_trainingService.GetAllTrainingDTO());
         }
         // GET: api/training/5
         [HttpGet]
@@ -50,6 +50,13 @@ namespace SkillslabAssignment.WebApi.Controllers
         public void Delete(int id)
         {
             _trainingService.Delete(id);
+        }
+        // GET: api/training/trainingDetails/5
+        [HttpGet]
+        [Route("trainingDetails/{id:int}")]
+        public IHttpActionResult GetTrainingDetails(int id)
+        {
+            return Ok(_trainingService.GetTrainingDetails(id));
         }
     }
 }

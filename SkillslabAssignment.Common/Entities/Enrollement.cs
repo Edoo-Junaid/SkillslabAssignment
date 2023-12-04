@@ -17,6 +17,6 @@ namespace SkillslabAssignment.Common.Entities
         [Column("date")]
         public DateTime Date { get; set; }
         [Column("status")]
-        public EnrollementStatus Status { get; set; }
+        public string Status { get; set; }
     }
 }

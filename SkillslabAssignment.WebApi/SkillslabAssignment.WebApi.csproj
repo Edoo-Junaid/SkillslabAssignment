@@ -175,7 +175,9 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Attribute\AllowRoleAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AttachmentController.cs" />
     <Compile Include="Controllers\DepartmentController.cs" />
+    <Compile Include="Controllers\EnrollementController.cs" />
     <Compile Include="Controllers\PendingAccountController.cs" />
     <Compile Include="Controllers\PrerequisiteController.cs" />
     <Compile Include="Controllers\RoleController.cs" />

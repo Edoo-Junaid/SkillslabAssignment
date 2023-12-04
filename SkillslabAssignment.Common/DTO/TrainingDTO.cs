@@ -2,7 +2,7 @@
 
 namespace SkillslabAssignment.Common.DTO
 {
-    public class TrainingSumarryDTO
+    public class TrainingDTO
     {
         public int Id { get; set; }
         public string Name { get; set; }

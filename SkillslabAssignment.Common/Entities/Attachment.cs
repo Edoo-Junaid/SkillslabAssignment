@@ -11,8 +11,8 @@ namespace SkillslabAssignment.Common.Entities
         [Column("url")]
         public string Url { get; set; }
         [Column("enrollment_id")]
-        public int Enrollment_id { get; set; }
+        public int EnrollmentId { get; set; }
         [Column("prerequisite_id")]
-        public int Prerequisite_id { get; set; }
+        public int PrerequisiteId { get; set; }
     }
 }
