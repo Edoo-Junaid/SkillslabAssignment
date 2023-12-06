@@ -9,28 +9,16 @@ namespace SkillslabAssigment.DAL.DAL
     public class GenericRepository<T> : IGenericRepository<T> where T : IEntity
     {
         protected IDbConnection _connection;
-        public GenericRepository(IDbConnection connection)
-        {
-            _connection = connection;
-        }
+        public GenericRepository(IDbConnection connection) => _connection = connection;
         public bool Delete(int id)
         {
             //TODO
             _connection.DeleteById<T>(id);
             return true;
         }
-        public IEnumerable<T> GetAll()
-        {
-            return _connection.GetAll<T>();
-        }
-        public T GetById(int id)
-        {
-            return _connection.GetById<T>(id);
-        }
-        public T Add(T entity)
-        {
-            return _connection.ExecuteInsertQuery(entity);
-        }
+        public IEnumerable<T> GetAll() => _connection.GetAll<T>();
+        public T GetById(int id) => _connection.GetById<T>(id);
+        public T Add(T entity) => _connection.ExecuteInsertQuery<T>(entity);
         public bool Update(T entity)
         {
             //TODO

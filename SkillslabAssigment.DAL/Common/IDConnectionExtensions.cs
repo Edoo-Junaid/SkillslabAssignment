@@ -195,7 +195,7 @@ namespace SkillslabAssigment.DAL.Common
                 }
             }
         }
-        public static IEnumerable<T> ExecuteQuery<T>(this IDbConnection connection, string sqlQuery, object parameters = null)
+        public static IEnumerable<T> ExecuteQuery<T>(this IDbConnection connection, string sqlQuery, object parameters = null) where T : class
         {
             using (var command = connection.CreateCommand())
             {
@@ -247,7 +247,6 @@ namespace SkillslabAssigment.DAL.Common
                 }
             }
         }
-
 
         private static void OpenConnection(this IDbConnection connection)
         {

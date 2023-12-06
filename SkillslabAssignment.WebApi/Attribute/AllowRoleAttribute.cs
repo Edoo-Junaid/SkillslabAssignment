@@ -1,6 +1,8 @@
 ﻿using SkillslabAssignment.Common.Enums;
 using SkillslabAssignment.WebApi.App_Start;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Controllers;
@@ -10,18 +12,26 @@ namespace SkillslabAssignment.WebApi.Attribute
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
     public class AllowRoleAttribute : AuthorizeAttribute
     {
-        private readonly RoleEnum _role;
-        public AllowRoleAttribute(RoleEnum role)
+        private readonly List<RoleEnum> _roles;
+
+        public AllowRoleAttribute(params RoleEnum[] roles)
         {
-            _role = role;
+            _roles = roles.ToList();
         }
+
         protected override bool IsAuthorized(HttpActionContext actionContext)
         {
             var token = GetTokenFromHeader(actionContext.Request.Headers.Authorization);
             var principal = JwtManager.GetPrincipal(token);
-            if (principal != null && principal.IsInRole(_role.ToString()))
+            if (principal != null)
             {
-                return true;
+                foreach (var allowedRole in _roles)
+                {
+                    if (principal.IsInRole(allowedRole.ToString()))
+                    {
+                        return true;
+                    }
+                }
             }
             return false;
         }

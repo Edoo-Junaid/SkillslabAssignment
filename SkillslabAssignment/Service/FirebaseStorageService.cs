@@ -10,7 +10,6 @@ namespace SkillslabAssignment.Service
     public class FirebaseStorageService : IStorrageService
     {
         private readonly FirebaseStorage _storage;
-
         public FirebaseStorageService()
         {
             _storage = new FirebaseStorage("skillslab-9e0a3.appspot.com");

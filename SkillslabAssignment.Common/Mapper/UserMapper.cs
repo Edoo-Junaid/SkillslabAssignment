@@ -5,11 +5,12 @@ namespace SkillslabAssignment.Common.Mapper
 {
     public static class UserMapper
     {
-        public static ManagerDTO UserToManagerDTO(User user)
+        public static ManagerDTO ToManagerDTO(this User user)
         {
             return new ManagerDTO { Name = $"{user.FirstName} {user.LastName}", Id = user.Id };
         }
-        public static User CreateUserDtoToUser(CreateUserDTO createUserDTO)
+
+        public static User ToUser(this CreateUserDTO createUserDTO)
         {
             return new User()
             {
@@ -19,7 +20,7 @@ namespace SkillslabAssignment.Common.Mapper
             };
         }
 
-        public static User PendingAccountToUser(PendingAccount pendingAccount)
+        public static User ToUser(this PendingAccount pendingAccount)
         {
             return new User()
             {
@@ -30,7 +31,7 @@ namespace SkillslabAssignment.Common.Mapper
             };
         }
 
-        public static UserDto CreateUserDtoFromPendingAccountAndDTO(PendingAccount pendingAccount, CreateUserDTO createUserDTO)
+        public static UserDto ToUserDto(this PendingAccount pendingAccount, CreateUserDTO createUserDTO)
         {
             return new UserDto()
             {

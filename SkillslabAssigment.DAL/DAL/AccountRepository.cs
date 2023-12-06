@@ -12,10 +12,7 @@ namespace SkillslabAssigment.DAL.DAL
         public AccountRepository(IDbConnection connection) : base(connection)
         {
         }
-        public Account GetByEmail(string email)
-        {
-            return _connection.SelectWhere<Account>("email = @Email", new { Email = email }).FirstOrDefault();
-        }
+        public Account GetByEmail(string email) => _connection.SelectWhere<Account>("email = @Email", new { Email = email }).FirstOrDefault();
         public bool IsAuthenticated(string email, string password)
         {
             const string AUTHENTICATION_QUERY = "SELECT * FROM Account WHERE email = @Email AND password = @Password";

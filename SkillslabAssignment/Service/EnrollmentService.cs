@@ -25,9 +25,8 @@ namespace SkillslabAssignment.Service
         }
         public IEnumerable<EnrollementDTO> GetAllByManagerId(int managerId)
         {
-           return _enrollementRepository.GetAllByManagerId(managerId);
+            return _enrollementRepository.GetAllByManagerId(managerId);
         }
-
         public async Task<bool> ProcessEnrollement(EnrollementRequestDTO enrollementRequest)
         {
             if (enrollementRequest == null)
@@ -49,7 +48,6 @@ namespace SkillslabAssignment.Service
             {
                 if (file.Headers.ContentType != null)
                 {
-                    var fileName = file.Headers.ContentDisposition.FileName.Trim('\"');
                     var prerequisiteId = int.Parse(file.Headers.ContentDisposition.Name.Trim('\"'));
                     var fileStream = await file.ReadAsStreamAsync();
                     enrollementRequest.PrerequisiteToAttachment.Add(prerequisiteId, fileStream);

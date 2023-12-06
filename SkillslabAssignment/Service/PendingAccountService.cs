@@ -15,7 +15,7 @@ namespace SkillslabAssignment.Service
         }
         public IEnumerable<PendingAccountDTO> GetAllPendingAccountDTOs()
         {
-            return _repository.GetAll().Select(pemdingAccount => PendingAccountMapper.pendingAccountToPendingAccountDTO(pemdingAccount));
+            return _repository.GetAll().Select(pendingAccount => pendingAccount.ToPendingAccountDTO());
         }
     }
 }

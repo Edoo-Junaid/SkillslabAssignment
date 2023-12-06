@@ -19,8 +19,6 @@ namespace SkillslabAssignment.Common.Mapper
                 Deadline = training.Deadline
             };
         }
-
-
         public static TrainingDetailsDTO ToDetailsDTO(this Training training, Department department, IEnumerable<Prerequisite> prerequisites)
         {
             return new TrainingDetailsDTO

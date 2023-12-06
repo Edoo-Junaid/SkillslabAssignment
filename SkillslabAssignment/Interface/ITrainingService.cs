@@ -10,5 +10,6 @@ namespace SkillslabAssignment.Interface
     {
         IEnumerable<TrainingDTO> GetAllTrainingDTO();
         TrainingDetailsDTO GetTrainingDetails(int id);
+        IEnumerable<Training> GetAllEnrolledTraining(int userId);
     }
 }

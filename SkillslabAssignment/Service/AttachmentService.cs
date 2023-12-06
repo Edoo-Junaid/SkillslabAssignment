@@ -14,13 +14,11 @@ namespace SkillslabAssignment.Service
     {
         public IAttachmentRepository _attachmentRepository;
         public IPrerequisiteRepository _prerequisiteRepository;
-
         public AttachmentService(IAttachmentRepository attachmentRepository, IPrerequisiteRepository prerequisiteRepository) : base(attachmentRepository)
         {
             _attachmentRepository = attachmentRepository;
             _prerequisiteRepository = prerequisiteRepository;
         }
-
         public IEnumerable<AttachementDTO> GetAllByEnrollmentId(int enrollmentId)
         {
             IEnumerable<Attachment> attachments = _attachmentRepository.GetAllByEnrollmentId(enrollmentId);

@@ -61,14 +61,7 @@ namespace SkillslabAssignment.WebApi.Controllers
             try
             {
                 IEnumerable<EnrollementDTO> enrollements = _enrollementService.GetAllByManagerId(managerId);
-                if (enrollements != null && enrollements.Any())
-                {
-                    return Ok(enrollements);
-                }
-                else
-                {
-                    return NotFound();
-                }
+                return Ok(enrollements);
             }
             catch (Exception ex)
             {

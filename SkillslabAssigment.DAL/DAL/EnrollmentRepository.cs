@@ -22,10 +22,9 @@ namespace SkillslabAssigment.DAL.DAL
             [user].id = [enrollment].user_id
             INNER JOIN training on
             training.id = enrollment.training_id
-            WHERE enrollment.status='pending'";
-
-
-            return _connection.ExecuteQuery<EnrollementDTO>(GET_ALL_ENROLLMENTS_BY_MANAGER_ID);
+            WHERE enrollment.status='pending' AND manager_id = @ManagerId";
+            return _connection.ExecuteQuery<EnrollementDTO>(GET_ALL_ENROLLMENTS_BY_MANAGER_ID,new {ManagerId=managerId});
         }
+
     }
 }

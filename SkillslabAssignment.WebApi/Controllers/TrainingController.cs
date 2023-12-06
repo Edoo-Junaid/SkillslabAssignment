@@ -58,5 +58,11 @@ namespace SkillslabAssignment.WebApi.Controllers
         {
             return Ok(_trainingService.GetTrainingDetails(id));
         }
+        [HttpGet]
+        [Route("getEnrolledTrainingIds/{userId:int}")]
+        public IHttpActionResult GetAllEnrolledTrainingId(int userId)
+        {
+            return Ok(_trainingService.GetAllEnrolledTraining(userId));
+        }
     }
 }

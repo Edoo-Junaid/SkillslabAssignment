@@ -16,10 +16,10 @@ namespace SkillslabAssignment.Service
             this._userRepository = userRepository;
             _roleRepository = roleRepository;
         }
-        public LoginResponseDTO Authenticate(LoginRequestDTO loginDTO)
+        public LoginResponseDTO Authenticate(LoginRequestDTO loginRequest)
         {
-            Account account = _accountRepository.GetByEmail(loginDTO.Email);
-            if (account != null && _accountRepository.IsAuthenticated(loginDTO.Email, loginDTO.Password))
+            Account account = _accountRepository.GetByEmail(loginRequest.Email);
+            if (account != null && _accountRepository.IsAuthenticated(loginRequest.Email, loginRequest.Password))
             {
                 User user = _userRepository.GetByAccountId(account.Id);
                 Role role = _roleRepository.GetById(user.RoleId);
