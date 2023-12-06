@@ -27,6 +27,7 @@ namespace SkillslabAssignment.Service
                 {
                     UserId = user.Id,
                     RoleName = role.Name,
+                    Email = account.Email,
                 };
             }
             else

@@ -9,7 +9,6 @@ namespace SkillslabAssignment.Common.Mapper
         {
             return new ManagerDTO { Name = $"{user.FirstName} {user.LastName}", Id = user.Id };
         }
-
         public static User ToUser(this CreateUserDTO createUserDTO)
         {
             return new User()
@@ -19,7 +18,6 @@ namespace SkillslabAssignment.Common.Mapper
                 ManagerId = createUserDTO.ManagerId
             };
         }
-
         public static User ToUser(this PendingAccount pendingAccount)
         {
             return new User()
@@ -30,7 +28,6 @@ namespace SkillslabAssignment.Common.Mapper
                 PhoneNumber = pendingAccount.PhoneNumber,
             };
         }
-
         public static UserDto ToUserDto(this PendingAccount pendingAccount, CreateUserDTO createUserDTO)
         {
             return new UserDto()

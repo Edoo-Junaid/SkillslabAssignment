@@ -1,6 +1,7 @@
 ﻿using SkillslabAssignment.Common.DTO;
 using SkillslabAssignment.Common.Validatora;
 using SkillslabAssignment.Interface;
+using SkillslabAssignment.WebApi.App_Start;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
@@ -27,6 +28,7 @@ namespace SkillslabAssignment.WebApi.Controllers
             {
                 ParameterValidator<LoginRequestDTO>.TryValidateAndThrow(loginRequest);
                 LoginResponseDTO loginResponseDTO = _accountService.Authenticate(loginRequest);
+                loginResponseDTO.AuthToken = JwtManager.GenerateToken(loginResponseDTO.Email, loginResponseDTO.RoleName);
                 return Ok(loginResponseDTO);
             }
             catch (AuthenticationException ex)

@@ -1,4 +1,5 @@
 ﻿using SkillslabAssignment.Common.Interface;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SkillslabAssignment.Common.Entities
@@ -9,8 +10,10 @@ namespace SkillslabAssignment.Common.Entities
         [Column("id")]
         public int Id { get; set; }
         [Column("name")]
+        [Required]
         public string Name { get; set; }
         [Column("description")]
+        [Required]
         public string Description { get; set; }
     }
 }

@@ -19,7 +19,7 @@ namespace SkillslabAssignment.WebApi.Controllers
     {
         [HttpGet]
         [Route("")]
-        [AllowRole(RoleEnum.Admin)]
+        [AllowRole(RoleEnum.Admin, RoleEnum.Manager)]
         public IHttpActionResult Get()
         {
             return Ok("Hello World");

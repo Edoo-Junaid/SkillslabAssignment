@@ -1,6 +1,10 @@
 ﻿using SkillslabAssignment.Common.Entities;
+using SkillslabAssignment.Common.Enums;
+using SkillslabAssignment.Common.Validatora;
 using SkillslabAssignment.Interface;
+using SkillslabAssignment.WebApi.Attribute;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -18,6 +22,7 @@ namespace SkillslabAssignment.WebApi.Controllers
         // GET: api/training
         [HttpGet]
         [Route("")]
+        [AllowRole(RoleEnum.Employee)]
         public IHttpActionResult Get()
         {
             return Ok(_trainingService.GetAllTrainingDTO());
@@ -32,9 +37,18 @@ namespace SkillslabAssignment.WebApi.Controllers
         // POST: api/training
         [HttpPost]
         [Route("")]
-        public void Post([FromBody] Training training)
+        public IHttpActionResult Post([FromBody] Training training)
         {
-            _trainingService.Add(training);
+            //_trainingService.Add(training);
+            try
+            {
+                ParameterValidator<Training>.TryValidateAndThrow(training);
+                return Created("api/training", _trainingService.Add(training));
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         // PUT: api/training/5
         [HttpPut]

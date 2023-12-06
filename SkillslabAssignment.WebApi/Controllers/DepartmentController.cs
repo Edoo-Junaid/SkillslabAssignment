@@ -1,10 +1,12 @@
 ﻿using SkillslabAssignment.Common.Entities;
+using SkillslabAssignment.Common.Validatora;
 using SkillslabAssignment.Interface;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using System.Web.UI.WebControls;
 
 namespace SkillslabAssignment.WebApi.Controllers
 {
@@ -35,10 +37,22 @@ namespace SkillslabAssignment.WebApi.Controllers
             }
         }
         // POST: api/Department
-        public Department Post([FromBody] Department department)
+        public IHttpActionResult Post([FromBody] Department department)
         {
-            _departmentService.Add(department);
-            return department;
+            try
+            {
+                ParameterValidator<Department>.TryValidateAndThrow(department);
+                Department addedDepartment = _departmentService.Add(department);
+                return CreatedAtRoute("DefaultApi", new { id = addedDepartment.Id }, addedDepartment);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
         }
         // PUT: api/Department/5
         public void Put(int id, [FromBody] Department department)
