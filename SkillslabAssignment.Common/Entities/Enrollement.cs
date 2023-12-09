@@ -1,5 +1,4 @@
-﻿using SkillslabAssignment.Common.Enums;
-using SkillslabAssignment.Common.Interface;
+﻿using SkillslabAssignment.Common.Interface;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 

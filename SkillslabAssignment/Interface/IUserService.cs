@@ -9,5 +9,6 @@ namespace SkillslabAssignment.Interface
     {
         IEnumerable<ManagerDTO> GetAllManagerByDepartment(int departmentId);
         bool CreateUserAndAccount(CreateUserDTO createUserDTO);
+        bool IsNicUnique(string nic);
     }
 }

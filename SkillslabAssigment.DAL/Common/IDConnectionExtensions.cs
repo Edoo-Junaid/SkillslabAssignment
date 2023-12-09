@@ -11,6 +11,22 @@ namespace SkillslabAssigment.DAL.Common
 {
     public static class IDConnectionExtensions
     {
+        private static readonly Dictionary<Type, DbType> TypeToDbTypeMap = new Dictionary<Type, DbType>
+        {
+            { typeof(string), DbType.String },
+            { typeof(int), DbType.Int32 },
+            { typeof(long), DbType.Int64 },
+            { typeof(short), DbType.Int16 },
+            { typeof(byte), DbType.Byte },
+            { typeof(bool), DbType.Boolean },
+            { typeof(DateTime), DbType.DateTime },
+            { typeof(decimal), DbType.Decimal },
+            { typeof(double), DbType.Double },
+            { typeof(Guid), DbType.Guid },
+            { typeof(float), DbType.Single },
+            { typeof(TimeSpan), DbType.Time },
+            { typeof(byte[]), DbType.Binary },
+        };
         public static void ExecuteNonQuery(this IDbConnection connection, string query, object parameters = null)
         {
             using (var command = connection.CreateCommand())
@@ -29,14 +45,14 @@ namespace SkillslabAssigment.DAL.Common
                 }
             }
         }
-        public static void ExecuteTransaction(this IDbConnection connection, string transactionQuery, object parameters = null)
+        public static bool ExecuteTransaction(this IDbConnection connection, string transactionQuery, object parameters = null)
         {
             using (var command = connection.CreateCommand())
             {
                 try
                 {
                     connection.Open();
-                    using (var transaction = connection.BeginTransaction())
+                    using (IDbTransaction transaction = connection.BeginTransaction())
                     {
                         try
                         {
@@ -45,11 +61,13 @@ namespace SkillslabAssigment.DAL.Common
                             AddParametersToCommand(command, parameters);
                             command.ExecuteNonQuery();
                             transaction.Commit();
+                            return true;
                         }
                         catch (Exception ex)
                         {
                             Debug.WriteLine($"Exception: {ex.Message}");
                             transaction.Rollback();
+                            return false;
                         }
                     }
                 }
@@ -67,7 +85,6 @@ namespace SkillslabAssigment.DAL.Common
                 {
                     connection.OpenConnection();
                     Type type = parameters.GetType();
-                    string tableName = GetTableName(type);
                     var insertQuery = CreateInsertQuery(type, parameters, command);
                     command.CommandText = insertQuery;
                     using (var reader = command.ExecuteReader())
@@ -94,8 +111,7 @@ namespace SkillslabAssigment.DAL.Common
                 {
                     connection.OpenConnection();
                     Type type = typeof(T);
-                    string tableName = GetTableName(type);
-                    command.CommandText = $"SELECT * FROM [{tableName}]";
+                    command.CommandText = $"SELECT * FROM [{GetTableName(type)}]";
                     using (var reader = command.ExecuteReader())
                     {
                         return ReadResultSet<T>(type, reader);
@@ -149,10 +165,9 @@ namespace SkillslabAssigment.DAL.Common
                 {
                     connection.OpenConnection();
                     Type type = typeof(T);
-                    string tableName = GetTableName(type);
                     string primaryKeyColumnName = GetPrimaryKeyColumnName(type);
-                    command.CommandText = $"DELETE FROM [{tableName}] WHERE {primaryKeyColumnName} = @Id";
-                    var idParameter = command.CreateParameter();
+                    command.CommandText = $"DELETE FROM [{GetTableName(type)}] WHERE {primaryKeyColumnName} = @Id";
+                    IDbDataParameter idParameter = command.CreateParameter();
                     idParameter.ParameterName = "@Id";
                     idParameter.Value = id;
                     command.Parameters.Add(idParameter);
@@ -182,7 +197,6 @@ namespace SkillslabAssigment.DAL.Common
                     var idParameter = CreateParameter(command, "Id", id);
                     command.Parameters.Add(idParameter);
                     command.CommandText = updateQuery;
-                    Console.WriteLine($"Executing command: {command.CommandText}");
                     command.ExecuteNonQuery();
                 }
                 catch (Exception ex)
@@ -228,7 +242,7 @@ namespace SkillslabAssigment.DAL.Common
                 {
                     connection.OpenConnection();
                     Type type = typeof(T);
-                    string selectQuery = new StringBuilder($"SELECT * FROM [{type.Name}] WHERE {whereClause}").ToString();
+                    string selectQuery = new StringBuilder($"SELECT * FROM [{GetTableName(type)}] WHERE {whereClause}").ToString();
                     AddParametersToCommand(command, parameters);
                     command.CommandText = selectQuery;
                     using (var reader = command.ExecuteReader())
@@ -319,12 +333,9 @@ namespace SkillslabAssigment.DAL.Common
                         object convertedValue = Convert.ChangeType(value, propertyType);
                         property.SetValue(item, convertedValue);
                     }
-                    else
+                    else if (IsPropertyTypeNullable(property))
                     {
-                        if (IsPropertyTypeNullable(property))
-                        {
-                            property.SetValue(item, null);
-                        }
+                        property.SetValue(item, null);
                     }
                 }
             }
@@ -345,7 +356,8 @@ namespace SkillslabAssigment.DAL.Common
                 {
                     var parameter = command.CreateParameter();
                     parameter.ParameterName = $"@{property.Name}";
-                    parameter.Value = property.GetValue(parameters);
+                    var value = property.GetValue(parameters);
+                    parameter.Value = value ?? DBNull.Value;
                     return parameter;
                 });
         }

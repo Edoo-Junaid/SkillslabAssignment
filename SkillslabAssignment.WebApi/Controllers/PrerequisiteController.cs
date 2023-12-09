@@ -1,6 +1,5 @@
 ﻿using SkillslabAssignment.Common.Entities;
 using SkillslabAssignment.Interface;
-using System;
 using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Cors;
@@ -19,33 +18,21 @@ namespace SkillslabAssignment.WebApi.Controllers
         // GET: api/prerequisite
         [HttpGet]
         [Route("")]
-        public IEnumerable<Prerequisite> Get()
-        {
-            return _prerequisiteService.GetAll();
-        }
+        public IEnumerable<Prerequisite> Get() => _prerequisiteService.GetAll();
+
         // GET: api/prerequisite/5
         [HttpGet]
         [Route("{id:int}")]
-        public Prerequisite Get(int id)
-        {
-            return _prerequisiteService.GetById(id);
-        }
+        public Prerequisite Get(int id) => _prerequisiteService.GetById(id);
+
         // POST: api/prerequisite
         [HttpPost]
         [Route("")]
         public IHttpActionResult Post([FromBody] Prerequisite prerequisite)
         {
-            try
-            {
-                _prerequisiteService.Add(prerequisite);
-                return Created(Request.RequestUri + "/" + prerequisite.Id, prerequisite);
-            }
-            catch (Exception ex)
-            {
-                return InternalServerError(ex);
-            }
-
+            return Created(Request.RequestUri, _prerequisiteService.Add(prerequisite));
         }
+
         // PUT: api/prerequisite/5
         [HttpPut]
         [Route("{id:int}")]
@@ -54,34 +41,14 @@ namespace SkillslabAssignment.WebApi.Controllers
             prerequisite.Id = id;
             _prerequisiteService.Update(prerequisite);
         }
+
         // DELETE: api/prerequisite/5
         [HttpDelete]
         [Route("{id:int}")]
-        public IHttpActionResult Delete(int id)
-        {
-            try
-            {
-                _prerequisiteService.Delete(id);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return InternalServerError(ex);
-            }
-        }
+        public IHttpActionResult Delete(int id) => Ok(_prerequisiteService.Delete(id));
+
         [HttpGet]
         [Route("getAllPrerequisiteByTrainingId/{id:int}")]
-        public IHttpActionResult GetAllPrerequisiteByTrainingId(int id)
-        {
-            try
-            {
-                IEnumerable<Prerequisite> prerequisites = _prerequisiteService.GetAllByTrainingId(id);
-                return Ok(prerequisites);
-            }
-            catch (Exception ex)
-            {
-                return InternalServerError(ex);
-            }
-        }
+        public IHttpActionResult GetAllPrerequisiteByTrainingId(int id) => Ok(_prerequisiteService.GetAllByTrainingId(id));
     }
 }

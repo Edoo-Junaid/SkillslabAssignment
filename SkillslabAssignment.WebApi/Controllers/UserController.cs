@@ -1,10 +1,8 @@
 ﻿using SkillslabAssignment.Common.DTO;
 using SkillslabAssignment.Common.Entities;
-using SkillslabAssignment.Common.Validatora;
 using SkillslabAssignment.Interface;
-using System;
+using SkillslabAssignment.WebApi.Attribute;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -12,6 +10,7 @@ namespace SkillslabAssignment.WebApi.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     [RoutePrefix("api/user")]
+    [ValidationActionFilter]
     public class UserController : ApiController
     {
         private readonly IUserService _userService;
@@ -19,6 +18,7 @@ namespace SkillslabAssignment.WebApi.Controllers
         {
             _userService = userService;
         }
+
         // GET: api/user
         [HttpGet]
         [Route("")]
@@ -26,33 +26,25 @@ namespace SkillslabAssignment.WebApi.Controllers
         {
             return Ok(_userService.GetAll());
         }
+
         // GET: api/user/5
         [HttpGet]
         [Route("{id:int}")]
-        public User Get(int id)
-        {
-            return _userService.GetById(id);
-        }
+        public User Get(int id) => _userService.GetById(id);
+
         // POST: api/user
         [HttpPost]
         [Route("")]
         public IHttpActionResult Post([FromBody] CreateUserDTO user)
         {
-            try
+            bool isUserCreated = _userService.CreateUserAndAccount(user);
+            if (isUserCreated)
             {
-                ParameterValidator<CreateUserDTO>.TryValidateAndThrow(user);
-                _userService.CreateUserAndAccount(user);
                 return Ok();
             }
-            catch (ValidationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return InternalServerError(ex);
-            }
+            return BadRequest("Failed to create user account.");
         }
+
         // PUT: api/user/5
         [HttpPut]
         [Route("{id:int}")]
@@ -61,27 +53,19 @@ namespace SkillslabAssignment.WebApi.Controllers
             user.Id = id;
             _userService.Update(user);
         }
+
         // DELETE: api/user/5
         [HttpDelete]
         [Route("{id:int}")]
-        public void Delete(int id)
-        {
-            _userService.Delete(id);
-        }
-        // Custom action with a different route
+        public void Delete(int id) => _userService.Delete(id);
+
+        // GET: api/user/getAllManagerByDepartment/5
         [HttpGet]
         [Route("getAllManagerByDepartment/{id:int}")]
-        public IHttpActionResult getManagerByDepartmentId(int id)
+        public IHttpActionResult GetManagerByDepartmentId(int id)
         {
-            try
-            {
-                IEnumerable<ManagerDTO> managers = _userService.GetAllManagerByDepartment(id);
-                return Created(Request.RequestUri, managers);
-            }
-            catch (Exception ex)
-            {
-                return InternalServerError(ex);
-            }
+            IEnumerable<ManagerDTO> managers = _userService.GetAllManagerByDepartment(id);
+            return Ok(managers);
         }
     }
 }

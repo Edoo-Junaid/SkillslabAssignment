@@ -1,7 +1,5 @@
 ﻿using SkillslabAssignment.Common.Entities;
 using SkillslabAssignment.Service;
-using System;
-using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -15,35 +13,19 @@ namespace SkillslabAssignment.WebApi.Controllers
         {
             _roleService = roleService;
         }
+
         // GET: api/Role
-        public IHttpActionResult Get()
-        {
-            try
-            {
-                IEnumerable<Role> roles = _roleService.GetAll();
-                return Ok(roles);
-            }
-            catch (Exception ex)
-            {
-                return InternalServerError(ex);
-            }
-        }
+        public IHttpActionResult Get() => Ok(_roleService.GetAll());
+
         // GET: api/Role/5
-        public IHttpActionResult Get(int id)
-        {
-            return Ok(_roleService.GetById(id));
-        }
+        public IHttpActionResult Get(int id) => Ok(_roleService.GetById(id));
         // POST: api/Role
         public void Post([FromBody] string value)
         {
         }
         // PUT: api/Role/5
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+        public void Put(int id, [FromBody] Role role) => _roleService.Update(role);
         // DELETE: api/Role/5
-        public void Delete(int id)
-        {
-        }
+        public void Delete(int id) => _roleService.Delete(id);
     }
 }

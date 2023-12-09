@@ -8,5 +8,7 @@ namespace SkillslabAssignment.Interface
     public interface IPendingAccountService : IGenericService<PendingAccount>
     {
         IEnumerable<PendingAccountDTO> GetAllPendingAccountDTOs();
+        bool IsEmailUnique(string email);
+        bool IsNicUnique(string nic);
     }
 }

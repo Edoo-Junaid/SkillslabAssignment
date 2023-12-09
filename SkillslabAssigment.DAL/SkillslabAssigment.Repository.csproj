@@ -47,6 +47,7 @@
     <Compile Include="DAL\AttachmentRepository.cs" />
     <Compile Include="DAL\EnrollmentRepository.cs" />
     <Compile Include="DAL\GenericRepository.cs" />
+    <Compile Include="Interface\IPendingAccountRepository.cs" />
     <Compile Include="DAL\PrerequisiteRepository.cs" />
     <Compile Include="DAL\TrainingRepository.cs" />
     <Compile Include="DAL\UserRepository.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="Interface\IPrerequisiteRepository.cs" />
     <Compile Include="Interface\ITrainingRepository.cs" />
     <Compile Include="Interface\IUserRepository.cs" />
+    <Compile Include="DAL\PendingAccountRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

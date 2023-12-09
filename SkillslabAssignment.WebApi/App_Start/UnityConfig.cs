@@ -1,15 +1,14 @@
 using SkillslabAssigment.DAL.DAL;
 using SkillslabAssigment.DAL.Interface;
-using SkillslabAssignment.Common.Entities;
 using SkillslabAssignment.Interface;
 using SkillslabAssignment.Service;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web.Http;
 using Unity;
 using Unity.AspNet.WebApi;
 using Unity.Injection;
-using System.Configuration;
 namespace SkillslabAssignment.WebApi
 {
     public static class UnityConfig
@@ -39,6 +38,8 @@ namespace SkillslabAssignment.WebApi
             container.RegisterType<IAttachmentService, AttachmentService>();
             container.RegisterType<IAttachmentRepository, AttachmentRepository>();
             container.RegisterType<ITrainingRepository, TrainingRepository>();
+            container.RegisterType<IPendingAccountRepository, PendingAccountRepository>();
+            container.RegisterType(typeof(IValidatorService<>), typeof(ValidatorService<>));
             Container = container;
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
         }

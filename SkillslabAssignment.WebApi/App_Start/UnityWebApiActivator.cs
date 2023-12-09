@@ -22,7 +22,6 @@ namespace SkillslabAssignment.WebApi
             // var resolver = new UnityHierarchicalDependencyResolver(UnityConfig.Container);
             UnityConfig.RegisterComponents();
             var resolver = new UnityDependencyResolver(UnityConfig.Container);
-
             GlobalConfiguration.Configuration.DependencyResolver = resolver;
         }
 

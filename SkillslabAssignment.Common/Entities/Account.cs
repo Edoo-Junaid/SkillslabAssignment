@@ -1,4 +1,5 @@
-﻿using SkillslabAssignment.Common.Interface;
+﻿using SkillslabAssignment.Common.Attribute;
+using SkillslabAssignment.Common.Interface;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SkillslabAssignment.Common.Entities

@@ -33,5 +33,9 @@ namespace SkillslabAssignment.Service
             IEnumerable<Prerequisite> prerequisites = _prerequisiteRepository.GetAllByTrainingId(id);
             return training.ToDetailsDTO(department, prerequisites);
         }
+        public bool CreteTraining(CreateTrainingRequestDTO training)
+        {
+            return _trainingRepository.CreateTraining(training);
+        }
     }
 }

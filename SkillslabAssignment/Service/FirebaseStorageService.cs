@@ -23,7 +23,6 @@ namespace SkillslabAssignment.Service
                     .Child(fileName)
                     .PutAsync(stream);
                 var downloadUrl = await task;
-                Debug.WriteLine($"Finished uploading: {downloadUrl}");
                 return downloadUrl;
             }
             catch (Exception ex)

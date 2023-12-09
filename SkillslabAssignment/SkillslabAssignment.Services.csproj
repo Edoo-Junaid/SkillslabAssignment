@@ -55,6 +55,7 @@
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Console, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Console.4.3.0\lib\net46\System.Console.dll</HintPath>
       <Private>True</Private>
@@ -207,6 +208,7 @@
     <Compile Include="Interface\IPrerequisiteService.cs" />
     <Compile Include="Interface\IStorrageService.cs" />
     <Compile Include="Interface\ITrainingService.cs" />
+    <Compile Include="Interface\IValidatorService.cs" />
     <Compile Include="Service\AccountService.cs" />
     <Compile Include="Service\AttachmentService.cs" />
     <Compile Include="Service\DepartmentService.cs" />
@@ -222,6 +224,7 @@
     <Compile Include="Service\PrerequisiteService.cs" />
     <Compile Include="Service\TrainingService.cs" />
     <Compile Include="Service\UserService.cs" />
+    <Compile Include="Service\ValidatorService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

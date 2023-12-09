@@ -66,8 +66,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\UniqueAttribute.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="DTO\AttachementDTO.cs" />
+    <Compile Include="DTO\CreateTrainingRequestDTO.cs" />
     <Compile Include="DTO\CreateUserDTO.cs" />
     <Compile Include="DTO\EnrollementDTO.cs" />
     <Compile Include="DTO\EnrollementRequestDTO.cs" />
@@ -94,7 +96,6 @@
     <Compile Include="Mapper\TrainingMapper.cs" />
     <Compile Include="Mapper\UserMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Validatora\ParameterValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Exception\" />

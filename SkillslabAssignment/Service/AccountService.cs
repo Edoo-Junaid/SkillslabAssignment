@@ -35,5 +35,6 @@ namespace SkillslabAssignment.Service
                 throw new AuthenticationException("Invalid credentials");
             }
         }
+        public bool IsEmailUnique(string email) => _accountRepository.GetByEmail(email) == null;
     }
 }

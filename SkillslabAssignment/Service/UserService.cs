@@ -4,7 +4,6 @@ using SkillslabAssignment.Common.Entities;
 using SkillslabAssignment.Common.Enums;
 using SkillslabAssignment.Common.Mapper;
 using SkillslabAssignment.Interface;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -21,23 +20,16 @@ namespace SkillslabAssignment.Service
         }
         public bool CreateUserAndAccount(CreateUserDTO createUserDTO)
         {
-            try
-            {
-                PendingAccount pendingAccount = _pendingAccountRepository.GetById((int)createUserDTO.PendingAccountId) ?? throw new Exception("Pending account not found");
-                UserDto user = pendingAccount.ToUserDto(createUserDTO);
-                _userRepository.CreateUser(user);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error creating user: {ex.Message}");
-                throw;
-            }
+            PendingAccount pendingAccount = _pendingAccountRepository.GetById((int)createUserDTO.PendingAccountId);
+            if (pendingAccount is null) return false;
+            UserDto user = pendingAccount.ToUserDto(createUserDTO);
+            return _userRepository.CreateUser(user);
         }
         public IEnumerable<ManagerDTO> GetAllManagerByDepartment(int departmentId)
         {
             IEnumerable<User> managers = _userRepository.GetUsersByDepartmentAndRole(departmentId, RoleEnum.Manager.ToString());
             return managers.Select(manager => manager.ToManagerDTO());
         }
+        public bool IsNicUnique(string nic) => _userRepository.IsNicUnique(nic);
     }
 }

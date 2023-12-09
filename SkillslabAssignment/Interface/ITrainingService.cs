@@ -1,7 +1,6 @@
 ﻿using SkillslabAssignment.Common.DTO;
 using SkillslabAssignment.Common.Entities;
 using SkillslabAssignment.Service;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace SkillslabAssignment.Interface
@@ -11,5 +10,6 @@ namespace SkillslabAssignment.Interface
         IEnumerable<TrainingDTO> GetAllTrainingDTO();
         TrainingDetailsDTO GetTrainingDetails(int id);
         IEnumerable<Training> GetAllEnrolledTraining(int userId);
+        bool CreteTraining(CreateTrainingRequestDTO training);
     }
 }

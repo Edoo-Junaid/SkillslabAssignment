@@ -8,6 +8,7 @@ namespace SkillslabAssigment.DAL.Interface
     {
         IEnumerable<User> GetUsersByDepartmentAndRole(int departmentId, string roleName);
         User GetByAccountId(int accountId);
-        void CreateUser(UserDto user);
+        bool CreateUser(UserDto user);
+        bool IsNicUnique(string nic);
     }
 }

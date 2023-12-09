@@ -7,5 +7,6 @@ namespace SkillslabAssignment.Interface
     public interface IAccountService : IGenericService<Account>
     {
         LoginResponseDTO Authenticate(LoginRequestDTO loginDTO);
+        bool IsEmailUnique(string email);
     }
 }

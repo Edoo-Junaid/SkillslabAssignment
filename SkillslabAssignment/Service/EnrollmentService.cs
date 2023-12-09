@@ -4,9 +4,7 @@ using SkillslabAssignment.Common.Entities;
 using SkillslabAssignment.Common.Enums;
 using SkillslabAssignment.Interface;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -17,7 +15,11 @@ namespace SkillslabAssignment.Service
         public IStorrageService _storrageService;
         public IGenericRepository<Attachment> _attachmentRepository;
         public IEnrollmentRepository _enrollementRepository;
-        public EnrollmentService(IEnrollmentRepository repository, IStorrageService storrageService, IGenericRepository<Attachment> attachmentRepository) : base(repository)
+        public EnrollmentService(
+            IEnrollmentRepository repository,
+            IStorrageService storrageService,
+            IGenericRepository<Attachment> attachmentRepository
+            ) : base(repository)
         {
             _storrageService = storrageService;
             _attachmentRepository = attachmentRepository;
@@ -29,10 +31,8 @@ namespace SkillslabAssignment.Service
         }
         public async Task<bool> ProcessEnrollement(EnrollementRequestDTO enrollementRequest)
         {
-            if (enrollementRequest == null)
-            {
-                return false;
-            }
+            if (enrollementRequest is null) return false;
+
             Enrollement enrollement = CreateEnrollment(enrollementRequest);
             await UploadAndAddAttachments(enrollement, enrollementRequest.PrerequisiteToAttachment);
             return true;
@@ -43,7 +43,6 @@ namespace SkillslabAssignment.Service
             {
                 PrerequisiteToAttachment = new Dictionary<int, Stream>()
             };
-            List<Stream> attachments = new List<Stream>();
             foreach (var file in provider.Contents)
             {
                 if (file.Headers.ContentType != null)

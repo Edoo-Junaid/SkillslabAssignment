@@ -1,12 +1,9 @@
 ﻿using SkillslabAssigment.DAL.Common;
 using SkillslabAssigment.DAL.Interface;
+using SkillslabAssignment.Common.DTO;
 using SkillslabAssignment.Common.Entities;
-using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SkillslabAssigment.DAL.DAL
 {
@@ -15,7 +12,6 @@ namespace SkillslabAssigment.DAL.DAL
         public TrainingRepository(IDbConnection connection) : base(connection)
         {
         }
-
         public IEnumerable<Training> GetAllEnrolledTraining(int userId)
         {
             const string GET_ALL_ENROLLED_TRAINING_ID_QUERY = @"
@@ -25,6 +21,31 @@ namespace SkillslabAssigment.DAL.DAL
                 WHERE user_id = @UserId"
             ;
             return _connection.ExecuteQuery<Training>(GET_ALL_ENROLLED_TRAINING_ID_QUERY, new { UserId = userId });
+        }
+        public bool CreateTraining(CreateTrainingRequestDTO training)
+        {
+            const string CREATE_TRAINING_QUERY = @"
+                DECLARE @TrainingId INT;
+                INSERT INTO training (name, description, date, location, department_id, deadline)
+                VALUES (@Name, @Description, @Date, @Location, @DepartmentId, @Deadline)
+                SET @TrainingId = SCOPE_IDENTITY(); 
+                IF (@PrerequisitesId IS NOT NULL AND LEN(@PrerequisitesId) > 0)
+                BEGIN
+                    INSERT INTO training_prerequisite (training_id, prerequisite_id)
+                    SELECT @TrainingId, P.value
+                    FROM STRING_SPLIT(@PrerequisitesId, ',') AS P;
+                END
+            ";
+            return _connection.ExecuteTransaction(CREATE_TRAINING_QUERY, new
+            {
+                training.Name,
+                training.Description,
+                training.Date,
+                training.Location,
+                training.DepartmentId,
+                training.Deadline,
+                PrerequisitesId = training.PrerequisitesId != null ? string.Join(",", training.PrerequisitesId) : null
+            });
         }
     }
 }
