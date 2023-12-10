@@ -6,10 +6,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace SkillslabAssignment.Common.Entities
 {
     [Table("training")]
-    public class Training : IEntity
+    public class Training : IEntity<short>
     {
         [Column("id")]
-        public int Id { get; set; }
+        public short Id { get; set; }
         [Column("name")]
         [Required(ErrorMessage = "Training Name Required")]
         public string Name { get; set; }
@@ -27,6 +27,6 @@ namespace SkillslabAssignment.Common.Entities
         public DateTime Deadline { get; set; }
         [Column("department_id")]
         [Required(ErrorMessage = "Department Id Required")]
-        public int DepartmentId { get; set; }
+        public byte DepartmentId { get; set; }
     }
 }

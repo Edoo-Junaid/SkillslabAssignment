@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 namespace SkillslabAssigment.DAL.Interface
 {
-    public interface IEnrollmentRepository : IGenericRepository<Enrollement>
+    public interface IEnrollmentRepository : IGenericRepository<Enrollement, int>
     {
-        IEnumerable<EnrollementDTO> GetAllByManagerId(int managerId);
+        IEnumerable<EnrollementDTO> GetAllByManagerId(short managerId);
     }
 }

@@ -5,11 +5,11 @@ namespace SkillslabAssignment.Common.DTO
     public class CreateUserDTO
     {
         [Range(1, int.MaxValue, ErrorMessage = "Pending Account Id required")]
-        public int PendingAccountId { get; set; }
+        public short PendingAccountId { get; set; }
         [Range(1, int.MaxValue, ErrorMessage = "Department Id is required")]
-        public int DepartmentId { get; set; }
-        public int? ManagerId { get; set; }
+        public byte DepartmentId { get; set; }
+        public short? ManagerId { get; set; }
         [Range(1, int.MaxValue, ErrorMessage = "Role Id is required")]
-        public int RoleId { get; set; }
+        public byte RoleId { get; set; }
     }
 }

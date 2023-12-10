@@ -5,8 +5,8 @@ namespace SkillslabAssignment.Common.DTO
 {
     public class EnrollementRequestDTO
     {
-        public int TrainingId { get; set; }
-        public int UserId { get; set; }
-        public Dictionary<int, Stream> PrerequisiteToAttachment { get; set; }
+        public short TrainingId { get; set; }
+        public short UserId { get; set; }
+        public Dictionary<short, Stream> PrerequisiteToAttachment { get; set; }
     }
 }

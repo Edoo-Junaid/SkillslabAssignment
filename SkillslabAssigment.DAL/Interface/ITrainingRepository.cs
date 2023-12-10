@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace SkillslabAssigment.DAL.Interface
 {
-    public interface ITrainingRepository : IGenericRepository<Training>
+    public interface ITrainingRepository : IGenericRepository<Training, short>
     {
-        IEnumerable<Training> GetAllEnrolledTraining(int userId);
+        IEnumerable<Training> GetAllEnrolledTraining(short userId);
         bool CreateTraining(CreateTrainingRequestDTO training);
     }
 }

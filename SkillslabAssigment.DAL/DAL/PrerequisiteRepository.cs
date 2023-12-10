@@ -6,12 +6,12 @@ using System.Data;
 
 namespace SkillslabAssigment.DAL.DAL
 {
-    public class PrerequisiteRepository : GenericRepository<Prerequisite>, IPrerequisiteRepository
+    public class PrerequisiteRepository : GenericRepository<Prerequisite, short>, IPrerequisiteRepository
     {
         public PrerequisiteRepository(IDbConnection connection) : base(connection)
         {
         }
-        public IEnumerable<Prerequisite> GetAllByTrainingId(int trainingId)
+        public IEnumerable<Prerequisite> GetAllByTrainingId(short trainingId)
         {
             const string GET_ALL_BY_TRAINING_ID_Query = @"
                 SELECT p.* FROM prerequisite p 

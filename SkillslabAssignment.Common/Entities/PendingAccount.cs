@@ -5,10 +5,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace SkillslabAssignment.Common.Entities
 {
     [Table("pending_account")]
-    public class PendingAccount : IEntity
+    public class PendingAccount : IEntity<short>
     {
         [Column("id")]
-        public int Id { get; set; }
+        public short Id { get; set; }
         [Required(ErrorMessage = "NIC is required")]
         [Column("nic")]
         public string Nic { get; set; }

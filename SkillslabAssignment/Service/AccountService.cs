@@ -5,12 +5,12 @@ using SkillslabAssignment.Interface;
 using System.Security.Authentication;
 namespace SkillslabAssignment.Service
 {
-    public class AccountService : GenericService<Account>, IAccountService
+    public class AccountService : GenericService<Account, short>, IAccountService
     {
         private readonly IAccountRepository _accountRepository;
         private readonly IUserRepository _userRepository;
-        private readonly IGenericRepository<Role> _roleRepository;
-        public AccountService(IAccountRepository accountRepository, IUserRepository userRepository, IGenericRepository<Role> roleRepository) : base(accountRepository)
+        private readonly IGenericRepository<Role, byte> _roleRepository;
+        public AccountService(IAccountRepository accountRepository, IUserRepository userRepository, IGenericRepository<Role, byte> roleRepository) : base(accountRepository)
         {
             this._accountRepository = accountRepository;
             this._userRepository = userRepository;
@@ -32,7 +32,7 @@ namespace SkillslabAssignment.Service
             }
             else
             {
-                throw new AuthenticationException("Invalid credentials");
+                return null;
             }
         }
         public bool IsEmailUnique(string email) => _accountRepository.GetByEmail(email) == null;

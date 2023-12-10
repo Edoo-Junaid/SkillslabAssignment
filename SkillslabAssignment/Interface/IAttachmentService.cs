@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace SkillslabAssignment.Interface
 {
-    public interface IAttachmentService : IGenericService<Attachment>
+    public interface IAttachmentService : IGenericService<Attachment, short>
     {
         IEnumerable<AttachementDTO> GetAllByEnrollmentId(int enrollmentId);
     }

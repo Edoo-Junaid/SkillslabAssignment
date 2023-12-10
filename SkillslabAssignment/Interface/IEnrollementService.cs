@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace SkillslabAssignment.Interface
 {
-    public interface IEnrollementService : IGenericService<Enrollement>
+    public interface IEnrollementService : IGenericService<Enrollement, int>
     {
         Task<bool> ProcessEnrollement(EnrollementRequestDTO enrollementRequest);
         Task<EnrollementRequestDTO> ProcessMultipartContent(MultipartMemoryStreamProvider provider);
-        IEnumerable<EnrollementDTO> GetAllByManagerId(int managerId);
+        IEnumerable<EnrollementDTO> GetAllByManagerId(short managerId);
     }
 }

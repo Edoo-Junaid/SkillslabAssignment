@@ -7,12 +7,12 @@ using System.Data;
 
 namespace SkillslabAssigment.DAL.DAL
 {
-    public class TrainingRepository : GenericRepository<Training>, ITrainingRepository
+    public class TrainingRepository : GenericRepository<Training, short>, ITrainingRepository
     {
         public TrainingRepository(IDbConnection connection) : base(connection)
         {
         }
-        public IEnumerable<Training> GetAllEnrolledTraining(int userId)
+        public IEnumerable<Training> GetAllEnrolledTraining(short userId)
         {
             const string GET_ALL_ENROLLED_TRAINING_ID_QUERY = @"
                 SELECT training.* FROM enrollment

@@ -13,8 +13,8 @@ namespace SkillslabAssignment.Common.Mapper
         {
             return new User()
             {
-                RoleId = (int)createUserDTO.RoleId,
-                DepartmentId = (int)createUserDTO.DepartmentId,
+                RoleId = createUserDTO.RoleId,
+                DepartmentId = createUserDTO.DepartmentId,
                 ManagerId = createUserDTO.ManagerId
             };
         }

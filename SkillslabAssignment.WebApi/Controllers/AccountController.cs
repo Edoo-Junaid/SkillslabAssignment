@@ -22,9 +22,12 @@ namespace SkillslabAssignment.WebApi.Controllers
         public IHttpActionResult Authenticate([FromBody] LoginRequestDTO loginRequest)
         {
             LoginResponseDTO loginResponseDTO = _accountService.Authenticate(loginRequest);
+            if (loginResponseDTO == null)
+            {
+                return Unauthorized();
+            }
             loginResponseDTO.AuthToken = JwtManager.GenerateToken(loginResponseDTO.Email, loginResponseDTO.RoleName);
             return Ok(loginResponseDTO);
         }
     }
-
 }

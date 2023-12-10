@@ -2,7 +2,7 @@
 using SkillslabAssignment.Service;
 namespace SkillslabAssignment.Interface
 {
-    public interface IDepartmentService : IGenericService<Department>
+    public interface IDepartmentService : IGenericService<Department, byte>
     {
     }
 }

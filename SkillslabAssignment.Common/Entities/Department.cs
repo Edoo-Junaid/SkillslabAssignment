@@ -5,10 +5,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace SkillslabAssignment.Common.Entities
 {
     [Table("department")]
-    public class Department : IEntity
+    public class Department : IEntity<byte>
     {
         [Column("id")]
-        public int Id { get; set; }
+        public byte Id { get; set; }
         [Column("name")]
         [Required]
         public string Name { get; set; }

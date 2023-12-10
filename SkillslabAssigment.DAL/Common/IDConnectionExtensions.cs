@@ -11,22 +11,22 @@ namespace SkillslabAssigment.DAL.Common
 {
     public static class IDConnectionExtensions
     {
-        private static readonly Dictionary<Type, DbType> TypeToDbTypeMap = new Dictionary<Type, DbType>
-        {
-            { typeof(string), DbType.String },
-            { typeof(int), DbType.Int32 },
-            { typeof(long), DbType.Int64 },
-            { typeof(short), DbType.Int16 },
-            { typeof(byte), DbType.Byte },
-            { typeof(bool), DbType.Boolean },
-            { typeof(DateTime), DbType.DateTime },
-            { typeof(decimal), DbType.Decimal },
-            { typeof(double), DbType.Double },
-            { typeof(Guid), DbType.Guid },
-            { typeof(float), DbType.Single },
-            { typeof(TimeSpan), DbType.Time },
-            { typeof(byte[]), DbType.Binary },
-        };
+        //private static readonly Dictionary<Type, DbType> TypeToDbTypeMap = new Dictionary<Type, DbType>
+        //{
+        //    { typeof(string), DbType.String },
+        //    { typeof(int), DbType.Int32 },
+        //    { typeof(long), DbType.Int64 },
+        //    { typeof(short), DbType.Int16 },
+        //    { typeof(byte), DbType.Byte },
+        //    { typeof(bool), DbType.Boolean },
+        //    { typeof(DateTime), DbType.DateTime },
+        //    { typeof(decimal), DbType.Decimal },
+        //    { typeof(double), DbType.Double },
+        //    { typeof(Guid), DbType.Guid },
+        //    { typeof(float), DbType.Single },
+        //    { typeof(TimeSpan), DbType.Time },
+        //    { typeof(byte[]), DbType.Binary },
+        //};
         public static void ExecuteNonQuery(this IDbConnection connection, string query, object parameters = null)
         {
             using (var command = connection.CreateCommand())
@@ -120,7 +120,7 @@ namespace SkillslabAssigment.DAL.Common
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Exception: {ex.Message}");
-                    return null;
+                    throw;
                 }
                 finally
                 {
@@ -176,6 +176,7 @@ namespace SkillslabAssigment.DAL.Common
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Exception: {ex.Message}");
+                    throw;
                 }
                 finally
                 {
@@ -202,6 +203,7 @@ namespace SkillslabAssigment.DAL.Common
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Exception: {ex.Message}");
+                    throw;
                 }
                 finally
                 {
@@ -226,7 +228,7 @@ namespace SkillslabAssigment.DAL.Common
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Exception: {ex.Message}");
-                    return null;
+                    throw;
                 }
                 finally
                 {
@@ -253,7 +255,7 @@ namespace SkillslabAssigment.DAL.Common
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Exception: {ex.Message}");
-                    return null;
+                    throw;
                 }
                 finally
                 {
@@ -261,7 +263,6 @@ namespace SkillslabAssigment.DAL.Common
                 }
             }
         }
-
         public static bool RowExists<T>(this IDbConnection connection, string whereClause, object parameters = null)
         {
             using (var command = connection.CreateCommand())
@@ -279,7 +280,7 @@ namespace SkillslabAssigment.DAL.Common
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Exception: {ex.Message}");
-                    return false;
+                    throw;
                 }
                 finally
                 {
@@ -345,7 +346,7 @@ namespace SkillslabAssigment.DAL.Common
         }
         private static T CreateInstance<T>(Type type, IDataReader reader)
         {
-            var item = Activator.CreateInstance<T>();
+            var instance = Activator.CreateInstance<T>();
             for (int i = 0; i < reader.FieldCount; i++)
             {
                 var columnName = reader.GetName(i);
@@ -357,15 +358,15 @@ namespace SkillslabAssigment.DAL.Common
                     {
                         Type propertyType = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
                         object convertedValue = Convert.ChangeType(value, propertyType);
-                        property.SetValue(item, convertedValue);
+                        property.SetValue(instance, convertedValue);
                     }
                     else if (IsPropertyTypeNullable(property))
                     {
-                        property.SetValue(item, null);
+                        property.SetValue(instance, null);
                     }
                 }
             }
-            return item;
+            return instance;
         }
         private static PropertyInfo GetPropertyByName(Type type, string propertyName)
         {
@@ -430,5 +431,4 @@ namespace SkillslabAssigment.DAL.Common
             return !property.PropertyType.IsValueType || Nullable.GetUnderlyingType(property.PropertyType) != null;
         }
     }
-
 }

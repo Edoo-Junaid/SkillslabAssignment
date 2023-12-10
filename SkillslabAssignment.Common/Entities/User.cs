@@ -4,10 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace SkillslabAssignment.Common.Entities
 {
     [Table("user")]
-    public class User : IEntity
+    public class User : IEntity<short>
     {
         [Column("id")]
-        public int Id { get; set; }
+        public short Id { get; set; }
         [Column("first_name")]
         public string FirstName { get; set; }
         [Column("last_name")]
@@ -15,13 +15,13 @@ namespace SkillslabAssignment.Common.Entities
         [Column("nic")]
         public string NIC { get; set; }
         [Column("department_id")]
-        public int DepartmentId { get; set; }
+        public byte DepartmentId { get; set; }
         [Column("manager_id")]
-        public int? ManagerId { get; set; }
+        public short? ManagerId { get; set; }
         [Column("account_id")]
-        public int AccountId { get; set; }
+        public short AccountId { get; set; }
         [Column("role_id")]
-        public int RoleId { get; set; }
+        public byte RoleId { get; set; }
         [Column("phone_number")]
         public string PhoneNumber { get; set; }
     }

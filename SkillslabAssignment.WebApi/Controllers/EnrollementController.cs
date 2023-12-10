@@ -34,7 +34,7 @@ namespace SkillslabAssignment.WebApi.Controllers
         }
         [HttpGet]
         [Route("getByManagerID/{managerId}")]
-        public IHttpActionResult GetAllByManagerId(int managerId)
+        public IHttpActionResult GetAllByManagerId(short managerId)
         {
             IEnumerable<EnrollementDTO> enrollements = _enrollementService.GetAllByManagerId(managerId);
             return Ok(enrollements);

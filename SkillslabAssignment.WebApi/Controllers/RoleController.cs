@@ -8,17 +8,15 @@ namespace SkillslabAssignment.WebApi.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class RoleController : ApiController
     {
-        private readonly IGenericService<Role> _roleService;
-        public RoleController(IGenericService<Role> roleService)
+        private readonly IGenericService<Role, byte> _roleService;
+        public RoleController(IGenericService<Role, byte> roleService)
         {
             _roleService = roleService;
         }
-
         // GET: api/Role
         public IHttpActionResult Get() => Ok(_roleService.GetAll());
-
         // GET: api/Role/5
-        public IHttpActionResult Get(int id) => Ok(_roleService.GetById(id));
+        public IHttpActionResult Get(byte id) => Ok(_roleService.GetById(id));
         // POST: api/Role
         public void Post([FromBody] string value)
         {
@@ -26,6 +24,6 @@ namespace SkillslabAssignment.WebApi.Controllers
         // PUT: api/Role/5
         public void Put(int id, [FromBody] Role role) => _roleService.Update(role);
         // DELETE: api/Role/5
-        public void Delete(int id) => _roleService.Delete(id);
+        public void Delete(byte id) => _roleService.Delete(id);
     }
 }

@@ -4,15 +4,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace SkillslabAssignment.Common.Entities
 {
     [Table("attachment")]
-    public class Attachment : IEntity
+    public class Attachment : IEntity<short>
     {
         [Column("id")]
-        public int Id { get; set; }
+        public short Id { get; set; }
         [Column("url")]
         public string Url { get; set; }
         [Column("enrollment_id")]
         public int EnrollmentId { get; set; }
         [Column("prerequisite_id")]
-        public int PrerequisiteId { get; set; }
+        public short PrerequisiteId { get; set; }
     }
 }

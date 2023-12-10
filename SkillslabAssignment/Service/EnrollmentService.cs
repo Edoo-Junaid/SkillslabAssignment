@@ -10,22 +10,22 @@ using System.Threading.Tasks;
 
 namespace SkillslabAssignment.Service
 {
-    public class EnrollmentService : GenericService<Enrollement>, IEnrollementService
+    public class EnrollmentService : GenericService<Enrollement, int>, IEnrollementService
     {
         public IStorrageService _storrageService;
-        public IGenericRepository<Attachment> _attachmentRepository;
+        public IGenericRepository<Attachment, short> _attachmentRepository;
         public IEnrollmentRepository _enrollementRepository;
         public EnrollmentService(
             IEnrollmentRepository repository,
             IStorrageService storrageService,
-            IGenericRepository<Attachment> attachmentRepository
+            IGenericRepository<Attachment, short> attachmentRepository
             ) : base(repository)
         {
             _storrageService = storrageService;
             _attachmentRepository = attachmentRepository;
             _enrollementRepository = repository;
         }
-        public IEnumerable<EnrollementDTO> GetAllByManagerId(int managerId)
+        public IEnumerable<EnrollementDTO> GetAllByManagerId(short managerId)
         {
             return _enrollementRepository.GetAllByManagerId(managerId);
         }
@@ -41,13 +41,13 @@ namespace SkillslabAssignment.Service
         {
             EnrollementRequestDTO enrollementRequest = new EnrollementRequestDTO()
             {
-                PrerequisiteToAttachment = new Dictionary<int, Stream>()
+                PrerequisiteToAttachment = new Dictionary<short, Stream>()
             };
             foreach (var file in provider.Contents)
             {
                 if (file.Headers.ContentType != null)
                 {
-                    var prerequisiteId = int.Parse(file.Headers.ContentDisposition.Name.Trim('\"'));
+                    var prerequisiteId = short.Parse(file.Headers.ContentDisposition.Name.Trim('\"'));
                     var fileStream = await file.ReadAsStreamAsync();
                     enrollementRequest.PrerequisiteToAttachment.Add(prerequisiteId, fileStream);
                 }
@@ -58,10 +58,10 @@ namespace SkillslabAssignment.Service
                     switch (fieldName)
                     {
                         case "TrainingId":
-                            enrollementRequest.TrainingId = int.Parse(fieldValue);
+                            enrollementRequest.TrainingId = short.Parse(fieldValue);
                             break;
                         case "UserId":
-                            enrollementRequest.UserId = int.Parse(fieldValue);
+                            enrollementRequest.UserId = short.Parse(fieldValue);
                             break;
                     }
                 }
@@ -82,7 +82,7 @@ namespace SkillslabAssignment.Service
                 Status = EnrollementStatus.Pending.ToString()
             });
         }
-        private async Task UploadAndAddAttachments(Enrollement enrollement, Dictionary<int, Stream> prerequisiteToAttachment)
+        private async Task UploadAndAddAttachments(Enrollement enrollement, Dictionary<short, Stream> prerequisiteToAttachment)
         {
             foreach (var attachement in prerequisiteToAttachment)
             {
@@ -91,7 +91,7 @@ namespace SkillslabAssignment.Service
                 _attachmentRepository.Add(new Attachment
                 {
                     EnrollmentId = enrollement.Id,
-                    PrerequisiteId = attachement.Key,
+                    PrerequisiteId = (short)attachement.Key,
                     Url = url
                 });
             }

@@ -1,7 +1,9 @@
-﻿namespace SkillslabAssignment.Common.Interface
+﻿using System;
+
+namespace SkillslabAssignment.Common.Interface
 {
-    public interface IEntity
+    public interface IEntity<TId>
     {
-        int Id { get; set; }
+        TId Id { get; set; }
     }
 }

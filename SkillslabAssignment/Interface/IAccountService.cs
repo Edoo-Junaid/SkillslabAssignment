@@ -4,7 +4,7 @@ using SkillslabAssignment.Service;
 
 namespace SkillslabAssignment.Interface
 {
-    public interface IAccountService : IGenericService<Account>
+    public interface IAccountService : IGenericService<Account, short>
     {
         LoginResponseDTO Authenticate(LoginRequestDTO loginDTO);
         bool IsEmailUnique(string email);

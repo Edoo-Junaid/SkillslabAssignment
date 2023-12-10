@@ -4,10 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace SkillslabAssignment.Common.Entities
 {
     [Table("role")]
-    public class Role : IEntity
+    public class Role : IEntity<byte>
     {
         [Column("id")]
-        public int Id { get; set; }
+        public byte Id { get; set; }
         [Column("name")]
         public string Name { get; set; }
     }

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace SkillslabAssignment.Service
 {
-    public class AttachmentService : GenericService<Attachment>, IAttachmentService
+    public class AttachmentService : GenericService<Attachment, short>, IAttachmentService
     {
         public IAttachmentRepository _attachmentRepository;
         public IPrerequisiteRepository _prerequisiteRepository;

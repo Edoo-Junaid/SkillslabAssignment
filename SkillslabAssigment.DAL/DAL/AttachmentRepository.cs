@@ -6,7 +6,7 @@ using System.Data;
 
 namespace SkillslabAssigment.DAL.DAL
 {
-    public class AttachmentRepository : GenericRepository<Attachment>, IAttachmentRepository
+    public class AttachmentRepository : GenericRepository<Attachment, short>, IAttachmentRepository
     {
         public AttachmentRepository(IDbConnection connection) : base(connection)
         {

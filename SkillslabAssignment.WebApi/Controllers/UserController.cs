@@ -18,7 +18,6 @@ namespace SkillslabAssignment.WebApi.Controllers
         {
             _userService = userService;
         }
-
         // GET: api/user
         [HttpGet]
         [Route("")]
@@ -30,7 +29,7 @@ namespace SkillslabAssignment.WebApi.Controllers
         // GET: api/user/5
         [HttpGet]
         [Route("{id:int}")]
-        public User Get(int id) => _userService.GetById(id);
+        public User Get(short id) => _userService.GetById(id);
 
         // POST: api/user
         [HttpPost]
@@ -48,7 +47,7 @@ namespace SkillslabAssignment.WebApi.Controllers
         // PUT: api/user/5
         [HttpPut]
         [Route("{id:int}")]
-        public void Put(int id, [FromBody] User user)
+        public void Put(short id, [FromBody] User user)
         {
             user.Id = id;
             _userService.Update(user);
@@ -57,12 +56,12 @@ namespace SkillslabAssignment.WebApi.Controllers
         // DELETE: api/user/5
         [HttpDelete]
         [Route("{id:int}")]
-        public void Delete(int id) => _userService.Delete(id);
+        public void Delete(short id) => _userService.Delete(id);
 
         // GET: api/user/getAllManagerByDepartment/5
         [HttpGet]
         [Route("getAllManagerByDepartment/{id:int}")]
-        public IHttpActionResult GetManagerByDepartmentId(int id)
+        public IHttpActionResult GetManagerByDepartmentId(byte id)
         {
             IEnumerable<ManagerDTO> managers = _userService.GetAllManagerByDepartment(id);
             return Ok(managers);

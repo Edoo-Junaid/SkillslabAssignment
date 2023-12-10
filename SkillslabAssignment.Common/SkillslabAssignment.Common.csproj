@@ -92,7 +92,6 @@
     <Compile Include="Enums\EnrollementStatus.cs" />
     <Compile Include="Enums\RolesEnum.cs" />
     <Compile Include="Interface\IEntity.cs" />
-    <Compile Include="Mapper\PendingAccountMapper.cs" />
     <Compile Include="Mapper\TrainingMapper.cs" />
     <Compile Include="Mapper\UserMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

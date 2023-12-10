@@ -21,7 +21,7 @@ namespace SkillslabAssignment.WebApi.Controllers
         public IEnumerable<Department> GetAll() => _departmentService.GetAll();
 
         // GET: api/Department/5
-        public Department Get(int id) => _departmentService.GetById(id);
+        public Department Get(byte id) => _departmentService.GetById(id);
 
         // POST: api/Department
         public IHttpActionResult Post([FromBody] Department department)
@@ -30,13 +30,13 @@ namespace SkillslabAssignment.WebApi.Controllers
         }
 
         // PUT: api/Department/5
-        public void Put(int id, [FromBody] Department department)
+        public void Put(byte id, [FromBody] Department department)
         {
             department.Id = id;
             _departmentService.Update(department);
         }
 
         // DELETE: api/Department/5
-        public void Delete(int id) => _departmentService.Delete(id);
+        public void Delete(byte id) => _departmentService.Delete(id);
     }
 }

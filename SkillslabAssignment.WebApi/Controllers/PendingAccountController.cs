@@ -25,20 +25,28 @@ namespace SkillslabAssignment.WebApi.Controllers
         // GET: api/pendingAccount/5
         [HttpGet]
         [Route("{id:int}")]
-        public PendingAccount Get(int id) => _pendingAccountService.GetById(id);
+        public PendingAccount Get(short id) => _pendingAccountService.GetById(id);
 
         // POST: api/pendingAccount
         [HttpPost]
         [Route("")]
         public IHttpActionResult Post([FromBody] PendingAccount account)
         {
-            return Created(Request.RequestUri, _pendingAccountService.Add(account));
+            bool IsCreated = _pendingAccountService.CreatePendingAccount(account);
+            if (IsCreated)
+            {
+                return Created(Request.RequestUri, account);
+            }
+            else
+            {
+                return BadRequest("Something went wrong. Please try again later");
+            }
         }
 
         // PUT: api/pendingAccount/5
         [HttpPut]
         [Route("{id:int}")]
-        public void Put(int id, [FromBody] PendingAccount account)
+        public void Put(short id, [FromBody] PendingAccount account)
         {
             account.Id = id;
             _pendingAccountService.Update(account);
@@ -47,6 +55,6 @@ namespace SkillslabAssignment.WebApi.Controllers
         // DELETE: api/pendingAccount/5
         [HttpDelete]
         [Route("{id:int}")]
-        public void Delete(int id) => _pendingAccountService.Delete(id);
+        public void Delete(short id) => _pendingAccountService.Delete(id);
     }
 }

@@ -5,14 +5,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace SkillslabAssignment.Common.Entities
 {
     [Table("enrollment")]
-    public class Enrollement : IEntity
+    public class Enrollement : IEntity<int>
     {
         [Column("id")]
         public int Id { get; set; }
         [Column("user_id")]
-        public int UserId { get; set; }
+        public short UserId { get; set; }
         [Column("training_id")]
-        public int TrainingId { get; set; }
+        public short TrainingId { get; set; }
         [Column("date")]
         public DateTime Date { get; set; }
         [Column("status")]

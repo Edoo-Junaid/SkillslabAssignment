@@ -8,16 +8,22 @@ using System.Linq;
 
 namespace SkillslabAssignment.Service
 {
-    public class PendingAccountService : GenericService<PendingAccount>, IPendingAccountService
+    public class PendingAccountService : GenericService<PendingAccount, short>, IPendingAccountService
     {
         private readonly IPendingAccountRepository _pendingAccountRepository;
         public PendingAccountService(IPendingAccountRepository pendingAccountRepository) : base(pendingAccountRepository)
         {
             _pendingAccountRepository = pendingAccountRepository;
         }
+
+        public bool CreatePendingAccount(PendingAccount pendingAccount)
+        {
+            return _pendingAccountRepository.CreatePendingAccount(pendingAccount);
+        }
+
         public IEnumerable<PendingAccountDTO> GetAllPendingAccountDTOs()
         {
-            return _repository.GetAll().Select(pendingAccount => pendingAccount.ToPendingAccountDTO());
+            return _pendingAccountRepository.GetAllPendingAccountDTO();
         }
         public bool IsEmailUnique(string email)
         {

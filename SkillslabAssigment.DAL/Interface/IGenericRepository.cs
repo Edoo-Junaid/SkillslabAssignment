@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace SkillslabAssigment.DAL.Interface
 {
-    public interface IGenericRepository<T> where T : IEntity
+    public interface IGenericRepository<T, TId> where T : IEntity<TId>
     {
         IEnumerable<T> GetAll();
-        T GetById(int id);
+        T GetById(TId id);
         T Add(T entity);
         bool Update(T entity);
-        bool Delete(int id);
+        bool Delete(TId id);
     }
 }

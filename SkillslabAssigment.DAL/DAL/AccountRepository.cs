@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace SkillslabAssigment.DAL.DAL
 {
-    public class AccountRepository : GenericRepository<Account>, IAccountRepository
+    public class AccountRepository : GenericRepository<Account, short>, IAccountRepository
     {
         public AccountRepository(IDbConnection connection) : base(connection)
         {

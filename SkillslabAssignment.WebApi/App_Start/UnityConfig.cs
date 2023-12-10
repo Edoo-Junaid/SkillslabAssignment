@@ -21,8 +21,8 @@ namespace SkillslabAssignment.WebApi
             container.RegisterType<IDbConnection, SqlConnection>(
                 new InjectionConstructor(connectionString)
             );
-            container.RegisterType(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            container.RegisterType(typeof(IGenericService<>), typeof(GenericService<>));
+            container.RegisterType(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
+            container.RegisterType(typeof(IGenericService<,>), typeof(GenericService<,>));
             container.RegisterType<IAccountRepository, AccountRepository>();
             container.RegisterType<IAccountService, AccountService>();
             container.RegisterType<IUserRepository, UserRepository>();

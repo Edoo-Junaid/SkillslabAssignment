@@ -27,20 +27,21 @@ namespace SkillslabAssignment.WebApi.Controllers
         // GET: api/training/5
         [HttpGet]
         [Route("{id:int}")]
-        public Training Get(int id) => _trainingService.GetById(id);
+        public Training Get(short id) => _trainingService.GetById(id);
 
         // POST: api/training
         [HttpPost]
         [Route("")]
         public IHttpActionResult Post([FromBody] CreateTrainingRequestDTO training)
         {
-            return Created(Request.RequestUri + "/" + training.Id, _trainingService.CreteTraining(training));
+            return Created(Request.RequestUri + "/" +
+                training.Id, _trainingService.CreteTraining(training));
         }
 
         // PUT: api/training/5
         [HttpPut]
         [Route("{id:int}")]
-        public void Put(int id, [FromBody] Training training)
+        public void Put(short id, [FromBody] Training training)
         {
             training.Id = id;
             _trainingService.Update(training);
@@ -49,16 +50,21 @@ namespace SkillslabAssignment.WebApi.Controllers
         // DELETE: api/training/5
         [HttpDelete]
         [Route("{id:int}")]
-        public void Delete(int id) => _trainingService.Delete(id);
+        public void Delete(short id) => _trainingService.Delete(id);
 
         // GET: api/training/trainingDetails/5
         [HttpGet]
         [Route("trainingDetails/{id:int}")]
-        public IHttpActionResult GetTrainingDetails(int id) => Ok(_trainingService.GetTrainingDetails(id));
-
+        public IHttpActionResult GetTrainingDetails(short id)
+        {
+            return Ok(_trainingService.GetTrainingDetails(id));
+        }
         // GET: api/training/getEnrolledTrainingIds/5
         [HttpGet]
         [Route("getEnrolledTrainingIds/{userId:int}")]
-        public IHttpActionResult GetAllEnrolledTrainingId(int userId) => Ok(_trainingService.GetAllEnrolledTraining(userId));
+        public IHttpActionResult GetAllEnrolledTrainingId(short userId)
+        {
+            return Ok(_trainingService.GetAllEnrolledTraining(userId));
+        }
     }
 }

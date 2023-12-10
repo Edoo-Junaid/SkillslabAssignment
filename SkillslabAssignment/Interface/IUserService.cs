@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace SkillslabAssignment.Interface
 {
-    public interface IUserService : IGenericService<User>
+    public interface IUserService : IGenericService<User, short>
     {
-        IEnumerable<ManagerDTO> GetAllManagerByDepartment(int departmentId);
+        IEnumerable<ManagerDTO> GetAllManagerByDepartment(byte departmentId);
         bool CreateUserAndAccount(CreateUserDTO createUserDTO);
         bool IsNicUnique(string nic);
     }

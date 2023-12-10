@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 namespace SkillslabAssignment.Interface
 {
-    public interface IPrerequisiteService : IGenericService<Prerequisite>
+    public interface IPrerequisiteService : IGenericService<Prerequisite, short>
     {
-        IEnumerable<Prerequisite> GetAllByTrainingId(int trainingId);
+        IEnumerable<Prerequisite> GetAllByTrainingId(short trainingId);
     }
 }

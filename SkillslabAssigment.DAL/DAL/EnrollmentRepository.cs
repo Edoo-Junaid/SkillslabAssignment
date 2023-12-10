@@ -7,12 +7,12 @@ using System.Data;
 
 namespace SkillslabAssigment.DAL.DAL
 {
-    public class EnrollmentRepository : GenericRepository<Enrollement>, IEnrollmentRepository
+    public class EnrollmentRepository : GenericRepository<Enrollement, int>, IEnrollmentRepository
     {
         public EnrollmentRepository(IDbConnection connection) : base(connection)
         {
         }
-        public IEnumerable<EnrollementDTO> GetAllByManagerId(int managerId)
+        public IEnumerable<EnrollementDTO> GetAllByManagerId(short managerId)
         {
             const string GET_ALL_ENROLLMENTS_BY_MANAGER_ID = @"
             SELECT [user].first_name,[user].last_name ,training.name AS training_name,enrollment.id AS enrollement_id 
