@@ -262,6 +262,32 @@ namespace SkillslabAssigment.DAL.Common
             }
         }
 
+        public static bool RowExists<T>(this IDbConnection connection, string whereClause, object parameters = null)
+        {
+            using (var command = connection.CreateCommand())
+            {
+                try
+                {
+                    connection.OpenConnection();
+                    Type type = typeof(T);
+                    string selectQuery = new StringBuilder($"SELECT COUNT(*) FROM [{GetTableName(type)}] WHERE {whereClause}").ToString();
+                    AddParametersToCommand(command, parameters);
+                    command.CommandText = selectQuery;
+                    int rowCount = (int)command.ExecuteScalar();
+                    return rowCount > 0;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Exception: {ex.Message}");
+                    return false;
+                }
+                finally
+                {
+                    connection.CloseConnection();
+                }
+            }
+        }
+
         private static void OpenConnection(this IDbConnection connection)
         {
             if (connection.State != ConnectionState.Open)

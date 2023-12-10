@@ -17,9 +17,11 @@ namespace SkillslabAssigment.DAL.DAL
             .FirstOrDefault();
         public bool IsAuthenticated(string email, string password)
         {
-            const string AUTHENTICATION_QUERY = "SELECT * FROM Account WHERE email = @Email AND password = @Password";
+            const string AUTHENTICATION_QUERY = @"
+            SELECT * FROM account WHERE email = @Email AND 
+            password = HASHBYTES('SHA2_256',@Password + CAST(salt AS NVARCHAR(MAX)))";
             IEnumerable<Account> accounts = _connection.ExecuteQuery<Account>(AUTHENTICATION_QUERY, new { Email = email, Password = password });
-            return accounts.Count() > 0;
+            return accounts.Any();
         }
     }
 }
