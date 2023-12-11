@@ -18,6 +18,7 @@ namespace SkillslabAssignment.WebApi
         {
             var container = new UnityContainer();
             string connectionString = ConfigurationManager.ConnectionStrings["MSSQLServerConnection"].ConnectionString;
+            string bucketString = ConfigurationManager.ConnectionStrings["Bucket"].ConnectionString;
             container.RegisterType<IDbConnection, SqlConnection>(
                 new InjectionConstructor(connectionString)
             );
@@ -34,7 +35,9 @@ namespace SkillslabAssignment.WebApi
             container.RegisterType<IPrerequisiteRepository, PrerequisiteRepository>();
             container.RegisterType<IEnrollmentRepository, EnrollmentRepository>();
             container.RegisterType<IEnrollementService, EnrollmentService>();
-            container.RegisterType<IStorrageService, FirebaseStorageService>();
+            container.RegisterType<IStorrageService, FirebaseStorageService>(
+                new InjectionConstructor(bucketString)
+                );
             container.RegisterType<IAttachmentService, AttachmentService>();
             container.RegisterType<IAttachmentRepository, AttachmentRepository>();
             container.RegisterType<ITrainingRepository, TrainingRepository>();

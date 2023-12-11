@@ -12,11 +12,9 @@ namespace SkillslabAssignment.Service
     public class UserService : GenericService<User, short>, IUserService
     {
         private readonly IUserRepository _userRepository;
-        private readonly IGenericRepository<PendingAccount, short> _pendingAccountRepository;
-        public UserService(IUserRepository repository, IGenericRepository<PendingAccount, short> pendingAccountRepository) : base(repository)
+        public UserService(IUserRepository repository) : base(repository)
         {
             _userRepository = repository;
-            _pendingAccountRepository = pendingAccountRepository;
         }
         public bool CreateUserAndAccount(CreateUserDTO createUserDTO)
         {

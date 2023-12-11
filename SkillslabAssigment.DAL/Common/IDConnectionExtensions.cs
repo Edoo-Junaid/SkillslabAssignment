@@ -354,15 +354,18 @@ namespace SkillslabAssigment.DAL.Common
                 if (property != null)
                 {
                     var value = reader.GetValue(i);
-                    if (value != DBNull.Value)
+                    if (value == DBNull.Value)
+                    {
+                        if (IsPropertyTypeNullable(property))
+                        {
+                            property.SetValue(instance, null);
+                        }
+                    }
+                    else
                     {
                         Type propertyType = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
                         object convertedValue = Convert.ChangeType(value, propertyType);
                         property.SetValue(instance, convertedValue);
-                    }
-                    else if (IsPropertyTypeNullable(property))
-                    {
-                        property.SetValue(instance, null);
                     }
                 }
             }
@@ -371,9 +374,7 @@ namespace SkillslabAssigment.DAL.Common
         private static PropertyInfo GetPropertyByName(Type type, string propertyName)
         {
             return type.GetProperties()
-                .FirstOrDefault(p =>
-                    (Attribute.GetCustomAttribute(p, typeof(ColumnAttribute)) as ColumnAttribute)?.Name == propertyName
-                    || p.Name == propertyName);
+                       .FirstOrDefault(property => GetColumnName(property) == propertyName || property.Name == propertyName);
         }
         private static IEnumerable<IDbDataParameter> ToParameters(this object parameters, IDbCommand command)
         {

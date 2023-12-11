@@ -10,9 +10,9 @@ namespace SkillslabAssignment.Service
     public class FirebaseStorageService : IStorrageService
     {
         private readonly FirebaseStorage _storage;
-        public FirebaseStorageService()
+        public FirebaseStorageService(string bucket)
         {
-            _storage = new FirebaseStorage("skillslab-9e0a3.appspot.com");
+            _storage = new FirebaseStorage(bucket);
         }
         public async Task<string> UploadFileAsync(Stream stream, int trainingId, string fileName)
         {
