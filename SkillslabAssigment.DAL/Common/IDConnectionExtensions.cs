@@ -29,24 +29,24 @@ namespace SkillslabAssigment.DAL.Common
                 }
             }
         }
-        public static async Task ExecuteNonQueryAsync(this DbConnection connection, string query, object parameters = null)
-        {
-            using (var command = connection.CreateCommand())
-            {
-                try
-                {
-                    connection.OpenConnection();
-                    command.CommandText = query;
-                    AddParametersToCommand(command, parameters);
-                    command.ExecuteNonQuery();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Exception: {ex.Message}");
-                    throw;
-                }
-            }
-        }
+        //public static async Task ExecuteNonQueryAsync(this DbConnection connection, string query, object parameters = null)
+        //{
+        //    using (var command = connection.CreateCommand())
+        //    {
+        //        try
+        //        {
+        //            connection.OpenConnection();
+        //            command.CommandText = query;
+        //            AddParametersToCommand(command, parameters);
+        //            command.ExecuteNonQuery();
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Console.WriteLine($"Exception: {ex.Message}");
+        //            throw;
+        //        }
+        //    }
+        //}
         public static bool ExecuteTransaction(this IDbConnection connection, string transactionQuery, object parameters = null)
         {
             using (var command = connection.CreateCommand())
@@ -79,35 +79,35 @@ namespace SkillslabAssigment.DAL.Common
                 }
             }
         }
-        public static async Task<bool> ExecuteTransactionAsync(this DbConnection connection, string transactionQuery, object parameters = null)
-        {
-            await connection.OpenAsync();
+        //public static async Task<bool> ExecuteTransactionAsync(this DbConnection connection, string transactionQuery, object parameters = null)
+        //{
+        //    await connection.OpenAsync();
 
-            using (var command = connection.CreateCommand())
-            {
-                using (var transaction = connection.BeginTransaction())
-                {
-                    try
-                    {
-                        command.CommandText = transactionQuery;
-                        command.Transaction = transaction;
+        //    using (var command = connection.CreateCommand())
+        //    {
+        //        using (var transaction = connection.BeginTransaction())
+        //        {
+        //            try
+        //            {
+        //                command.CommandText = transactionQuery;
+        //                command.Transaction = transaction;
 
-                        AddParametersToCommand(command, parameters);
+        //                AddParametersToCommand(command, parameters);
 
-                        await command.ExecuteNonQueryAsync();
+        //                await command.ExecuteNonQueryAsync();
 
-                        transaction.Commit();
-                        return true;
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.WriteLine($"Exception: {ex.Message}");
-                        transaction.Rollback();
-                        return false;
-                    }
-                }
-            }
-        }
+        //                transaction.Commit();
+        //                return true;
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                Debug.WriteLine($"Exception: {ex.Message}");
+        //                transaction.Rollback();
+        //                return false;
+        //            }
+        //        }
+        //    }
+        //}
 
 
         public static T ExecuteInsertQuery<T>(this IDbConnection connection, T parameters)
@@ -133,7 +133,7 @@ namespace SkillslabAssigment.DAL.Common
                 finally
                 {
                     connection.CloseConnection();
-        }
+                }
             }
         }
         public static IEnumerable<T> GetAll<T>(this IDbConnection connection)
