@@ -91,7 +91,7 @@ namespace SkillslabAssignment.Service
                 _attachmentRepository.Add(new Attachment
                 {
                     EnrollmentId = enrollement.Id,
-                    PrerequisiteId = (short)attachement.Key,
+                    PrerequisiteId = attachement.Key,
                     Url = url
                 });
             }

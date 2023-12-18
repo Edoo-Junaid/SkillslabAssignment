@@ -26,6 +26,7 @@ namespace SkillslabAssignment.Common.Mapper
                 Date = training.Date,
                 Location = training.Location,
                 DepartmentName = department.Name,
+                DepartmentId = department.Id,
                 Prerequisites = prerequisites
             };
         }
