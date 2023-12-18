@@ -4,12 +4,13 @@ using SkillslabAssignment.Common.DTO;
 using SkillslabAssignment.Common.Entities;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 
 namespace SkillslabAssigment.DAL.DAL
 {
     public class EnrollmentRepository : GenericRepository<Enrollement, int>, IEnrollmentRepository
     {
-        public EnrollmentRepository(IDbConnection connection) : base(connection)
+        public EnrollmentRepository(DbConnection connection) : base(connection)
         {
         }
         public IEnumerable<EnrollementDTO> GetAllByManagerId(short managerId)

@@ -13,6 +13,7 @@ namespace SkillslabAssignment.Common.DTO
         public DateTime Date { get; set; }
         public string Location { get; set; }
         public string DepartmentName { get; set; }
+        public byte DepartmentId { get; set; }
         public IEnumerable<Prerequisite> Prerequisites { get; set; }
     }
 }

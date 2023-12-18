@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
+using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SkillslabAssigment.DAL.Common
 {
     public static class IDConnectionExtensions
     {
-        public static void ExecuteNonQuery(this IDbConnection connection, string query, object parameters = null)
+        public static async Task ExecuteNonQueryAsync(this DbConnection connection, string query, object parameters = null)
         {
             using (var command = connection.CreateCommand())
             {
@@ -79,37 +81,6 @@ namespace SkillslabAssigment.DAL.Common
                 }
             }
         }
-        //public static async Task<bool> ExecuteTransactionAsync(this DbConnection connection, string transactionQuery, object parameters = null)
-        //{
-        //    await connection.OpenAsync();
-
-        //    using (var command = connection.CreateCommand())
-        //    {
-        //        using (var transaction = connection.BeginTransaction())
-        //        {
-        //            try
-        //            {
-        //                command.CommandText = transactionQuery;
-        //                command.Transaction = transaction;
-
-        //                AddParametersToCommand(command, parameters);
-
-        //                await command.ExecuteNonQueryAsync();
-
-        //                transaction.Commit();
-        //                return true;
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                Debug.WriteLine($"Exception: {ex.Message}");
-        //                transaction.Rollback();
-        //                return false;
-        //            }
-        //        }
-        //    }
-        //}
-
-
         public static T ExecuteInsertQuery<T>(this IDbConnection connection, T parameters)
         {
             using (var command = connection.CreateCommand())

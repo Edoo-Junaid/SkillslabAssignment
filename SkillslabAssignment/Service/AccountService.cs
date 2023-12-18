@@ -2,6 +2,7 @@
 using SkillslabAssignment.Common.DTO;
 using SkillslabAssignment.Common.Entities;
 using SkillslabAssignment.Interface;
+using System.Linq;
 using System.Security.Authentication;
 namespace SkillslabAssignment.Service
 {
@@ -9,32 +10,34 @@ namespace SkillslabAssignment.Service
     {
         private readonly IAccountRepository _accountRepository;
         private readonly IUserRepository _userRepository;
-        private readonly IGenericRepository<Role, byte> _roleRepository;
-        public AccountService(IAccountRepository accountRepository, IUserRepository userRepository, IGenericRepository<Role, byte> roleRepository) : base(accountRepository)
+        private readonly IRoleRepository _roleRepository;
+        public AccountService(IAccountRepository accountRepository, IUserRepository userRepository, IRoleRepository roleRepository) : base(accountRepository)
         {
             this._accountRepository = accountRepository;
             this._userRepository = userRepository;
-            _roleRepository = roleRepository;
+            this._roleRepository = roleRepository;
         }
         public LoginResponseDTO Authenticate(LoginRequestDTO loginRequest)
         {
             Account account = _accountRepository.GetByEmail(loginRequest.Email);
-            if (account != null && _accountRepository.IsAuthenticated(loginRequest.Email, loginRequest.Password))
-            {
-                User user = _userRepository.GetByAccountId(account.Id);
-                Role role = _roleRepository.GetById(user.RoleId);
-                return new LoginResponseDTO
-                {
-                    UserId = user.Id,
-                    RoleName = role.Name,
-                    Email = account.Email,
-                };
-            }
-            else
+            if (!IsValidCredentials(account, loginRequest))
             {
                 return null;
             }
+            User user = _userRepository.GetByAccountId(account.Id);
+            Role role = _roleRepository.GetByUserId(user.Id).FirstOrDefault();
+            return new LoginResponseDTO
+            {
+                UserId = user.Id,
+                RoleName = role?.Name,
+                Email = account.Email,
+            };
         }
         public bool IsEmailUnique(string email) => _accountRepository.GetByEmail(email) == null;
+
+        private bool IsValidCredentials(Account account, LoginRequestDTO loginRequest)
+        {
+            return account != null && _accountRepository.IsAuthenticated(loginRequest.Email, loginRequest.Password);
+        }
     }
 }

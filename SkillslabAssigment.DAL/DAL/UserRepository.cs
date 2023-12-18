@@ -4,13 +4,14 @@ using SkillslabAssignment.Common.DTO;
 using SkillslabAssignment.Common.Entities;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 
 namespace SkillslabAssigment.DAL.DAL
 {
     public class UserRepository : GenericRepository<User, short>, IUserRepository
     {
-        public UserRepository(IDbConnection connection) : base(connection)
+        public UserRepository(DbConnection connection) : base(connection)
         {
         }
         public IEnumerable<User> GetUsersByDepartmentAndRole(byte departmentId, string roleName)

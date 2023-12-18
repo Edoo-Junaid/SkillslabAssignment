@@ -4,16 +4,17 @@ using SkillslabAssignment.Common.DTO;
 using SkillslabAssignment.Common.Entities;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SkillslabAssigment.DAL.Interface
 {
     public class PendingAccountRepository : GenericRepository<PendingAccount, short>, IPendingAccountRepository
     {
-        public PendingAccountRepository(IDbConnection connection) : base(connection)
+        public PendingAccountRepository(DbConnection connection) : base(connection)
         {
         }
-
         public bool CreatePendingAccount(PendingAccount pendingAccount)
         {
             const string CREATE_PENDING_ACCOUNT_QUERY = @"
@@ -26,12 +27,10 @@ namespace SkillslabAssigment.DAL.Interface
             ";
             return _connection.ExecuteTransaction(CREATE_PENDING_ACCOUNT_QUERY, pendingAccount);
         }
-
         public IEnumerable<PendingAccountDTO> GetAllPendingAccountDTO()
         {
             return _connection.GetAll<PendingAccountDTO>();
         }
-
         public bool IsEmailUnique(string email)
         {
             return !_connection
@@ -42,6 +41,5 @@ namespace SkillslabAssigment.DAL.Interface
             return !_connection
                 .RowExists<PendingAccount>("nic = @Nic", new { Nic = nic });
         }
-
     }
 }

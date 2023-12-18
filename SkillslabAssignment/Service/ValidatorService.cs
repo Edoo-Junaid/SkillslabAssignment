@@ -26,7 +26,7 @@ namespace SkillslabAssignment.Service
             Validator.TryValidateObject(parameter, validationContext, validationResults, validateAllProperties: true);
             if (parameter is PendingAccount)
             {
-                var pendingAccount = parameter as PendingAccount;
+                PendingAccount pendingAccount = parameter as PendingAccount;
                 ValidateUniqueEmail(pendingAccount.Email);
                 ValidateUniqueNic(pendingAccount.Nic);
             }
@@ -41,7 +41,7 @@ namespace SkillslabAssignment.Service
             }
         }
 
-        public void ValidateUniqueNic(string nic)
+        private void ValidateUniqueNic(string nic)
         {
             if (!IsNicUnique(nic))
             {

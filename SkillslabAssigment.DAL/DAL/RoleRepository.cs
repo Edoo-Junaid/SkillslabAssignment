@@ -13,7 +13,7 @@ namespace SkillslabAssigment.DAL.DAL
 {
     public class RoleRepository : GenericRepository<Role, byte>, IRoleRepository
     {
-        public RoleRepository(DbConnection connection) : base(connection)
+        public RoleRepository(IDbConnection connection) : base(connection)
         {
         }
 

@@ -22,6 +22,9 @@ namespace SkillslabAssignment.WebApi
             container.RegisterType<IDbConnection, SqlConnection>(
                 new InjectionConstructor(connectionString)
             );
+            container.RegisterType<IStorrageService, FirebaseStorageService>(
+            new InjectionConstructor(bucketString)
+            );
             container.RegisterType(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
             container.RegisterType(typeof(IGenericService<,>), typeof(GenericService<,>));
             container.RegisterType<IAccountRepository, AccountRepository>();
@@ -35,12 +38,10 @@ namespace SkillslabAssignment.WebApi
             container.RegisterType<IPrerequisiteRepository, PrerequisiteRepository>();
             container.RegisterType<IEnrollmentRepository, EnrollmentRepository>();
             container.RegisterType<IEnrollementService, EnrollmentService>();
-            container.RegisterType<IStorrageService, FirebaseStorageService>(
-                new InjectionConstructor(bucketString)
-                );
             container.RegisterType<IAttachmentService, AttachmentService>();
             container.RegisterType<IAttachmentRepository, AttachmentRepository>();
             container.RegisterType<ITrainingRepository, TrainingRepository>();
+            container.RegisterType<IRoleRepository, RoleRepository>();
             container.RegisterType<IPendingAccountRepository, PendingAccountRepository>();
             container.RegisterType(typeof(IValidatorService<>), typeof(ValidatorService<>));
             Container = container;
