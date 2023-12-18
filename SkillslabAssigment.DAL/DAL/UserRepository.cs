@@ -31,33 +31,42 @@ namespace SkillslabAssigment.DAL.DAL
         public bool CreateUser(CreateUserDTO user)
         {
             const string CREATE_USER_TRANSACTION_QUERY = @"
-            DECLARE @AccountId TABLE (ID INT)
+                DECLARE @AccountId TABLE (ID INT)
+                DECLARE @UserId TABLE (ID INT)
 
-            INSERT INTO account (email, [password], salt)
-            OUTPUT inserted.id INTO @AccountId(ID)
-            SELECT
-                email,
-                [password],
-                salt
-            FROM pending_account
-            WHERE id = @PendingAccountId;
-            DECLARE @NewAccountId INT
-            SELECT @NewAccountId = ID FROM @AccountId
-            INSERT INTO [user] (nic, first_name, last_name, role_id, department_id, manager_id, account_id, phone_number)
-            SELECT
-                nic,
-                first_name,
-                last_name,
-                @RoleId,
-                @DepartmentId,
-                @ManagerId,
-                @NewAccountId,
-                phone_number
-            FROM pending_account
-            WHERE id = @PendingAccountId;
+                INSERT INTO account (email, [password], salt)
+                OUTPUT inserted.id INTO @AccountId(ID)
+                SELECT
+                    email,
+                    [password],
+                    salt
+                FROM pending_account
+                WHERE id = @PendingAccountId;
 
-            DELETE FROM pending_account WHERE id = @PendingAccountId;
-        ";
+                DECLARE @NewAccountId INT
+                SELECT @NewAccountId = ID FROM @AccountId
+
+                INSERT INTO [user] (nic, first_name, last_name, department_id, manager_id, account_id, phone_number)
+                OUTPUT inserted.id INTO @UserId(ID)
+                SELECT
+                    nic,
+                    first_name,
+                    last_name,
+                    @DepartmentId,
+                    @ManagerId,
+                    @NewAccountId,
+                    phone_number
+                FROM pending_account
+                WHERE id = @PendingAccountId;
+
+                DELETE FROM pending_account WHERE id = @PendingAccountId;
+
+                DECLARE @NewUserId INT
+                SELECT @NewUserId = ID FROM @UserId
+
+                INSERT INTO user_role (user_id, role_id) VALUES (@NewUserId, @RoleId);
+            ";
+
             return _connection.ExecuteTransaction(CREATE_USER_TRANSACTION_QUERY, user);
         }
         public bool IsNicUnique(string nic) => !_connection
