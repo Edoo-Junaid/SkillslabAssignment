@@ -10,6 +10,7 @@ namespace SkillslabAssignment.WebApi.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     [RoutePrefix("api/training")]
+    [ValidationActionFilter]
     public class TrainingController : ApiController
     {
         private readonly ITrainingService _trainingService;
@@ -21,7 +22,6 @@ namespace SkillslabAssignment.WebApi.Controllers
         // GET: api/training
         [HttpGet]
         [Route("")]
-        [AllowRole(RoleEnum.Employee)]
         public IHttpActionResult Get() => Ok(_trainingService.GetAll());
 
         // GET: api/training/5

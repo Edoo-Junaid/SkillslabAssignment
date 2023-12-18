@@ -3,13 +3,14 @@ using SkillslabAssigment.DAL.Interface;
 using SkillslabAssignment.Common.Entities;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 
 namespace SkillslabAssigment.DAL.DAL
 {
     public class AccountRepository : GenericRepository<Account, short>, IAccountRepository
     {
-        public AccountRepository(IDbConnection connection) : base(connection)
+        public AccountRepository(DbConnection connection) : base(connection)
         {
         }
         public Account GetByEmail(string email) => _connection

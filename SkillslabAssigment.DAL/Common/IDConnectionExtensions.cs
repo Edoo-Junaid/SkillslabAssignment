@@ -2,41 +2,27 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
+using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SkillslabAssigment.DAL.Common
 {
     public static class IDConnectionExtensions
     {
-        //private static readonly Dictionary<Type, DbType> TypeToDbTypeMap = new Dictionary<Type, DbType>
-        //{
-        //    { typeof(string), DbType.String },
-        //    { typeof(int), DbType.Int32 },
-        //    { typeof(long), DbType.Int64 },
-        //    { typeof(short), DbType.Int16 },
-        //    { typeof(byte), DbType.Byte },
-        //    { typeof(bool), DbType.Boolean },
-        //    { typeof(DateTime), DbType.DateTime },
-        //    { typeof(decimal), DbType.Decimal },
-        //    { typeof(double), DbType.Double },
-        //    { typeof(Guid), DbType.Guid },
-        //    { typeof(float), DbType.Single },
-        //    { typeof(TimeSpan), DbType.Time },
-        //    { typeof(byte[]), DbType.Binary },
-        //};
-        public static void ExecuteNonQuery(this IDbConnection connection, string query, object parameters = null)
+        public static async Task ExecuteNonQueryAsync(this DbConnection connection, string query, object parameters = null)
         {
             using (var command = connection.CreateCommand())
             {
                 try
                 {
-                    connection.OpenConnection();
+                    await connection.OpenAsync();
                     command.CommandText = query;
                     AddParametersToCommand(command, parameters);
-                    command.ExecuteNonQuery();
+                    await command.ExecuteNonQueryAsync();
                 }
                 catch (Exception ex)
                 {
@@ -77,6 +63,36 @@ namespace SkillslabAssigment.DAL.Common
                 }
             }
         }
+        public static async Task<bool> ExecuteTransactionAsync(this DbConnection connection, string transactionQuery, object parameters = null)
+        {
+            await connection.OpenAsync();
+
+            using (var command = connection.CreateCommand())
+            {
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        command.CommandText = transactionQuery;
+                        command.Transaction = transaction;
+
+                        AddParametersToCommand(command, parameters);
+
+                        await command.ExecuteNonQueryAsync();
+
+                        transaction.Commit();
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"Exception: {ex.Message}");
+                        transaction.Rollback();
+                        return false;
+                    }
+                }
+            }
+        }
+
         public static T ExecuteInsertQuery<T>(this IDbConnection connection, T parameters)
         {
             using (var command = connection.CreateCommand())

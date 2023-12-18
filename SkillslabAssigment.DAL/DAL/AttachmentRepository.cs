@@ -3,12 +3,13 @@ using SkillslabAssigment.DAL.Interface;
 using SkillslabAssignment.Common.Entities;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 
 namespace SkillslabAssigment.DAL.DAL
 {
     public class AttachmentRepository : GenericRepository<Attachment, short>, IAttachmentRepository
     {
-        public AttachmentRepository(IDbConnection connection) : base(connection)
+        public AttachmentRepository(DbConnection connection) : base(connection)
         {
         }
         public IEnumerable<Attachment> GetAllByEnrollmentId(int enrollmentId)

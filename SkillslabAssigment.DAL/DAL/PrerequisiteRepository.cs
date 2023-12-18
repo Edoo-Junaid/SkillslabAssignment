@@ -3,12 +3,13 @@ using SkillslabAssigment.DAL.Interface;
 using SkillslabAssignment.Common.Entities;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 
 namespace SkillslabAssigment.DAL.DAL
 {
     public class PrerequisiteRepository : GenericRepository<Prerequisite, short>, IPrerequisiteRepository
     {
-        public PrerequisiteRepository(IDbConnection connection) : base(connection)
+        public PrerequisiteRepository(DbConnection connection) : base(connection)
         {
         }
         public IEnumerable<Prerequisite> GetAllByTrainingId(short trainingId)

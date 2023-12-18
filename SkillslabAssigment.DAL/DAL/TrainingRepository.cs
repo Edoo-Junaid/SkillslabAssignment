@@ -4,12 +4,13 @@ using SkillslabAssignment.Common.DTO;
 using SkillslabAssignment.Common.Entities;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 
 namespace SkillslabAssigment.DAL.DAL
 {
     public class TrainingRepository : GenericRepository<Training, short>, ITrainingRepository
     {
-        public TrainingRepository(IDbConnection connection) : base(connection)
+        public TrainingRepository(DbConnection connection) : base(connection)
         {
         }
         public IEnumerable<Training> GetAllEnrolledTraining(short userId)
