@@ -9,6 +9,6 @@ namespace SkillslabAssigment.DAL.Interface
 {
     public interface IRoleRepository : IGenericRepository<Role, byte>
     {
-        IEnumerable<Role> GetByUserId(short userId);
+        IEnumerable<Role> GetByUserIdAsync(short userId);
     }
 }

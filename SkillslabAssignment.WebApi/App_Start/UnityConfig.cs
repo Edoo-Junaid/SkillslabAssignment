@@ -4,6 +4,7 @@ using SkillslabAssignment.Interface;
 using SkillslabAssignment.Service;
 using System.Configuration;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Web.Http;
 using Unity;
@@ -23,7 +24,10 @@ namespace SkillslabAssignment.WebApi
                 new InjectionConstructor(connectionString)
             );
             container.RegisterType<IStorrageService, FirebaseStorageService>(
-            new InjectionConstructor(bucketString)
+                new InjectionConstructor(bucketString)
+            );
+            container.RegisterType<DbConnection, SqlConnection>(
+                new InjectionConstructor(connectionString)
             );
             container.RegisterType(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
             container.RegisterType(typeof(IGenericService<,>), typeof(GenericService<,>));

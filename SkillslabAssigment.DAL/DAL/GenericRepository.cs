@@ -4,6 +4,7 @@ using SkillslabAssignment.Common.Interface;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Threading.Tasks;
 
 namespace SkillslabAssigment.DAL.DAL
 {
@@ -11,19 +12,19 @@ namespace SkillslabAssigment.DAL.DAL
     {
         protected DbConnection _connection;
         public GenericRepository(DbConnection connection) => _connection = connection;
-        public bool Delete(TId id)
+        public async Task<bool> DeleteAsync(TId id)
         {
             //TODO
-            _connection.DeleteById<T>(id);
+            await _connection.DeleteByIdAsync<T>(id);
             return true;
         }
-        public IEnumerable<T> GetAll() => _connection.GetAll<T>();
-        public T GetById(TId id) => _connection.GetById<T>(id);
-        public T Add(T entity) => _connection.ExecuteInsertQuery<T>(entity);
-        public bool Update(T entity)
+        public async Task<IEnumerable<T>> GetAllAsync() => await _connection.GetAllAsync<T>();
+        public async Task<T> GetByIdAsync(TId id) => await _connection.GetByIdAsync<T>(id);
+        public async Task<T> AddAsync(T entity) => await _connection.ExecuteInsertQueryAsync<T>(entity);
+        public async Task<bool> UpdateAsync(T entity)
         {
             //TODO
-            _connection.UpdateById<T>(entity.Id, entity);
+            await _connection.UpdateByIdAsync<T>(entity.Id, entity);
             return true;
         }
     }

@@ -2,6 +2,7 @@
 using SkillslabAssignment.Interface;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace SkillslabAssignment.Service
 {
@@ -19,7 +20,7 @@ namespace SkillslabAssignment.Service
             _pendingAccountService = pendingAccountService;
             _userService = userService;
         }
-        public IEnumerable<ValidationResult> Validate<U>(U parameter)
+        public async Task<IEnumerable<ValidationResult>> ValidateAsync<U>(U parameter)
         {
             validationResults = new List<ValidationResult>();
             var validationContext = new ValidationContext(parameter);
@@ -27,35 +28,35 @@ namespace SkillslabAssignment.Service
             if (parameter is PendingAccount)
             {
                 PendingAccount pendingAccount = parameter as PendingAccount;
-                ValidateUniqueEmail(pendingAccount.Email);
-                ValidateUniqueNic(pendingAccount.Nic);
+                await ValidateUniqueEmailAsync(pendingAccount.Email);
+                await ValidateUniqueNic(pendingAccount.Nic);
             }
             return validationResults;
         }
 
-        private void ValidateUniqueEmail(string email)
+        private async Task ValidateUniqueEmailAsync(string email)
         {
-            if (!IsEmailUnique(email))
+            if (!await IsEmailUnique(email))
             {
                 validationResults.Add(new ValidationResult("Email must be unique", new[] { "Email" }));
             }
         }
 
-        private void ValidateUniqueNic(string nic)
+        private async Task ValidateUniqueNic(string nic)
         {
-            if (!IsNicUnique(nic))
+            if (!await IsNicUnique(nic))
             {
                 validationResults.Add(new ValidationResult("NIC must be unique", new[] { "Nic" }));
             }
         }
-        private bool IsEmailUnique(string email)
+        private async Task<bool> IsEmailUnique(string email)
         {
-            return _accountService.IsEmailUnique(email) && _pendingAccountService.IsEmailUnique(email);
+            return await _accountService.IsEmailUniqueAsync(email) && await _pendingAccountService.IsEmailUniqueAsync(email);
         }
 
-        private bool IsNicUnique(string nic)
+        private async Task<bool> IsNicUnique(string nic)
         {
-            return _pendingAccountService.IsNicUnique(nic) && _userService.IsNicUnique(nic);
+            return await _pendingAccountService.IsNicUniqueAsync(nic) && await _userService.IsNicUniqueAsync(nic);
         }
     }
 }

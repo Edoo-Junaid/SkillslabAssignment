@@ -5,6 +5,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
+using System.Threading;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
@@ -14,7 +16,7 @@ namespace SkillslabAssignment.WebApi.Attribute
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
     public class ValidationActionFilterAttribute : ActionFilterAttribute
     {
-        public override void OnActionExecuting(HttpActionContext actionContext)
+        public override async Task OnActionExecutingAsync(HttpActionContext actionContext, CancellationToken cancellationToken)
         {
             var parameters = actionContext.ActionArguments.Values;
             foreach (var parameter in parameters)
@@ -26,7 +28,7 @@ namespace SkillslabAssignment.WebApi.Attribute
                     dynamic validatorService = GlobalConfiguration.Configuration.DependencyResolver.GetService(validatorType);
                     if (validatorService != null)
                     {
-                        IEnumerable<ValidationResult> validationResults = validatorService.Validate(parameter);
+                        IEnumerable<ValidationResult> validationResults = await validatorService.ValidateAsync(parameter);
                         if (validationResults != null && validationResults.Any())
                         {
                             var errorMessage = string.Join(", ", validationResults.Select(result => result.ErrorMessage));
@@ -36,7 +38,7 @@ namespace SkillslabAssignment.WebApi.Attribute
                     }
                 }
             }
-            base.OnActionExecuting(actionContext);
+            await base.OnActionExecutingAsync(actionContext, cancellationToken);
         }
     }
 }

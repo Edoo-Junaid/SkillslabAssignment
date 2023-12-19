@@ -5,6 +5,7 @@ using SkillslabAssignment.Common.Entities;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Threading.Tasks;
 
 namespace SkillslabAssigment.DAL.DAL
 {
@@ -13,7 +14,7 @@ namespace SkillslabAssigment.DAL.DAL
         public TrainingRepository(DbConnection connection) : base(connection)
         {
         }
-        public IEnumerable<Training> GetAllEnrolledTraining(short userId)
+        public async Task<IEnumerable<Training>> GetAllEnrolledTrainingAsync(short userId)
         {
             const string GET_ALL_ENROLLED_TRAINING_ID_QUERY = @"
                 SELECT training.* FROM enrollment
@@ -21,9 +22,9 @@ namespace SkillslabAssigment.DAL.DAL
                 ON training.id = enrollment.training_id
                 WHERE user_id = @UserId"
             ;
-            return _connection.ExecuteQuery<Training>(GET_ALL_ENROLLED_TRAINING_ID_QUERY, new { UserId = userId });
+            return await _connection.ExecuteQueryAsync<Training>(GET_ALL_ENROLLED_TRAINING_ID_QUERY, new { UserId = userId });
         }
-        public bool CreateTraining(CreateTrainingRequestDTO training)
+        public async Task<bool> CreateTrainingAsync(CreateTrainingRequestDTO training)
         {
             const string CREATE_TRAINING_QUERY = @"
                 DECLARE @TrainingId INT;
@@ -37,7 +38,7 @@ namespace SkillslabAssigment.DAL.DAL
                     FROM STRING_SPLIT(@PrerequisitesId, ',') AS P;
                 END
             ";
-            return _connection.ExecuteTransaction(CREATE_TRAINING_QUERY, new
+            return await _connection.ExecuteTransactionAsync(CREATE_TRAINING_QUERY, new
             {
                 training.Name,
                 training.Description,

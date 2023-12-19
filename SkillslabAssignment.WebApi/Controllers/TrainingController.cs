@@ -3,6 +3,7 @@ using SkillslabAssignment.Common.Entities;
 using SkillslabAssignment.Common.Enums;
 using SkillslabAssignment.Interface;
 using SkillslabAssignment.WebApi.Attribute;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -22,49 +23,49 @@ namespace SkillslabAssignment.WebApi.Controllers
         // GET: api/training
         [HttpGet]
         [Route("")]
-        public IHttpActionResult Get() => Ok(_trainingService.GetAll());
+        public async Task<IHttpActionResult> Get() => Ok(await _trainingService.GetAllAsync());
 
         // GET: api/training/5
         [HttpGet]
         [Route("{id:int}")]
-        public Training Get(short id) => _trainingService.GetById(id);
+        public async Task<Training> Get(short id) => await _trainingService.GetByIdAsync(id);
 
         // POST: api/training
         [HttpPost]
         [Route("")]
-        public IHttpActionResult Post([FromBody] CreateTrainingRequestDTO training)
+        public async Task<IHttpActionResult> Post([FromBody] CreateTrainingRequestDTO training)
         {
             return Created(Request.RequestUri + "/" +
-                training.Id, _trainingService.CreteTraining(training));
+                training.Id, await _trainingService.CreteTrainingAsync(training));
         }
 
         // PUT: api/training/5
         [HttpPut]
         [Route("{id:int}")]
-        public void Put(short id, [FromBody] Training training)
+        public async Task Put(short id, [FromBody] Training training)
         {
             training.Id = id;
-            _trainingService.Update(training);
+            await _trainingService.UpdateAsync(training);
         }
 
         // DELETE: api/training/5
         [HttpDelete]
         [Route("{id:int}")]
-        public void Delete(short id) => _trainingService.Delete(id);
+        public async Task Delete(short id) => await _trainingService.DeleteAsync(id);
 
         // GET: api/training/trainingDetails/5
         [HttpGet]
         [Route("trainingDetails/{id:int}")]
-        public IHttpActionResult GetTrainingDetails(short id)
+        public async Task<IHttpActionResult> GetTrainingDetails(short id)
         {
-            return Ok(_trainingService.GetTrainingDetails(id));
+            return Ok(await _trainingService.GetTrainingDetailsAsync(id));
         }
         // GET: api/training/getEnrolledTrainingIds/5
         [HttpGet]
         [Route("getEnrolledTrainingIds/{userId:int}")]
-        public IHttpActionResult GetAllEnrolledTrainingId(short userId)
+        public async Task<IHttpActionResult> GetAllEnrolledTrainingId(short userId)
         {
-            return Ok(_trainingService.GetAllEnrolledTraining(userId));
+            return Ok(await _trainingService.GetAllEnrolledTrainingAsync(userId));
         }
     }
 }

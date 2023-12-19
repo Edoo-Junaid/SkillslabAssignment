@@ -2,13 +2,14 @@
 using SkillslabAssignment.Common.Entities;
 using SkillslabAssignment.Service;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SkillslabAssignment.Interface
 {
     public interface IUserService : IGenericService<User, short>
     {
-        IEnumerable<ManagerDTO> GetAllManagerByDepartment(byte departmentId);
-        bool CreateUserAndAccount(CreateUserDTO createUserDTO);
-        bool IsNicUnique(string nic);
+        Task<IEnumerable<ManagerDTO>> GetAllManagerByDepartmentAsync(byte departmentId);
+        Task<bool> CreateUserAndAccountAsync(CreateUserDTO createUserDTO);
+        Task<bool> IsNicUniqueAsync(string nic);
     }
 }

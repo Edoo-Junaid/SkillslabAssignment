@@ -2,6 +2,7 @@
 using SkillslabAssignment.Common.Entities;
 using SkillslabAssignment.Interface;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SkillslabAssignment.Service
 {
@@ -12,9 +13,9 @@ namespace SkillslabAssignment.Service
         {
             _prerequisiteRepository = prerequisiteRepository;
         }
-        public IEnumerable<Prerequisite> GetAllByTrainingId(short trainingId)
+        public async Task<IEnumerable<Prerequisite>> GetAllByTrainingIdAsync(short trainingId)
         {
-            return _prerequisiteRepository.GetAllByTrainingId(trainingId);
+            return await _prerequisiteRepository.GetAllByTrainingIdAsync(trainingId);
         }
     }
 }

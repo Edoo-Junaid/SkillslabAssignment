@@ -9,8 +9,8 @@ namespace SkillslabAssignment.Interface
 {
     public interface IEnrollementService : IGenericService<Enrollement, int>
     {
-        Task<bool> ProcessEnrollement(EnrollementRequestDTO enrollementRequest);
-        Task<EnrollementRequestDTO> ProcessMultipartContent(MultipartMemoryStreamProvider provider);
-        IEnumerable<EnrollementDTO> GetAllByManagerId(short managerId);
+        Task<bool> ProcessEnrollementAsync(EnrollementRequestDTO enrollementRequest);
+        Task<EnrollementRequestDTO> ProcessMultipartContentAsync(MultipartMemoryStreamProvider provider);
+        Task<IEnumerable<EnrollementDTO>> GetAllByManagerIdAsync(short managerId);
     }
 }

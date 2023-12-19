@@ -4,6 +4,7 @@ using SkillslabAssignment.Common.Entities;
 using SkillslabAssignment.Interface;
 using System.Linq;
 using System.Security.Authentication;
+using System.Threading.Tasks;
 namespace SkillslabAssignment.Service
 {
     public class AccountService : GenericService<Account, short>, IAccountService
@@ -17,15 +18,15 @@ namespace SkillslabAssignment.Service
             this._userRepository = userRepository;
             this._roleRepository = roleRepository;
         }
-        public LoginResponseDTO Authenticate(LoginRequestDTO loginRequest)
+        public async Task<LoginResponseDTO> AuthenticateAsync(LoginRequestDTO loginRequest)
         {
-            Account account = _accountRepository.GetByEmail(loginRequest.Email);
+            Account account = await _accountRepository.GetByEmailAsync(loginRequest.Email);
             if (!IsValidCredentials(account, loginRequest))
             {
                 return null;
             }
-            User user = _userRepository.GetByAccountId(account.Id);
-            Role role = _roleRepository.GetByUserId(user.Id).FirstOrDefault();
+            User user = await _userRepository.GetByAccountIdAsync(account.Id);
+            Role role = _roleRepository.GetByUserIdAsync(user.Id).FirstOrDefault();
             return new LoginResponseDTO
             {
                 UserId = user.Id,
@@ -33,7 +34,7 @@ namespace SkillslabAssignment.Service
                 Email = account.Email,
             };
         }
-        public bool IsEmailUnique(string email) => _accountRepository.GetByEmail(email) == null;
+        public async Task<bool> IsEmailUniqueAsync(string email) => await _accountRepository.GetByEmailAsync(email) == null;
 
         private bool IsValidCredentials(Account account, LoginRequestDTO loginRequest)
         {

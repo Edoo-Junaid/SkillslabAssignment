@@ -5,6 +5,7 @@ using SkillslabAssignment.Common.Entities;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Threading.Tasks;
 
 namespace SkillslabAssigment.DAL.DAL
 {
@@ -13,7 +14,7 @@ namespace SkillslabAssigment.DAL.DAL
         public EnrollmentRepository(DbConnection connection) : base(connection)
         {
         }
-        public IEnumerable<EnrollementDTO> GetAllByManagerId(short managerId)
+        public async Task<IEnumerable<EnrollementDTO>> GetAllByManagerIdAsync(short managerId)
         {
             const string GET_ALL_ENROLLMENTS_BY_MANAGER_ID = @"
             SELECT [user].first_name,[user].last_name ,training.name AS training_name,enrollment.id AS enrollement_id 
@@ -23,7 +24,7 @@ namespace SkillslabAssigment.DAL.DAL
             INNER JOIN training on
             training.id = enrollment.training_id
             WHERE enrollment.status='pending' AND manager_id = @ManagerId";
-            return _connection.ExecuteQuery<EnrollementDTO>(GET_ALL_ENROLLMENTS_BY_MANAGER_ID, new { ManagerId = managerId });
+            return await _connection.ExecuteQueryAsync<EnrollementDTO>(GET_ALL_ENROLLMENTS_BY_MANAGER_ID, new { ManagerId = managerId });
         }
 
     }

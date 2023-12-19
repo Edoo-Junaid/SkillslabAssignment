@@ -3,6 +3,7 @@ using SkillslabAssignment.Common.Entities;
 using SkillslabAssignment.Interface;
 using SkillslabAssignment.WebApi.Attribute;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -21,22 +22,22 @@ namespace SkillslabAssignment.WebApi.Controllers
         // GET: api/user
         [HttpGet]
         [Route("")]
-        public IHttpActionResult Get()
+        public async Task<IHttpActionResult> Get()
         {
-            return Ok(_userService.GetAll());
+            return Ok(await _userService.GetAllAsync());
         }
 
         // GET: api/user/5
         [HttpGet]
         [Route("{id:int}")]
-        public User Get(short id) => _userService.GetById(id);
+        public async Task<User> Get(short id) => await _userService.GetByIdAsync(id);
 
         // POST: api/user
         [HttpPost]
         [Route("")]
-        public IHttpActionResult Post([FromBody] CreateUserDTO user)
+        public async Task<IHttpActionResult> Post([FromBody] CreateUserDTO user)
         {
-            bool isUserCreated = _userService.CreateUserAndAccount(user);
+            bool isUserCreated = await _userService.CreateUserAndAccountAsync(user);
             if (isUserCreated)
             {
                 return Ok();
@@ -47,23 +48,23 @@ namespace SkillslabAssignment.WebApi.Controllers
         // PUT: api/user/5
         [HttpPut]
         [Route("{id:int}")]
-        public void Put(short id, [FromBody] User user)
+        public async Task Put(short id, [FromBody] User user)
         {
             user.Id = id;
-            _userService.Update(user);
+            await _userService.UpdateAsync(user);
         }
 
         // DELETE: api/user/5
         [HttpDelete]
         [Route("{id:int}")]
-        public void Delete(short id) => _userService.Delete(id);
+        public async Task Delete(short id) => await _userService.DeleteAsync(id);
 
         // GET: api/user/getAllManagerByDepartment/5
         [HttpGet]
         [Route("getAllManagerByDepartment/{id:int}")]
-        public IHttpActionResult GetManagerByDepartmentId(byte id)
+        public async Task<IHttpActionResult> GetManagerByDepartmentId(byte id)
         {
-            IEnumerable<ManagerDTO> managers = _userService.GetAllManagerByDepartment(id);
+            IEnumerable<ManagerDTO> managers = await _userService.GetAllManagerByDepartmentAsync(id);
             return Ok(managers);
         }
     }

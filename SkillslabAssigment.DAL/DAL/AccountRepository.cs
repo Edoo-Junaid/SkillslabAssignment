@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SkillslabAssigment.DAL.DAL
 {
@@ -13,9 +14,12 @@ namespace SkillslabAssigment.DAL.DAL
         public AccountRepository(DbConnection connection) : base(connection)
         {
         }
-        public Account GetByEmail(string email) => _connection
-            .SelectWhere<Account>("email = @Email", new { Email = email })
-            .FirstOrDefault();
+        public async Task<Account> GetByEmailAsync(string email)
+        {
+            return (await _connection
+                .SelectWhereAsync<Account>("email = @Email", new { Email = email }))
+                .FirstOrDefault();
+        }
         public bool IsAuthenticated(string email, string password)
         {
             const string AUTHENTICATION_QUERY = @"

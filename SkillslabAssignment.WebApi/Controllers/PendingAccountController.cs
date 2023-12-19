@@ -1,6 +1,7 @@
 ﻿using SkillslabAssignment.Common.Entities;
 using SkillslabAssignment.Interface;
 using SkillslabAssignment.WebApi.Attribute;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -20,19 +21,19 @@ namespace SkillslabAssignment.WebApi.Controllers
         // GET: api/pendingAccount
         [HttpGet]
         [Route("")]
-        public IHttpActionResult Get() => Ok(_pendingAccountService.GetAllPendingAccountDTOs());
+        public async Task<IHttpActionResult> Get() => Ok(await _pendingAccountService.GetAllPendingAccountDTOsAsync());
 
         // GET: api/pendingAccount/5
         [HttpGet]
         [Route("{id:int}")]
-        public PendingAccount Get(short id) => _pendingAccountService.GetById(id);
+        public Task<PendingAccount> Get(short id) => _pendingAccountService.GetByIdAsync(id);
 
         // POST: api/pendingAccount
         [HttpPost]
         [Route("")]
-        public IHttpActionResult Post([FromBody] PendingAccount account)
+        public async Task<IHttpActionResult> Post([FromBody] PendingAccount account)
         {
-            bool IsCreated = _pendingAccountService.CreatePendingAccount(account);
+            bool IsCreated = await _pendingAccountService.CreatePendingAccountAsync(account);
             if (IsCreated)
             {
                 return Created(Request.RequestUri, account);
@@ -46,15 +47,15 @@ namespace SkillslabAssignment.WebApi.Controllers
         // PUT: api/pendingAccount/5
         [HttpPut]
         [Route("{id:int}")]
-        public void Put(short id, [FromBody] PendingAccount account)
+        public async Task Put(short id, [FromBody] PendingAccount account)
         {
             account.Id = id;
-            _pendingAccountService.Update(account);
+            await _pendingAccountService.UpdateAsync(account);
         }
 
         // DELETE: api/pendingAccount/5
         [HttpDelete]
         [Route("{id:int}")]
-        public void Delete(short id) => _pendingAccountService.Delete(id);
+        public async Task Delete(short id) => await _pendingAccountService.DeleteAsync(id);
     }
 }

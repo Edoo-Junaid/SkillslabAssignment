@@ -12,7 +12,7 @@ namespace SkillslabAssigment.DAL.DAL
         public AttachmentRepository(DbConnection connection) : base(connection)
         {
         }
-        public IEnumerable<Attachment> GetAllByEnrollmentId(int enrollmentId)
+        public IEnumerable<Attachment> GetAllByEnrollmentIdAsync(int enrollmentId)
         {
             return _connection.SelectWhere<Attachment>("enrollment_id = @EnrollmentId", new { EnrollmentId = enrollmentId });
         }

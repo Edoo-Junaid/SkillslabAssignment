@@ -25,18 +25,18 @@ namespace SkillslabAssignment.WebApi.Controllers
 
             MultipartMemoryStreamProvider multipartProvider = new MultipartMemoryStreamProvider();
             await Request.Content.ReadAsMultipartAsync(multipartProvider);
-            EnrollementRequestDTO enrollementRequest = await _enrollementService.ProcessMultipartContent(multipartProvider);
+            EnrollementRequestDTO enrollementRequest = await _enrollementService.ProcessMultipartContentAsync(multipartProvider);
 
             if (enrollementRequest is null) return BadRequest("Invalid request. Unable to process the enrollment data.");
 
-            await _enrollementService.ProcessEnrollement(enrollementRequest);
+            await _enrollementService.ProcessEnrollementAsync(enrollementRequest);
             return Ok();
         }
         [HttpGet]
         [Route("getByManagerID/{managerId}")]
-        public IHttpActionResult GetAllByManagerId(short managerId)
+        public async Task<IHttpActionResult> GetAllByManagerId(short managerId)
         {
-            IEnumerable<EnrollementDTO> enrollements = _enrollementService.GetAllByManagerId(managerId);
+            IEnumerable<EnrollementDTO> enrollements = await _enrollementService.GetAllByManagerIdAsync(managerId);
             return Ok(enrollements);
         }
     }

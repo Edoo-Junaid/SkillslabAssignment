@@ -25,19 +25,19 @@ namespace SkillslabAssignment.Service
             _attachmentRepository = attachmentRepository;
             _enrollementRepository = repository;
         }
-        public IEnumerable<EnrollementDTO> GetAllByManagerId(short managerId)
+        public async Task<IEnumerable<EnrollementDTO>> GetAllByManagerIdAsync(short managerId)
         {
-            return _enrollementRepository.GetAllByManagerId(managerId);
+            return await _enrollementRepository.GetAllByManagerIdAsync(managerId);
         }
-        public async Task<bool> ProcessEnrollement(EnrollementRequestDTO enrollementRequest)
+        public async Task<bool> ProcessEnrollementAsync(EnrollementRequestDTO enrollementRequest)
         {
             if (enrollementRequest is null) return false;
 
-            Enrollement enrollement = CreateEnrollment(enrollementRequest);
+            Enrollement enrollement = await CreateEnrollment(enrollementRequest);
             await UploadAndAddAttachments(enrollement, enrollementRequest.PrerequisiteToAttachment);
             return true;
         }
-        public async Task<EnrollementRequestDTO> ProcessMultipartContent(MultipartMemoryStreamProvider provider)
+        public async Task<EnrollementRequestDTO> ProcessMultipartContentAsync(MultipartMemoryStreamProvider provider)
         {
             EnrollementRequestDTO enrollementRequest = new EnrollementRequestDTO()
             {
@@ -72,9 +72,9 @@ namespace SkillslabAssignment.Service
             }
             return enrollementRequest;
         }
-        private Enrollement CreateEnrollment(EnrollementRequestDTO enrollementRequest)
+        private async Task<Enrollement> CreateEnrollment(EnrollementRequestDTO enrollementRequest)
         {
-            return _repository.Add(new Enrollement
+            return await _repository.AddAsync(new Enrollement
             {
                 TrainingId = enrollementRequest.TrainingId,
                 UserId = enrollementRequest.UserId,
@@ -88,7 +88,7 @@ namespace SkillslabAssignment.Service
             {
                 string fileName = $"user_{enrollement.UserId}_file{attachement.Key}";
                 string url = await _storrageService.UploadFileAsync(attachement.Value, enrollement.TrainingId, fileName);
-                _attachmentRepository.Add(new Attachment
+                await _attachmentRepository.AddAsync(new Attachment
                 {
                     EnrollmentId = enrollement.Id,
                     PrerequisiteId = attachement.Key,

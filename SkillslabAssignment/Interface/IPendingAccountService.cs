@@ -2,16 +2,15 @@
 using SkillslabAssignment.Common.Entities;
 using SkillslabAssignment.Service;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SkillslabAssignment.Interface
 {
     public interface IPendingAccountService : IGenericService<PendingAccount, short>
     {
-        IEnumerable<PendingAccountDTO> GetAllPendingAccountDTOs();
-        bool IsEmailUnique(string email);
-        bool IsNicUnique(string nic);
-
-        bool CreatePendingAccount(PendingAccount pendingAccount);
-
+        Task<IEnumerable<PendingAccountDTO>> GetAllPendingAccountDTOsAsync();
+        Task<bool> IsEmailUniqueAsync(string email);
+        Task<bool> IsNicUniqueAsync(string nic);
+        Task<bool> CreatePendingAccountAsync(PendingAccount pendingAccount);
     }
 }

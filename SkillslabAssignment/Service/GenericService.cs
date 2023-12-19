@@ -2,6 +2,7 @@
 using SkillslabAssignment.Common.Interface;
 using SkillslabAssignment.Service;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SkillslabAssignment.Interface
 {
@@ -9,10 +10,10 @@ namespace SkillslabAssignment.Interface
     {
         protected readonly IGenericRepository<T, TId> _repository;
         public GenericService(IGenericRepository<T, TId> repository) => _repository = repository;
-        T IGenericService<T, TId>.Add(T entity) => _repository.Add(entity);
-        bool IGenericService<T, TId>.Delete(TId id) => _repository.Delete(id);
-        IEnumerable<T> IGenericService<T, TId>.GetAll() => _repository.GetAll();
-        T IGenericService<T, TId>.GetById(TId id) => _repository.GetById(id);
-        bool IGenericService<T, TId>.Update(T entity) => _repository.Update(entity);
+        Task<T> IGenericService<T, TId>.AddAsync(T entity) => _repository.AddAsync(entity);
+        Task<bool> IGenericService<T, TId>.DeleteAsync(TId id) => _repository.DeleteAsync(id);
+        Task<IEnumerable<T>> IGenericService<T, TId>.GetAllAsync() => _repository.GetAllAsync();
+        Task<T> IGenericService<T, TId>.GetByIdAsync(TId id) => _repository.GetByIdAsync(id);
+        Task<bool> IGenericService<T, TId>.UpdateAsync(T entity) => _repository.UpdateAsync(entity);
     }
 }
