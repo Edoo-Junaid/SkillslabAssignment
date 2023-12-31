@@ -6,6 +6,7 @@ using SkillslabAssignment.Interface;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using System;
 
 namespace SkillslabAssignment.Service
 {
@@ -14,13 +15,16 @@ namespace SkillslabAssignment.Service
         private readonly IGenericRepository<Department, byte> _departmentRepository;
         private readonly IPrerequisiteRepository _prerequisiteRepository;
         private readonly ITrainingRepository _trainingRepository;
+        private readonly IEnrollmentRepository _enrollmentRepository;
         public TrainingService(ITrainingRepository trainingRepository,
             IPrerequisiteRepository prerequisiteRepository,
-            IGenericRepository<Department, byte> departmentRepository) : base(trainingRepository)
+            IGenericRepository<Department, byte> departmentRepository,
+            IEnrollmentRepository enrollmentRepository) : base(trainingRepository)
         {
             _prerequisiteRepository = prerequisiteRepository;
             _departmentRepository = departmentRepository;
             _trainingRepository = trainingRepository;
+            _enrollmentRepository = enrollmentRepository;
         }
         public async Task<IEnumerable<Training>> GetAllEnrolledTrainingAsync(short userId) => await _trainingRepository.GetAllEnrolledTrainingAsync(userId);
         public async Task<IEnumerable<TrainingDTO>> GetAllTrainingDTOAsync()
@@ -39,6 +43,20 @@ namespace SkillslabAssignment.Service
         public async Task<bool> CreteTrainingAsync(CreateTrainingRequestDTO training)
         {
             return await _trainingRepository.CreateTrainingAsync(training);
+        }
+
+        public async Task<bool> UpdateTrainingAndPrerequisiteAsync(TrainingDetailsDTO training)
+        {
+            return await _trainingRepository.UpdateTraninigAndPrerequisiteAsync(training);
+        }
+
+        public async Task<bool> DeleteTrainingAndPrerequisiteAsync(short trainingId)
+        {
+            if (await _enrollmentRepository.EnrollmentExistsAsync(trainingId))
+            {
+                return false;
+            }
+            return await _trainingRepository.DeleteTrainingAndPrerequisiteAsync(trainingId);
         }
     }
 }

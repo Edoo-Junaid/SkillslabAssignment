@@ -28,6 +28,11 @@ namespace SkillslabAssigment.DAL.Common
                 catch (Exception ex)
                 {
                     throw;
+
+                }
+                finally
+                {
+                    connection.Close();
                 }
             }
         }
@@ -85,6 +90,10 @@ namespace SkillslabAssigment.DAL.Common
                         Debug.WriteLine($"Exception: {ex.Message}");
                         transaction.Rollback();
                         return false;
+                    }
+                    finally
+                    {
+                        connection.Close();
                     }
                 }
             }
@@ -332,7 +341,7 @@ namespace SkillslabAssigment.DAL.Common
                 }
             }
         }
-        public async static Task UpdateByIdAsync<T>(this DbConnection connection, object id, object updatedData)
+        public async static Task<bool> UpdateByIdAsync<T>(this DbConnection connection, object id, object updatedData)
         {
             using (var command = connection.CreateCommand())
             {
@@ -346,7 +355,8 @@ namespace SkillslabAssigment.DAL.Common
                     var idParameter = CreateParameter(command, "Id", id);
                     command.Parameters.Add(idParameter);
                     command.CommandText = updateQuery;
-                    await command.ExecuteNonQueryAsync();
+                    int rowsAffected = await command.ExecuteNonQueryAsync();
+                    return rowsAffected > 0;
                 }
                 catch (Exception ex)
                 {
@@ -436,7 +446,6 @@ namespace SkillslabAssigment.DAL.Common
                 }
             }
         }
-
         public async static Task<IEnumerable<T>> SelectWhereAsync<T>(this DbConnection connection, string whereClause, object parameters = null)
         {
             using (var command = connection.CreateCommand())
@@ -489,7 +498,6 @@ namespace SkillslabAssigment.DAL.Common
                 }
             }
         }
-
         public async static Task<bool> RowExistsAsync<T>(this DbConnection connection, string whereClause, object parameters = null)
         {
             using (var command = connection.CreateCommand())
@@ -512,6 +520,37 @@ namespace SkillslabAssigment.DAL.Common
                 finally
                 {
                     connection.Close();
+                }
+            }
+        }
+        public static async Task<bool> ExecuteStoredProcedureAsync(this DbConnection connection, string storedProcedureName, object parameters = null)
+        {
+            await connection.OpenAsync();
+
+            using (var command = connection.CreateCommand())
+            {
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = storedProcedureName;
+                        command.Transaction = transaction;
+                        AddParametersToCommand(command, parameters);
+                        await command.ExecuteNonQueryAsync();
+                        transaction.Commit();
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"Exception: {ex.Message}");
+                        transaction.Rollback();
+                        return false;
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
                 }
             }
         }
@@ -568,6 +607,7 @@ namespace SkillslabAssigment.DAL.Common
                 var item = CreateInstance<T>(type, reader);
                 resultList.Add(item);
             }
+            reader.Close();
             return resultList;
         }
         private static T CreateInstance<T>(Type type, IDataReader reader)

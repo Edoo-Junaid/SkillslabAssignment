@@ -27,6 +27,7 @@ namespace SkillslabAssignment.Common.Mapper
                 Location = training.Location,
                 DepartmentName = department.Name,
                 DepartmentId = department.Id,
+                TrainingCapacity = training.TrainingCapacity,
                 Prerequisites = prerequisites
             };
         }

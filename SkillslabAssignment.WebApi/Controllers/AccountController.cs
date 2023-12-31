@@ -27,7 +27,7 @@ namespace SkillslabAssignment.WebApi.Controllers
             {
                 return Unauthorized();
             }
-            loginResponseDTO.AuthToken = JwtManager.GenerateToken(loginResponseDTO.Email, loginResponseDTO.RoleName);
+            loginResponseDTO.AuthToken = JwtManager.GenerateToken(loginResponseDTO.Email, loginResponseDTO.UserId.ToString(), loginResponseDTO.RoleName);
             return Ok(loginResponseDTO);
         }
     }

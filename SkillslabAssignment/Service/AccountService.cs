@@ -21,12 +21,12 @@ namespace SkillslabAssignment.Service
         public async Task<LoginResponseDTO> AuthenticateAsync(LoginRequestDTO loginRequest)
         {
             Account account = await _accountRepository.GetByEmailAsync(loginRequest.Email);
-            if (!IsValidCredentials(account, loginRequest))
+            if (!await IsValidCredentials(account, loginRequest))
             {
                 return null;
             }
             User user = await _userRepository.GetByAccountIdAsync(account.Id);
-            Role role = _roleRepository.GetByUserIdAsync(user.Id).FirstOrDefault();
+            Role role = (await _roleRepository.GetByUserIdAsync(user.Id)).FirstOrDefault();
             return new LoginResponseDTO
             {
                 UserId = user.Id,
@@ -36,9 +36,9 @@ namespace SkillslabAssignment.Service
         }
         public async Task<bool> IsEmailUniqueAsync(string email) => await _accountRepository.GetByEmailAsync(email) == null;
 
-        private bool IsValidCredentials(Account account, LoginRequestDTO loginRequest)
+        private async Task<bool> IsValidCredentials(Account account, LoginRequestDTO loginRequest)
         {
-            return account != null && _accountRepository.IsAuthenticated(loginRequest.Email, loginRequest.Password);
+            return account != null && await _accountRepository.IsAuthenticated(loginRequest.Email, loginRequest.Password);
         }
     }
 }

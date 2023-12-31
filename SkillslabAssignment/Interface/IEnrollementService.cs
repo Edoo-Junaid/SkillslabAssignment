@@ -12,5 +12,8 @@ namespace SkillslabAssignment.Interface
         Task<bool> ProcessEnrollementAsync(EnrollementRequestDTO enrollementRequest);
         Task<EnrollementRequestDTO> ProcessMultipartContentAsync(MultipartMemoryStreamProvider provider);
         Task<IEnumerable<EnrollementDTO>> GetAllByManagerIdAsync(short managerId);
+        Task RunAutomaticProcessing();
+        Task<bool> ApproveEnrollementAsync(int enrollmentId);
+        Task<bool> DeclineEnrollementAsync(DeclineEnrollmentRequestDTO declineEnrollmentRequestDTO);
     }
 }

@@ -71,12 +71,14 @@
     <Compile Include="DTO\AttachementDTO.cs" />
     <Compile Include="DTO\CreateTrainingRequestDTO.cs" />
     <Compile Include="DTO\CreateUserDTO.cs" />
+    <Compile Include="DTO\DeclineEnrollmentRequestDTO.cs" />
     <Compile Include="DTO\EnrollementDTO.cs" />
     <Compile Include="DTO\EnrollementRequestDTO.cs" />
     <Compile Include="DTO\LoginRequestDTO.cs" />
     <Compile Include="DTO\LoginResponseDTO.cs" />
     <Compile Include="DTO\ManagerDTO.cs" />
     <Compile Include="DTO\PendingAccountDTO.cs" />
+    <Compile Include="DTO\SelectedUserDTO.cs" />
     <Compile Include="DTO\TrainingDetailsDTO.cs" />
     <Compile Include="DTO\TrainingDTO.cs" />
     <Compile Include="DTO\UserDto.cs" />
@@ -85,15 +87,21 @@
     <Compile Include="Entities\Department.cs" />
     <Compile Include="Entities\Enrollement.cs" />
     <Compile Include="Entities\PendingAccount.cs" />
+    <Compile Include="Entities\Permission.cs" />
     <Compile Include="Entities\Prerequisite.cs" />
     <Compile Include="Entities\Role.cs" />
+    <Compile Include="Entities\trail.cs" />
     <Compile Include="Entities\Training.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Enums\EnrollementStatus.cs" />
+    <Compile Include="Enums\PermissionEnum.cs" />
     <Compile Include="Enums\RolesEnum.cs" />
     <Compile Include="Interface\IEntity.cs" />
+    <Compile Include="Logger\ILogger.cs" />
+    <Compile Include="Logger\Logger.cs" />
     <Compile Include="Mapper\TrainingMapper.cs" />
     <Compile Include="Mapper\UserMapper.cs" />
+    <Compile Include="Permission\Permissions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

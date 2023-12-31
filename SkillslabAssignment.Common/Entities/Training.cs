@@ -16,6 +16,9 @@ namespace SkillslabAssignment.Common.Entities
         [Column("description")]
         [Required(ErrorMessage = "Description Required")]
         public string Description { get; set; }
+        [Column("training_capacity")]
+        [Required(ErrorMessage = "Training Capacity Required")]
+        public short TrainingCapacity { get; set; }
         [Column("date")]
         [Required(ErrorMessage = "Date Required")]
         public DateTime Date { get; set; }

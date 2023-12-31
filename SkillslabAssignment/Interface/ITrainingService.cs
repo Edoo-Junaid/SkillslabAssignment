@@ -1,6 +1,7 @@
 ﻿using SkillslabAssignment.Common.DTO;
 using SkillslabAssignment.Common.Entities;
 using SkillslabAssignment.Service;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -12,5 +13,7 @@ namespace SkillslabAssignment.Interface
         Task<TrainingDetailsDTO> GetTrainingDetailsAsync(short id);
         Task<IEnumerable<Training>> GetAllEnrolledTrainingAsync(short userId);
         Task<bool> CreteTrainingAsync(CreateTrainingRequestDTO training);
+        Task<bool> UpdateTrainingAndPrerequisiteAsync(TrainingDetailsDTO training);
+        Task<bool> DeleteTrainingAndPrerequisiteAsync(short trainingId);
     }
 }

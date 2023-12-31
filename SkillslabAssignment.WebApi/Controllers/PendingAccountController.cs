@@ -1,4 +1,6 @@
 ﻿using SkillslabAssignment.Common.Entities;
+using SkillslabAssignment.Common.Enums;
+using SkillslabAssignment.Common.Permission;
 using SkillslabAssignment.Interface;
 using SkillslabAssignment.WebApi.Attribute;
 using System.Threading.Tasks;
@@ -21,11 +23,13 @@ namespace SkillslabAssignment.WebApi.Controllers
         // GET: api/pendingAccount
         [HttpGet]
         [Route("")]
+        [Permission(Permissions.ViewPendingAccount)]
         public async Task<IHttpActionResult> Get() => Ok(await _pendingAccountService.GetAllPendingAccountDTOsAsync());
 
         // GET: api/pendingAccount/5
         [HttpGet]
         [Route("{id:int}")]
+        [Permission(Permissions.ViewPendingAccount)]
         public Task<PendingAccount> Get(short id) => _pendingAccountService.GetByIdAsync(id);
 
         // POST: api/pendingAccount

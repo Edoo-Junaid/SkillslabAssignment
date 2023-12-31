@@ -47,6 +47,7 @@
     <Compile Include="DAL\AttachmentRepository.cs" />
     <Compile Include="DAL\EnrollmentRepository.cs" />
     <Compile Include="DAL\GenericRepository.cs" />
+    <Compile Include="DAL\PermissionRepository.cs" />
     <Compile Include="DAL\RoleRepository.cs" />
     <Compile Include="Interface\IPendingAccountRepository.cs" />
     <Compile Include="DAL\PrerequisiteRepository.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="Interface\IAttachmentRepository.cs" />
     <Compile Include="Interface\IEnrollmentRepository.cs" />
     <Compile Include="Interface\IGenericRepository.cs" />
+    <Compile Include="Interface\IPermissionRepository.cs" />
     <Compile Include="Interface\IPrerequisiteRepository.cs" />
     <Compile Include="Interface\IRoleRepository.cs" />
     <Compile Include="Interface\ITrainingRepository.cs" />

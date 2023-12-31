@@ -1,6 +1,7 @@
 ﻿using SkillslabAssignment.Common.DTO;
 using SkillslabAssignment.Common.Entities;
 using SkillslabAssignment.Common.Enums;
+using SkillslabAssignment.Common.Permission;
 using SkillslabAssignment.Interface;
 using SkillslabAssignment.WebApi.Attribute;
 using System.Threading.Tasks;
@@ -19,15 +20,15 @@ namespace SkillslabAssignment.WebApi.Controllers
         {
             _trainingService = trainingService;
         }
-
         // GET: api/training
         [HttpGet]
         [Route("")]
+        [Permission(Permissions.ViewTraining)]
         public async Task<IHttpActionResult> Get() => Ok(await _trainingService.GetAllAsync());
-
         // GET: api/training/5
         [HttpGet]
         [Route("{id:int}")]
+        [Permission(Permissions.ViewTraining)]
         public async Task<Training> Get(short id) => await _trainingService.GetByIdAsync(id);
 
         // POST: api/training
@@ -36,26 +37,41 @@ namespace SkillslabAssignment.WebApi.Controllers
         public async Task<IHttpActionResult> Post([FromBody] CreateTrainingRequestDTO training)
         {
             return Created(Request.RequestUri + "/" +
-                training.Id, await _trainingService.CreteTrainingAsync(training));
+              training.Id, await _trainingService.CreteTrainingAsync(training));
         }
-
         // PUT: api/training/5
         [HttpPut]
         [Route("{id:int}")]
-        public async Task Put(short id, [FromBody] Training training)
+        public async Task<IHttpActionResult> Put(short id, [FromBody] TrainingDetailsDTO training)
         {
-            training.Id = id;
-            await _trainingService.UpdateAsync(training);
-        }
 
+            if (await _trainingService.UpdateTrainingAndPrerequisiteAsync(training))
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
         // DELETE: api/training/5
         [HttpDelete]
         [Route("{id:int}")]
-        public async Task Delete(short id) => await _trainingService.DeleteAsync(id);
-
+        public async Task<IHttpActionResult> Delete(short id)
+        {
+            if (await _trainingService.DeleteTrainingAndPrerequisiteAsync(id))
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest("Cannot Delete. Users already Registered to training");
+            }
+        }
         // GET: api/training/trainingDetails/5
         [HttpGet]
         [Route("trainingDetails/{id:int}")]
+        [Permission(Permissions.ViewTraining)]
         public async Task<IHttpActionResult> GetTrainingDetails(short id)
         {
             return Ok(await _trainingService.GetTrainingDetailsAsync(id));
