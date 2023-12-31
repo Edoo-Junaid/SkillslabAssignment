@@ -1,6 +1,7 @@
 ﻿using SkillslabAssignment.Common.Entities;
 using SkillslabAssignment.Interface;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -18,37 +19,37 @@ namespace SkillslabAssignment.WebApi.Controllers
         // GET: api/prerequisite
         [HttpGet]
         [Route("")]
-        public IEnumerable<Prerequisite> Get() => _prerequisiteService.GetAll();
+        public async Task<IEnumerable<Prerequisite>> Get() => await _prerequisiteService.GetAllAsync();
 
         // GET: api/prerequisite/5
         [HttpGet]
         [Route("{id:int}")]
-        public Prerequisite Get(short id) => _prerequisiteService.GetById(id);
+        public async Task<Prerequisite> Get(short id) => await _prerequisiteService.GetByIdAsync(id);
 
         // POST: api/prerequisite
         [HttpPost]
         [Route("")]
-        public IHttpActionResult Post([FromBody] Prerequisite prerequisite)
+        public async Task<IHttpActionResult> Post([FromBody] Prerequisite prerequisite)
         {
-            return Created(Request.RequestUri, _prerequisiteService.Add(prerequisite));
+            return Created(Request.RequestUri, await _prerequisiteService.AddAsync(prerequisite));
         }
 
         // PUT: api/prerequisite/5
         [HttpPut]
         [Route("{id:int}")]
-        public void Put(short id, [FromBody] Prerequisite prerequisite)
+        public async Task Put(short id, [FromBody] Prerequisite prerequisite)
         {
             prerequisite.Id = id;
-            _prerequisiteService.Update(prerequisite);
+            await _prerequisiteService.UpdateAsync(prerequisite);
         }
 
         // DELETE: api/prerequisite/5
         [HttpDelete]
         [Route("{id:int}")]
-        public IHttpActionResult Delete(short id) => Ok(_prerequisiteService.Delete(id));
+        public async Task<IHttpActionResult> Delete(short id) => Ok(await _prerequisiteService.DeleteAsync(id));
 
         [HttpGet]
         [Route("getAllPrerequisiteByTrainingId/{id:int}")]
-        public IHttpActionResult GetAllPrerequisiteByTrainingId(short id) => Ok(_prerequisiteService.GetAllByTrainingId(id));
+        public async Task<IHttpActionResult> GetAllPrerequisiteByTrainingId(short id) => Ok(await _prerequisiteService.GetAllByTrainingIdAsync(id));
     }
 }

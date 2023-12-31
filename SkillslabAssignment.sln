@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkillslabAssigment.Reposito
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkillslabAssignment.Common", "SkillslabAssignment.Common\SkillslabAssignment.Common.csproj", "{A1A63420-EC12-4DF9-B11D-A5C388E83841}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{32213EEA-90CD-4DEA-AD59-A1954FCA7D95}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,10 +33,6 @@ Global
 		{A1A63420-EC12-4DF9-B11D-A5C388E83841}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1A63420-EC12-4DF9-B11D-A5C388E83841}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1A63420-EC12-4DF9-B11D-A5C388E83841}.Release|Any CPU.Build.0 = Release|Any CPU
-		{32213EEA-90CD-4DEA-AD59-A1954FCA7D95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{32213EEA-90CD-4DEA-AD59-A1954FCA7D95}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{32213EEA-90CD-4DEA-AD59-A1954FCA7D95}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{32213EEA-90CD-4DEA-AD59-A1954FCA7D95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

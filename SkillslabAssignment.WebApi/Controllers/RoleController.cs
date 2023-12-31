@@ -1,5 +1,6 @@
 ﻿using SkillslabAssignment.Common.Entities;
 using SkillslabAssignment.Service;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -14,16 +15,19 @@ namespace SkillslabAssignment.WebApi.Controllers
             _roleService = roleService;
         }
         // GET: api/Role
-        public IHttpActionResult Get() => Ok(_roleService.GetAll());
+        public async Task<IHttpActionResult> Get() => Ok(await _roleService.GetAllAsync());
         // GET: api/Role/5
-        public IHttpActionResult Get(byte id) => Ok(_roleService.GetById(id));
+        public async Task<IHttpActionResult> Get(byte id) => Ok(await _roleService.GetByIdAsync(id));
         // POST: api/Role
-        public void Post([FromBody] string value)
+        public async Task<IHttpActionResult> Post([FromBody] Role role)
         {
+            Role addedRole = await _roleService.AddAsync(role);
+            return Created(Request.RequestUri + "/" +
+                               addedRole.Id, addedRole);
         }
         // PUT: api/Role/5
-        public void Put(int id, [FromBody] Role role) => _roleService.Update(role);
+        public async Task Put(int id, [FromBody] Role role) => await _roleService.UpdateAsync(role);
         // DELETE: api/Role/5
-        public void Delete(byte id) => _roleService.Delete(id);
+        public async Task Delete(byte id) => await _roleService.DeleteAsync(id);
     }
 }

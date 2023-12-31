@@ -3,6 +3,7 @@ using SkillslabAssignment.Common.DTO;
 using SkillslabAssignment.Common.Entities;
 using SkillslabAssignment.Interface;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SkillslabAssignment.Service
 {
@@ -15,9 +16,9 @@ namespace SkillslabAssignment.Service
             _attachmentRepository = attachmentRepository;
             _prerequisiteRepository = prerequisiteRepository;
         }
-        public IEnumerable<AttachementDTO> GetAllByEnrollmentId(int enrollmentId)
+        public async Task<IEnumerable<AttachementDTO>> GetAllByEnrollmentIdAsync(int enrollmentId)
         {
-            IEnumerable<Attachment> attachments = _attachmentRepository.GetAllByEnrollmentId(enrollmentId);
+            IEnumerable<Attachment> attachments = _attachmentRepository.GetAllByEnrollmentIdAsync(enrollmentId);
             List<AttachementDTO> attachementDTOs = new List<AttachementDTO>();
             foreach (Attachment attachment in attachments)
             {
@@ -25,7 +26,7 @@ namespace SkillslabAssignment.Service
                 {
                     AttachmentId = attachment.Id,
                     EnrollmentId = attachment.EnrollmentId,
-                    Prerequisite = _prerequisiteRepository.GetById(attachment.PrerequisiteId),
+                    Prerequisite = await _prerequisiteRepository.GetByIdAsync(attachment.PrerequisiteId),
                     Url = attachment.Url
                 });
             }

@@ -4,7 +4,9 @@ using SkillslabAssignment.Common.Entities;
 using SkillslabAssignment.Common.Mapper;
 using SkillslabAssignment.Interface;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Linq;
+using System;
 
 namespace SkillslabAssignment.Service
 {
@@ -13,29 +15,48 @@ namespace SkillslabAssignment.Service
         private readonly IGenericRepository<Department, byte> _departmentRepository;
         private readonly IPrerequisiteRepository _prerequisiteRepository;
         private readonly ITrainingRepository _trainingRepository;
+        private readonly IEnrollmentRepository _enrollmentRepository;
         public TrainingService(ITrainingRepository trainingRepository,
             IPrerequisiteRepository prerequisiteRepository,
-            IGenericRepository<Department, byte> departmentRepository) : base(trainingRepository)
+            IGenericRepository<Department, byte> departmentRepository,
+            IEnrollmentRepository enrollmentRepository) : base(trainingRepository)
         {
             _prerequisiteRepository = prerequisiteRepository;
             _departmentRepository = departmentRepository;
             _trainingRepository = trainingRepository;
+            _enrollmentRepository = enrollmentRepository;
         }
-        public IEnumerable<Training> GetAllEnrolledTraining(short userId) => _trainingRepository.GetAllEnrolledTraining(userId);
-        public IEnumerable<TrainingDTO> GetAllTrainingDTO()
+        public async Task<IEnumerable<Training>> GetAllEnrolledTrainingAsync(short userId) => await _trainingRepository.GetAllEnrolledTrainingAsync(userId);
+        public async Task<IEnumerable<TrainingDTO>> GetAllTrainingDTOAsync()
         {
-            return _repository.GetAll().Select(training => training.ToDTO());
+            return (await _repository
+                .GetAllAsync())
+                .Select(training => training.ToDTO());
         }
-        public TrainingDetailsDTO GetTrainingDetails(short id)
+        public async Task<TrainingDetailsDTO> GetTrainingDetailsAsync(short id)
         {
-            Training training = _trainingRepository.GetById(id);
-            Department department = _departmentRepository.GetById(training.DepartmentId);
-            IEnumerable<Prerequisite> prerequisites = _prerequisiteRepository.GetAllByTrainingId(id);
+            Training training = await _trainingRepository.GetByIdAsync(id);
+            Department department = await _departmentRepository.GetByIdAsync(training.DepartmentId);
+            IEnumerable<Prerequisite> prerequisites = await _prerequisiteRepository.GetAllByTrainingIdAsync(id);
             return training.ToDetailsDTO(department, prerequisites);
         }
-        public bool CreteTraining(CreateTrainingRequestDTO training)
+        public async Task<bool> CreteTrainingAsync(CreateTrainingRequestDTO training)
         {
-            return _trainingRepository.CreateTraining(training);
+            return await _trainingRepository.CreateTrainingAsync(training);
+        }
+
+        public async Task<bool> UpdateTrainingAndPrerequisiteAsync(TrainingDetailsDTO training)
+        {
+            return await _trainingRepository.UpdateTraninigAndPrerequisiteAsync(training);
+        }
+
+        public async Task<bool> DeleteTrainingAndPrerequisiteAsync(short trainingId)
+        {
+            if (await _enrollmentRepository.EnrollmentExistsAsync(trainingId))
+            {
+                return false;
+            }
+            return await _trainingRepository.DeleteTrainingAndPrerequisiteAsync(trainingId);
         }
     }
 }

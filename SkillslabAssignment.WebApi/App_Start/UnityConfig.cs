@@ -1,10 +1,17 @@
 using SkillslabAssigment.DAL.DAL;
 using SkillslabAssigment.DAL.Interface;
+using SkillslabAssignment.Common.Entities;
+using SkillslabAssignment.Common.Logger;
 using SkillslabAssignment.Interface;
 using SkillslabAssignment.Service;
+using SkillslabAssignment.Service.ValidationRule;
+using SkillslabAssignment.ValidationRule;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
+using System.Reflection;
 using System.Web.Http;
 using Unity;
 using Unity.AspNet.WebApi;
@@ -23,10 +30,19 @@ namespace SkillslabAssignment.WebApi
                 new InjectionConstructor(connectionString)
             );
             container.RegisterType<IStorrageService, FirebaseStorageService>(
-            new InjectionConstructor(bucketString)
+                new InjectionConstructor(bucketString)
+            );
+            container.RegisterType<DbConnection, SqlConnection>(
+                new InjectionConstructor(connectionString)
             );
             container.RegisterType(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
             container.RegisterType(typeof(IGenericService<,>), typeof(GenericService<,>));
+            container.RegisterType<ILogger, Logger>(
+                new InjectionConstructor(@"C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssignment.WebApi\App_Data\log.txt")
+            );
+            container.RegisterType<IPermissionRepository, PermissionRepository>();
+            container.RegisterType<ICacheService, MemoryCacheService>();
+            container.RegisterType<IPermissionService, PermissionService>();
             container.RegisterType<IAccountRepository, AccountRepository>();
             container.RegisterType<IAccountService, AccountService>();
             container.RegisterType<IUserRepository, UserRepository>();
@@ -43,6 +59,13 @@ namespace SkillslabAssignment.WebApi
             container.RegisterType<ITrainingRepository, TrainingRepository>();
             container.RegisterType<IRoleRepository, RoleRepository>();
             container.RegisterType<IPendingAccountRepository, PendingAccountRepository>();
+            container.RegisterInstance<IValidatorRule<PendingAccount>>("Unique Email Validation", new UniqueEmailValidatorRule(container.Resolve<IAccountService>(), container.Resolve<IPendingAccountService>()));
+            container.RegisterInstance<IValidatorRule<PendingAccount>>("Unique NIC Validation", new UniqueNicValidatorRule(container.Resolve<IPendingAccountService>(), container.Resolve<IUserService>()));
+            container.RegisterType(typeof(IValidatorService<PendingAccount>), typeof(ValidatorService<PendingAccount>),
+            new InjectionConstructor(new ResolvedArrayParameter<IValidatorRule<PendingAccount>>(
+                new ResolvedParameter<IValidatorRule<PendingAccount>>("Unique Email Validation"),
+                new ResolvedParameter<IValidatorRule<PendingAccount>>("Unique NIC Validation")
+            )));
             container.RegisterType(typeof(IValidatorService<>), typeof(ValidatorService<>));
             Container = container;
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);

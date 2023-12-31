@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SkillslabAssigment.DAL.DAL
 {
@@ -14,27 +15,29 @@ namespace SkillslabAssigment.DAL.DAL
         public UserRepository(DbConnection connection) : base(connection)
         {
         }
-        public IEnumerable<User> GetUsersByDepartmentAndRole(byte departmentId, string roleName)
+        public async Task<IEnumerable<User>> GetUsersByDepartmentAndRoleAsync(byte departmentId, string roleName)
         {
             const string GET_USERS_BY_DEPARTMENT_ROLE_QUERY = @"
-                SELECT *
-                FROM [user]
-                WHERE department_id = @DepartmentId
-                AND role_id = (SELECT id FROM [role] WHERE name = @RoleName);
-            ";
+            SELECT u.*
+            FROM [user] u
+            JOIN user_role ur ON u.id = ur.user_id
+            WHERE u.department_id = @DepartmentId
+            AND ur.role_id = (SELECT id FROM [role] WHERE name = @RoleName);
+        ";
             var parameters = new { DepartmentId = departmentId, RoleName = roleName };
-            return _connection.ExecuteQuery<User>(GET_USERS_BY_DEPARTMENT_ROLE_QUERY, parameters);
+            return await _connection.ExecuteQueryAsync<User>(GET_USERS_BY_DEPARTMENT_ROLE_QUERY, parameters);
         }
-        public User GetByAccountId(short accountId)
+        public async Task<User> GetByAccountIdAsync(short accountId)
         {
-            return _connection.SelectWhere<User>("account_id = @AccountId", new { AccountId = accountId }).FirstOrDefault();
+            return (await _connection
+                .SelectWhereAsync<User>("account_id = @AccountId", new { AccountId = accountId }))
+                .FirstOrDefault();
         }
-        public bool CreateUser(CreateUserDTO user)
+        public async Task<bool> CreateUserAsync(CreateUserDTO user)
         {
             const string CREATE_USER_TRANSACTION_QUERY = @"
                 DECLARE @AccountId TABLE (ID INT)
                 DECLARE @UserId TABLE (ID INT)
-
                 INSERT INTO account (email, [password], salt)
                 OUTPUT inserted.id INTO @AccountId(ID)
                 SELECT
@@ -43,10 +46,8 @@ namespace SkillslabAssigment.DAL.DAL
                     salt
                 FROM pending_account
                 WHERE id = @PendingAccountId;
-
                 DECLARE @NewAccountId INT
                 SELECT @NewAccountId = ID FROM @AccountId
-
                 INSERT INTO [user] (nic, first_name, last_name, department_id, manager_id, account_id, phone_number)
                 OUTPUT inserted.id INTO @UserId(ID)
                 SELECT
@@ -64,13 +65,11 @@ namespace SkillslabAssigment.DAL.DAL
 
                 DECLARE @NewUserId INT
                 SELECT @NewUserId = ID FROM @UserId
-
                 INSERT INTO user_role (user_id, role_id) VALUES (@NewUserId, @RoleId);
             ";
-
-            return _connection.ExecuteTransaction(CREATE_USER_TRANSACTION_QUERY, user);
+            return await _connection.ExecuteTransactionAsync(CREATE_USER_TRANSACTION_QUERY, user);
         }
-        public bool IsNicUnique(string nic) => !_connection
-            .RowExists<User>("nic = @Nic", new { Nic = nic });
+        public async Task<bool> IsNicUniqueAsync(string nic) => !await _connection
+            .RowExistsAsync<User>("nic = @Nic", new { Nic = nic });
     }
 }

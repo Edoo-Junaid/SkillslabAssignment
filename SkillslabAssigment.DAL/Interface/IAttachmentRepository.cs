@@ -5,6 +5,6 @@ namespace SkillslabAssigment.DAL.Interface
 {
     public interface IAttachmentRepository : IGenericRepository<Attachment, short>
     {
-        IEnumerable<Attachment> GetAllByEnrollmentId(int enrollmentId);
+        IEnumerable<Attachment> GetAllByEnrollmentIdAsync(int enrollmentId);
     }
 }

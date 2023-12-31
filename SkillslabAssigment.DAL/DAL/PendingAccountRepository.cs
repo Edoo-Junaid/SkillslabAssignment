@@ -15,7 +15,7 @@ namespace SkillslabAssigment.DAL.Interface
         public PendingAccountRepository(DbConnection connection) : base(connection)
         {
         }
-        public bool CreatePendingAccount(PendingAccount pendingAccount)
+        public async Task<bool> CreatePendingAccountAsync(PendingAccount pendingAccount)
         {
             const string CREATE_PENDING_ACCOUNT_QUERY = @"
                 DECLARE @Salt UNIQUEIDENTIFIER = NEWID();
@@ -25,21 +25,21 @@ namespace SkillslabAssigment.DAL.Interface
                 + CAST( @Salt AS NVARCHAR(MAX))),  @Salt, @FirstName,
                 @LastName, @Email, @PhoneNumber)
             ";
-            return _connection.ExecuteTransaction(CREATE_PENDING_ACCOUNT_QUERY, pendingAccount);
+            return await _connection.ExecuteTransactionAsync(CREATE_PENDING_ACCOUNT_QUERY, pendingAccount);
         }
-        public IEnumerable<PendingAccountDTO> GetAllPendingAccountDTO()
+        public async Task<IEnumerable<PendingAccountDTO>> GetAllPendingAccountDTOAsync()
         {
-            return _connection.GetAll<PendingAccountDTO>();
+            return await _connection.GetAllAsync<PendingAccountDTO>();
         }
-        public bool IsEmailUnique(string email)
+        public async Task<bool> IsEmailUniqueAsync(string email)
         {
-            return !_connection
-                .RowExists<PendingAccount>("email = @Email", new { Email = email });
+            return !await _connection
+                .RowExistsAsync<PendingAccount>("email = @Email", new { Email = email });
         }
-        public bool IsNicUnique(string nic)
+        public async Task<bool> IsNicUniqueAsync(string nic)
         {
-            return !_connection
-                .RowExists<PendingAccount>("nic = @Nic", new { Nic = nic });
+            return !await _connection
+                .RowExistsAsync<PendingAccount>("nic = @Nic", new { Nic = nic });
         }
     }
 }

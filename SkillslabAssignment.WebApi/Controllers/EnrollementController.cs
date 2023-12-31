@@ -25,19 +25,47 @@ namespace SkillslabAssignment.WebApi.Controllers
 
             MultipartMemoryStreamProvider multipartProvider = new MultipartMemoryStreamProvider();
             await Request.Content.ReadAsMultipartAsync(multipartProvider);
-            EnrollementRequestDTO enrollementRequest = await _enrollementService.ProcessMultipartContent(multipartProvider);
-
+            EnrollementRequestDTO enrollementRequest = await _enrollementService.ProcessMultipartContentAsync(multipartProvider);
             if (enrollementRequest is null) return BadRequest("Invalid request. Unable to process the enrollment data.");
-
-            await _enrollementService.ProcessEnrollement(enrollementRequest);
+            await _enrollementService.ProcessEnrollementAsync(enrollementRequest);
             return Ok();
         }
         [HttpGet]
         [Route("getByManagerID/{managerId}")]
-        public IHttpActionResult GetAllByManagerId(short managerId)
+        public async Task<IHttpActionResult> GetAllByManagerId(short managerId)
         {
-            IEnumerable<EnrollementDTO> enrollements = _enrollementService.GetAllByManagerId(managerId);
+            IEnumerable<EnrollementDTO> enrollements = await _enrollementService.GetAllByManagerIdAsync(managerId);
             return Ok(enrollements);
+        }
+
+        [HttpGet]
+        [Route("runAutomaticProcessing")]
+        public async Task<IHttpActionResult> RunAutomaticProcessing()
+        {
+            await _enrollementService.RunAutomaticProcessing();
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("approve/{enrollmentId:int}")]
+        public async Task<IHttpActionResult> ApproveEnrollement(int enrollmentId)
+        {
+            if (await _enrollementService.ApproveEnrollementAsync(enrollmentId))
+            {
+                return Ok("Enrollment Declined Successfully");
+            }
+            return BadRequest();
+        }
+
+        [HttpPut]
+        [Route("decline")]
+        public async Task<IHttpActionResult> DeclineEnrollement([FromBody]DeclineEnrollmentRequestDTO declineEnrollmentRequestDTO)
+        {
+            if (await _enrollementService.DeclineEnrollementAsync(declineEnrollmentRequestDTO))
+            {
+                return Ok();
+            }
+            return BadRequest();
         }
     }
 }

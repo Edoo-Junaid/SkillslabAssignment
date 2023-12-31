@@ -1,15 +1,24 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SkillslabAssignment.Common.Logger;
+using SkillslabAssignment.Interface;
+using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Net.Http;
 using System.Security.Authentication;
 using System.Web.Http.Filters;
+using Unity;
 
 namespace SkillslabAssignment.WebApi.App_Start
 {
     public class GlobalExceptionhandler : ExceptionFilterAttribute
     {
+        private readonly ILogger _logger;
+        public GlobalExceptionhandler()
+        {
+        }
+
         public override void OnException(HttpActionExecutedContext context)
         {
+            var logger = UnityConfig.Container.Resolve<ILogger>();
             if (context.Exception is ValidationException)
             {
                 context.Response = context.Request.CreateErrorResponse(HttpStatusCode.BadRequest, context.Exception.Message);
@@ -20,6 +29,7 @@ namespace SkillslabAssignment.WebApi.App_Start
             }
             else
             {
+                logger.LogAsync(context.Exception);
                 context.Response = context.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "An error occurred.");
             }
         }

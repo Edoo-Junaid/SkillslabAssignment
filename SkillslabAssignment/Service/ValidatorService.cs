@@ -1,61 +1,37 @@
 ﻿using SkillslabAssignment.Common.Entities;
 using SkillslabAssignment.Interface;
+using SkillslabAssignment.Service.ValidationRule;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SkillslabAssignment.Service
 {
     public class ValidatorService<T> : IValidatorService<T>
     {
-        private readonly IAccountService _accountService;
-        private readonly IPendingAccountService _pendingAccountService;
-        private readonly IUserService _userService;
-        public List<ValidationResult> validationResults;
-        public ValidatorService(IAccountService accountService
-            , IPendingAccountService pendingAccountService
-            , IUserService userService)
+        private readonly List<IValidatorRule<T>> _validatorRules;
+
+        public ValidatorService(IEnumerable<IValidatorRule<T>> validatorRules)
         {
-            _accountService = accountService;
-            _pendingAccountService = pendingAccountService;
-            _userService = userService;
+            _validatorRules = validatorRules.ToList();
         }
-        public IEnumerable<ValidationResult> Validate<U>(U parameter)
+
+        public async Task<IEnumerable<ValidationResult>> ValidateAsync<U>(U parameter)
         {
-            validationResults = new List<ValidationResult>();
+            var validationResults = new List<ValidationResult>();
+
             var validationContext = new ValidationContext(parameter);
             Validator.TryValidateObject(parameter, validationContext, validationResults, validateAllProperties: true);
-            if (parameter is PendingAccount)
+
+            foreach (var rule in _validatorRules)
             {
-                PendingAccount pendingAccount = parameter as PendingAccount;
-                ValidateUniqueEmail(pendingAccount.Email);
-                ValidateUniqueNic(pendingAccount.Nic);
+                if (parameter is T typedParameter)
+                {
+                    await rule.ValidateAsync(typedParameter, validationResults);
+                }
             }
             return validationResults;
-        }
-
-        private void ValidateUniqueEmail(string email)
-        {
-            if (!IsEmailUnique(email))
-            {
-                validationResults.Add(new ValidationResult("Email must be unique", new[] { "Email" }));
-            }
-        }
-
-        private void ValidateUniqueNic(string nic)
-        {
-            if (!IsNicUnique(nic))
-            {
-                validationResults.Add(new ValidationResult("NIC must be unique", new[] { "Nic" }));
-            }
-        }
-        private bool IsEmailUnique(string email)
-        {
-            return _accountService.IsEmailUnique(email) && _pendingAccountService.IsEmailUnique(email);
-        }
-
-        private bool IsNicUnique(string nic)
-        {
-            return _pendingAccountService.IsNicUnique(nic) && _userService.IsNicUnique(nic);
         }
     }
 }

@@ -6,6 +6,7 @@ using SkillslabAssignment.Common.Mapper;
 using SkillslabAssignment.Interface;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SkillslabAssignment.Service
 {
@@ -16,15 +17,15 @@ namespace SkillslabAssignment.Service
         {
             _userRepository = repository;
         }
-        public bool CreateUserAndAccount(CreateUserDTO createUserDTO)
+        public async Task<bool> CreateUserAndAccountAsync(CreateUserDTO createUserDTO)
         {
-            return _userRepository.CreateUser(createUserDTO);
+            return await _userRepository.CreateUserAsync(createUserDTO);
         }
-        public IEnumerable<ManagerDTO> GetAllManagerByDepartment(byte departmentId)
+        public async Task<IEnumerable<ManagerDTO>> GetAllManagerByDepartmentAsync(byte departmentId)
         {
-            IEnumerable<User> managers = _userRepository.GetUsersByDepartmentAndRole(departmentId, RoleEnum.Manager.ToString());
+            IEnumerable<User> managers = await _userRepository.GetUsersByDepartmentAndRoleAsync(departmentId, RoleEnum.Manager.ToString());
             return managers.Select(manager => manager.ToManagerDTO());
         }
-        public bool IsNicUnique(string nic) => _userRepository.IsNicUnique(nic);
+        public async Task<bool> IsNicUniqueAsync(string nic) => await _userRepository.IsNicUniqueAsync(nic);
     }
 }

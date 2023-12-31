@@ -1,7 +1,10 @@
 ﻿using SkillslabAssignment.Common.Entities;
+using SkillslabAssignment.Common.Enums;
+using SkillslabAssignment.Common.Permission;
 using SkillslabAssignment.Interface;
 using SkillslabAssignment.WebApi.Attribute;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -16,27 +19,31 @@ namespace SkillslabAssignment.WebApi.Controllers
         {
             _departmentService = departmentService;
         }
-
         // GET: api/Department
-        public IEnumerable<Department> GetAll() => _departmentService.GetAll();
+        [Permission(Permissions.ViewDepartment)]
+        public async Task<IEnumerable<Department>> GetAll() => await _departmentService.GetAllAsync();
 
         // GET: api/Department/5
-        public Department Get(byte id) => _departmentService.GetById(id);
+        //[Permission(PermissionEnum.ViewDepartment)]
+        public async Task<Department> Get(byte id) => await _departmentService.GetByIdAsync(id);
 
         // POST: api/Department
-        public IHttpActionResult Post([FromBody] Department department)
+        [Permission(Permissions.ViewDepartment)]
+        public async Task<IHttpActionResult> Post([FromBody] Department department)
         {
-            return Created(Request.RequestUri, _departmentService.Add(department));
+            return Created(Request.RequestUri, await _departmentService.AddAsync(department));
         }
 
         // PUT: api/Department/5
-        public void Put(byte id, [FromBody] Department department)
+        [Permission(Permissions.EditDepartment)]
+        public async Task Put(byte id, [FromBody] Department department)
         {
             department.Id = id;
-            _departmentService.Update(department);
+            await _departmentService.UpdateAsync(department);
         }
 
         // DELETE: api/Department/5
-        public void Delete(byte id) => _departmentService.Delete(id);
+        [Permission(Permissions.DeleteDepartment)]
+        public async Task Delete(byte id) => await _departmentService.DeleteAsync(id);
     }
 }

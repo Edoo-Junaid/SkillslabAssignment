@@ -13,18 +13,18 @@ namespace SkillslabAssigment.DAL.DAL
 {
     public class RoleRepository : GenericRepository<Role, byte>, IRoleRepository
     {
-        public RoleRepository(IDbConnection connection) : base(connection)
+        public RoleRepository(DbConnection connection) : base(connection)
         {
         }
 
-        public IEnumerable<Role> GetByUserId(short userId)
+        public async Task<IEnumerable<Role>> GetByUserIdAsync(short userId)
         {
             const string GET_BY_USER_ID_QUERY = @"
                 SELECT role.* FROM user_role
                 INNER JOIN [role] ON role.id = user_role.role_id
                 WHERE user_role.user_id = @UserId
             ";
-            return _connection.ExecuteQuery<Role>(GET_BY_USER_ID_QUERY, new { UserId = userId });
+            return await _connection.ExecuteQueryAsync<Role>(GET_BY_USER_ID_QUERY, new { UserId = userId });
         }
     }
 }
