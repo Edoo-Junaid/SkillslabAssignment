@@ -11,7 +11,9 @@ namespace SkillslabAssignment.Common.Entities
     [Table("web_page")]
     public class WebPage : IEntity<int>
     {
+        [Column("id")]
         public int Id { get; set; }
+        [Column("web_page_name")]
         public string WebPageName { get; set; }
     }
 }
