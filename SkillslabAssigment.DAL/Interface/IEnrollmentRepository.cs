@@ -13,5 +13,6 @@ namespace SkillslabAssigment.DAL.Interface
         Task<bool> UpdateEnrollmentStatus(int enrollmentId, EnrollementStatus status);
         Task<bool> EnrollmentExistsAsync(short trainingId);
         Task<bool> DeclineEnrollement(int enrollmentId, string declineReason);
+        Task<IEnumerable<EnrollmentDetailsDto>> GetEnrollmentDetailsByUserIdAsync(short userId);
     }
 }

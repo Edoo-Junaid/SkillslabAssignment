@@ -16,6 +16,7 @@ using System.Web.Http.Controllers;
 using Unity;
 using System.Web.Http.Filters;
 using System.Threading;
+using SkillslabAssignment.Common.Entities;
 
 namespace SkillslabAssignment.WebApi.Attribute
 {
@@ -31,6 +32,12 @@ namespace SkillslabAssignment.WebApi.Attribute
         public override async Task OnActionExecutingAsync(HttpActionContext actionContext, CancellationToken cancellationToken)
         {
             var token = GetTokenFromHeader(actionContext.Request.Headers.Authorization);
+            if(token == null)
+            {
+                actionContext.Response = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                return;
+            }
+
             var principal = JwtManager.GetPrincipal(token);
 
             if (principal == null || !await HasPermissionAsync(principal, _permission))
@@ -38,7 +45,7 @@ namespace SkillslabAssignment.WebApi.Attribute
                 actionContext.Response = new HttpResponseMessage(HttpStatusCode.Forbidden);
                 return;
             }
-
+            actionContext.ControllerContext.RequestContext.Principal = principal;
             base.OnActionExecuting(actionContext);
         }
         private string GetTokenFromHeader(AuthenticationHeaderValue authenticationHeaderValue)

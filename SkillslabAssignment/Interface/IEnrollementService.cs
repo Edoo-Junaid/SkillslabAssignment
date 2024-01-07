@@ -15,5 +15,6 @@ namespace SkillslabAssignment.Interface
         Task RunAutomaticProcessing();
         Task<bool> ApproveEnrollementAsync(int enrollmentId);
         Task<bool> DeclineEnrollementAsync(DeclineEnrollmentRequestDTO declineEnrollmentRequestDTO);
+        Task<IEnumerable<EnrollmentDetailsDto>> GetEnrollmentDetailsByUserIdAsync(short userId);
     }
 }

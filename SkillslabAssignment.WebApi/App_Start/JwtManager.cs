@@ -20,7 +20,8 @@ namespace SkillslabAssignment.WebApi.App_Start
             {
                 new Claim(ClaimTypes.Name, username),
                 new Claim(ClaimTypes.Role, role),
-                new Claim("UserId", userId)
+                new Claim("UserId", userId),
+                new Claim(ClaimTypes.UserData,userId)
             };
 
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -58,6 +59,18 @@ namespace SkillslabAssignment.WebApi.App_Start
             {
                 return null;
             }
+        }
+
+        public static short GetUserIdFromClaims(ClaimsPrincipal claims)
+        {
+            var userId = claims.FindFirst("UserId").Value;
+            return short.Parse(userId);
+        }
+
+        public static short GetUserIdFromToken(string token)
+        {
+            var claims = GetPrincipal(token);
+            return GetUserIdFromClaims(claims);
         }
     }
 }

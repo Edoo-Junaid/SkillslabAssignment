@@ -74,6 +74,7 @@
     <Compile Include="DTO\DeclineEnrollmentRequestDTO.cs" />
     <Compile Include="DTO\EnrollementDTO.cs" />
     <Compile Include="DTO\EnrollementRequestDTO.cs" />
+    <Compile Include="DTO\EnrollemetDetailsDto.cs" />
     <Compile Include="DTO\LoginRequestDTO.cs" />
     <Compile Include="DTO\LoginResponseDTO.cs" />
     <Compile Include="DTO\ManagerDTO.cs" />
@@ -86,6 +87,8 @@
     <Compile Include="Entities\Attachment.cs" />
     <Compile Include="Entities\Department.cs" />
     <Compile Include="Entities\Enrollement.cs" />
+    <Compile Include="Entities\InAppNotification.cs" />
+    <Compile Include="Entities\WebPageElement.cs" />
     <Compile Include="Entities\PendingAccount.cs" />
     <Compile Include="Entities\Permission.cs" />
     <Compile Include="Entities\Prerequisite.cs" />
@@ -93,6 +96,7 @@
     <Compile Include="Entities\trail.cs" />
     <Compile Include="Entities\Training.cs" />
     <Compile Include="Entities\User.cs" />
+    <Compile Include="Entities\WebPage.cs" />
     <Compile Include="Enums\EnrollementStatus.cs" />
     <Compile Include="Enums\PermissionEnum.cs" />
     <Compile Include="Enums\RolesEnum.cs" />

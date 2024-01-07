@@ -1,5 +1,8 @@
 ﻿using SkillslabAssignment.Common.DTO;
+using SkillslabAssignment.Common.Permission;
 using SkillslabAssignment.Interface;
+using SkillslabAssignment.WebApi.App_Start;
+using SkillslabAssignment.WebApi.Attribute;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -22,7 +25,6 @@ namespace SkillslabAssignment.WebApi.Controllers
         public async Task<IHttpActionResult> Enroll()
         {
             if (!Request.Content.IsMimeMultipartContent()) return BadRequest("Invalid request. Expecting a multipart/form-data request.");
-
             MultipartMemoryStreamProvider multipartProvider = new MultipartMemoryStreamProvider();
             await Request.Content.ReadAsMultipartAsync(multipartProvider);
             EnrollementRequestDTO enrollementRequest = await _enrollementService.ProcessMultipartContentAsync(multipartProvider);
@@ -52,20 +54,30 @@ namespace SkillslabAssignment.WebApi.Controllers
         {
             if (await _enrollementService.ApproveEnrollementAsync(enrollmentId))
             {
-                return Ok("Enrollment Declined Successfully");
+                return Ok("Enrollment Approved Successfully");
             }
             return BadRequest();
         }
 
         [HttpPut]
         [Route("decline")]
-        public async Task<IHttpActionResult> DeclineEnrollement([FromBody]DeclineEnrollmentRequestDTO declineEnrollmentRequestDTO)
+        public async Task<IHttpActionResult> DeclineEnrollement([FromBody] DeclineEnrollmentRequestDTO declineEnrollmentRequestDTO)
         {
             if (await _enrollementService.DeclineEnrollementAsync(declineEnrollmentRequestDTO))
             {
                 return Ok();
             }
             return BadRequest();
+        }
+
+        [HttpGet]
+        [Route("getEnrollmentDetailsByUserId")]
+        [Permission(Permissions.Test)]
+        public async Task<IHttpActionResult> GetEnrollmentDetailsByUserId()
+        {
+            short userId = JwtManager.GetUserIdFromToken(Request.Headers.Authorization.Parameter);
+            IEnumerable<EnrollmentDetailsDto> enrollmentDetails = await _enrollementService.GetEnrollmentDetailsByUserIdAsync(userId);
+            return Ok(enrollmentDetails);
         }
     }
 }

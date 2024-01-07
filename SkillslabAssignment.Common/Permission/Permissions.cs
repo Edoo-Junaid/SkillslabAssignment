@@ -42,5 +42,6 @@ namespace SkillslabAssignment.Common.Permission
         public const string EditPendingAccount = "Edit Pending Account";
         public const string DeletePendingAccount = "Delete Pending Account";
         public const string ViewPendingAccount = "View Pending Account";
+        public const string Test = "Test";
     }
 }

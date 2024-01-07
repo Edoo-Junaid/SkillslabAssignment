@@ -20,15 +20,10 @@ namespace SkillslabAssigment.DAL.Common
             {
                 try
                 {
-                    connection.OpenConnection();
+                    await connection.OpenAsync();
                     command.CommandText = query;
                     AddParametersToCommand(command, parameters);
-                    command.ExecuteNonQuery();
-                }
-                catch (Exception ex)
-                {
-                    throw;
-
+                    await command.ExecuteNonQueryAsync();
                 }
                 finally
                 {
@@ -36,24 +31,6 @@ namespace SkillslabAssigment.DAL.Common
                 }
             }
         }
-        //public static async Task ExecuteNonQueryAsync(this DbConnection connection, string query, object parameters = null)
-        //{
-        //    using (var command = connection.CreateCommand())
-        //    {
-        //        try
-        //        {
-        //            connection.OpenConnection();
-        //            command.CommandText = query;
-        //            AddParametersToCommand(command, parameters);
-        //            command.ExecuteNonQuery();
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            Console.WriteLine($"Exception: {ex.Message}");
-        //            throw;
-        //        }
-        //    }
-        //}
         public static bool ExecuteTransaction(this IDbConnection connection, string transactionQuery, object parameters = null)
         {
             using (var command = connection.CreateCommand())
@@ -86,7 +63,6 @@ namespace SkillslabAssigment.DAL.Common
                 }
             }
         }
-
         public static async Task<bool> ExecuteTransactionAsync(this DbConnection connection, string transactionQuery, object parameters = null)
         {
             await connection.OpenAsync();
@@ -117,7 +93,6 @@ namespace SkillslabAssigment.DAL.Common
                 }
             }
         }
-
         public static T ExecuteInsertQuery<T>(this IDbConnection connection, T parameters)
         {
             using (var command = connection.CreateCommand())
@@ -219,8 +194,88 @@ namespace SkillslabAssigment.DAL.Common
                     connection.Close();
                 }
             }
-
         }
+        public async static Task<int> GetRowCountAsync<T>(this DbConnection connection)
+        {
+            using (var command = connection.CreateCommand())
+            {
+                try
+                {
+                    await connection.OpenAsync();
+                    Type type = typeof(T);
+                    command.CommandText = $"SELECT COUNT(*) FROM [{GetTableName(type)}]";
+                    var rowCount = await command.ExecuteScalarAsync();
+                    return Convert.ToInt32(rowCount);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Exception: {ex.Message}");
+                    throw;
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+        }
+
+        public async static Task<IEnumerable<T>> GetPaginatedDataAsync<T>(this DbConnection connection, int pageSize, int pageNumber, string orderBy = "id")
+        {
+            using (var command = connection.CreateCommand())
+            {
+                try
+                {
+                    await connection.OpenAsync();
+                    Type type = typeof(T);
+                    int offset = (pageNumber - 1) * pageSize;
+                    var queryBuilder = new StringBuilder($"SELECT * FROM [{GetTableName(type)}]");
+                    queryBuilder.Append($" ORDER BY {orderBy}");
+                    queryBuilder.Append($" OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY");
+                    command.CommandText = queryBuilder.ToString();
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        return ReadResultSet<T>(type, reader);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Exception: {ex.Message}");
+                    throw;
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+        }
+        public async static Task<IEnumerable<T>> GetAllWithSearchAsync<T>(this DbConnection connection, string columnName, string searchValue)
+        {
+            using (var command = connection.CreateCommand())
+            {
+                try
+                {
+                    await connection.OpenAsync();
+                    Type type = typeof(T);
+                    command.CommandText = $"SELECT * FROM [{GetTableName(type)}] WHERE {columnName} LIKE @searchValue";
+                    var searchParameter = CreateParameter(command, "searchValue", $"%{searchValue}%");
+                    command.Parameters.Add(searchParameter);
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        return ReadResultSet<T>(type, reader);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Exception: {ex.Message}");
+                    throw;
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+        }
+
         public static T GetById<T>(this IDbConnection connection, object id)
         {
             using (var command = connection.CreateCommand())
@@ -439,6 +494,29 @@ namespace SkillslabAssigment.DAL.Common
                 }
             }
         }
+        public async static Task<T> ExecuteScalarAsync<T>(this DbConnection connection, string sqlQuery, object parameters = null)
+        {
+            using (var command = connection.CreateCommand())
+            {
+                try
+                {
+                    await connection.OpenAsync();
+                    command.CommandText = sqlQuery;
+                    AddParametersToCommand(command, parameters);
+                    var result = await command.ExecuteScalarAsync();
+                    return (T)Convert.ChangeType(result, typeof(T));
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Exception: {ex.Message}");
+                    throw;
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+        }
         public static IEnumerable<T> SelectWhere<T>(this IDbConnection connection, string whereClause, object parameters = null)
         {
             using (var command = connection.CreateCommand())
@@ -616,7 +694,14 @@ namespace SkillslabAssigment.DAL.Common
         {
             var parameter = command.CreateParameter();
             parameter.ParameterName = $"@{parameterName}";
-            parameter.Value = value;
+            if(value==null)
+            {
+                parameter.Value = DBNull.Value;
+            }
+            else
+            {
+                parameter.Value = value;
+            }
             return parameter;
         }
         private static IEnumerable<T> ReadResultSet<T>(Type type, IDataReader reader)

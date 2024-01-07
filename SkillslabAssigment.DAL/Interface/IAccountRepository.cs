@@ -7,5 +7,7 @@ namespace SkillslabAssigment.DAL.Interface
     {
         Task<bool> IsAuthenticated(string email, string password);
         Task<Account> GetByEmailAsync(string email);
+
+        Task<string> GetEmailByUserIdAsync(short userId);
     }
 }

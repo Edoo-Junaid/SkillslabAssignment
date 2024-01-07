@@ -99,5 +99,10 @@ namespace SkillslabAssigment.DAL.DAL
             ";
             return await _connection.ExecuteTransactionAsync(DELETE_TRAINING_QUERY, new { TrainingId = trainingId });
         }
+
+        public Task<IEnumerable<Training>> GetAllWithSearchAsync(string columnName, string searchValue)
+        {
+            return _connection.GetAllWithSearchAsync<Training>(columnName, searchValue);
+        }
     }
 }
