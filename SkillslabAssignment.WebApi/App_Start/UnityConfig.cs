@@ -3,9 +3,10 @@ using SkillslabAssigment.DAL.Interface;
 using SkillslabAssignment.Common.Entities;
 using SkillslabAssignment.Common.Logger;
 using SkillslabAssignment.Interface;
+using SkillslabAssignment.Notification;
 using SkillslabAssignment.Service;
 using SkillslabAssignment.Service.ValidationRule;
-using SkillslabAssignment.ValidationRule;
+
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -29,9 +30,11 @@ namespace SkillslabAssignment.WebApi
             container.RegisterType<IDbConnection, SqlConnection>(
                 new InjectionConstructor(connectionString)
             );
-            container.RegisterType<IStorrageService, FirebaseStorageService>(
-                new InjectionConstructor(bucketString)
-            );
+            //container.RegisterType<IStorrageService, FirebaseStorageService>(
+            //    new InjectionConstructor(bucketString)
+            //);
+            container.RegisterType<IStorrageService, FirebaseStorageServiceV2>();
+
             container.RegisterType<DbConnection, SqlConnection>(
                 new InjectionConstructor(connectionString)
             );
@@ -59,6 +62,8 @@ namespace SkillslabAssignment.WebApi
             container.RegisterType<ITrainingRepository, TrainingRepository>();
             container.RegisterType<IRoleRepository, RoleRepository>();
             container.RegisterType<IPendingAccountRepository, PendingAccountRepository>();
+            container.RegisterType<IInAppNotificationRepository, InAppNotificationRepository>();
+            container.RegisterType<IInAppNotificationService, InAppNotificationService>();
             container.RegisterInstance<IValidatorRule<PendingAccount>>("Unique Email Validation", new UniqueEmailValidatorRule(container.Resolve<IAccountService>(), container.Resolve<IPendingAccountService>()));
             container.RegisterInstance<IValidatorRule<PendingAccount>>("Unique NIC Validation", new UniqueNicValidatorRule(container.Resolve<IPendingAccountService>(), container.Resolve<IUserService>()));
             container.RegisterType(typeof(IValidatorService<PendingAccount>), typeof(ValidatorService<PendingAccount>),
@@ -67,6 +72,15 @@ namespace SkillslabAssignment.WebApi
                 new ResolvedParameter<IValidatorRule<PendingAccount>>("Unique NIC Validation")
             )));
             container.RegisterType(typeof(IValidatorService<>), typeof(ValidatorService<>));
+
+            container.RegisterInstance<INotificationHandler>("Email Notification", new EmailNotificationHandler(container.Resolve<IAccountRepository>()));
+            container.RegisterInstance<INotificationHandler>("In-App Notification", new InAppNotificationHandler(container.Resolve<IInAppNotificationRepository>()));
+            container.RegisterType(typeof(INotificationManager), typeof(NotificationManager),
+            new InjectionConstructor(new ResolvedArrayParameter<INotificationHandler>(
+                new ResolvedParameter<INotificationHandler>("Email Notification"),
+                new ResolvedParameter<INotificationHandler>("In-App Notification")
+            )));
+
             Container = container;
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
         }

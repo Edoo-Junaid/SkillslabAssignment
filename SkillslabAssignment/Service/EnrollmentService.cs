@@ -3,32 +3,38 @@ using SkillslabAssignment.Common.DTO;
 using SkillslabAssignment.Common.Entities;
 using SkillslabAssignment.Common.Enums;
 using SkillslabAssignment.Interface;
+using SkillslabAssignment.Notification;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace SkillslabAssignment.Service
 {
     public class EnrollmentService : GenericService<Enrollement, int>, IEnrollementService
     {
-        public IStorrageService _storrageService;
-        public IGenericRepository<Attachment, short> _attachmentRepository;
-        public IEnrollmentRepository _enrollementRepository;
-        public ITrainingRepository _trainingRepository;
+        private readonly IStorrageService _storrageService;
+        private readonly IGenericRepository<Attachment, short> _attachmentRepository;
+        private readonly IEnrollmentRepository _enrollementRepository;
+        private readonly ITrainingRepository _trainingRepository;
+        private readonly INotificationManager _notificationManager;
         public EnrollmentService(
             IEnrollmentRepository repository,
             IStorrageService storrageService,
             IGenericRepository<Attachment, short> attachmentRepository,
-            ITrainingRepository trainingRepository
+            ITrainingRepository trainingRepository,
+            INotificationManager notificationManager
             ) : base(repository)
         {
             _storrageService = storrageService;
             _attachmentRepository = attachmentRepository;
             _enrollementRepository = repository;
             _trainingRepository = trainingRepository;
+            _notificationManager = notificationManager;
         }
 
         public async Task<IEnumerable<EnrollementDTO>> GetAllByManagerIdAsync(short managerId)
@@ -37,18 +43,18 @@ namespace SkillslabAssignment.Service
         }
         public async Task RunAutomaticProcessing()
         {
-            IEnumerable<Training> trainings = await _trainingRepository.GetAllByRegistrationDeadline(new System.DateTime(2024, 02, 15));
-            trainings.ToList().ForEach(async training =>
+            IEnumerable<Training> trainings = await _trainingRepository.GetAllByRegistrationDeadline(System.DateTime.Today);
+            foreach (var training in trainings)
             {
-                IEnumerable<SelectedUserDTO> selectedUsers = await _enrollementRepository.GetAllSelectedUsersAsync(training.Id);
-            });
+                await ProcessTrainingAsync(training);
+            }
         }
         public async Task<bool> ProcessEnrollementAsync(EnrollementRequestDTO enrollementRequest)
         {
             if (enrollementRequest is null) return false;
 
             Enrollement enrollement = await CreateEnrollment(enrollementRequest);
-            await UploadAndAddAttachments(enrollement, enrollementRequest.PrerequisiteToAttachment);
+            await UploadAndAddAttachments(enrollement, enrollementRequest.PrerequisiteToAttachment, enrollementRequest.ContentType);
             return true;
         }
         public async Task<EnrollementRequestDTO> ProcessMultipartContentAsync(MultipartMemoryStreamProvider provider)
@@ -64,6 +70,7 @@ namespace SkillslabAssignment.Service
                     var prerequisiteId = short.Parse(file.Headers.ContentDisposition.Name.Trim('\"'));
                     var fileStream = await file.ReadAsStreamAsync();
                     enrollementRequest.PrerequisiteToAttachment.Add(prerequisiteId, fileStream);
+                    enrollementRequest.ContentType = file.Headers.ContentType.MediaType;
                 }
                 else
                 {
@@ -93,31 +100,80 @@ namespace SkillslabAssignment.Service
                 TrainingId = enrollementRequest.TrainingId,
                 UserId = enrollementRequest.UserId,
                 Date = System.DateTime.Now,
-                Status = EnrollementStatus.Pending.ToString()
+                Status = EnrollementStatus.Pending.ToString(),
             });
         }
-        private async Task UploadAndAddAttachments(Enrollement enrollement, Dictionary<short, Stream> prerequisiteToAttachment)
+        private async Task UploadAndAddAttachments(Enrollement enrollement, Dictionary<short, Stream> prerequisiteToAttachment, string contentType)
         {
             foreach (var attachement in prerequisiteToAttachment)
             {
-                string fileName = $"user_{enrollement.UserId}_file{attachement.Key}";
-                string url = await _storrageService.UploadFileAsync(attachement.Value, enrollement.TrainingId, fileName);
+                var fileId = Guid.NewGuid();
+                await _storrageService.UploadFileAsync(attachement.Value, enrollement.TrainingId, fileId, contentType);
                 await _attachmentRepository.AddAsync(new Attachment
                 {
                     EnrollmentId = enrollement.Id,
                     PrerequisiteId = attachement.Key,
-                    Url = url
+                    FileId = fileId
                 });
             }
         }
         public async Task<bool> ApproveEnrollementAsync(int enrollmentId)
         {
+            Enrollement enrollement = await _enrollementRepository.GetByIdAsync(enrollmentId);
+            Training training = await _trainingRepository.GetByIdAsync(enrollement.TrainingId);
+            string trainingName = training.Name;
+            string htmlBody = GenerateApprovalBody(enrollmentId, trainingName);
+            await _notificationManager.NotifyHandlers("Enrollment approved", htmlBody, enrollement.UserId);
             return await _enrollementRepository.UpdateEnrollmentStatus(enrollmentId, EnrollementStatus.Approved);
         }
-
-        public async Task<bool> DeclineEnrollementAsync(DeclineEnrollmentRequestDTO declineEnrollmentRequestDTO)
+        public async Task<bool> DeclineEnrollementAsync(DeclineEnrollmentRequestDTO declineEnrollmentRequest)
         {
-            return await _enrollementRepository.DeclineEnrollement(declineEnrollmentRequestDTO.EnrollmentId, declineEnrollmentRequestDTO.DeclineReason);
+            Enrollement enrollement = await _enrollementRepository.GetByIdAsync(declineEnrollmentRequest.EnrollmentId);
+            Training training = await _trainingRepository.GetByIdAsync(enrollement.TrainingId);
+            string trainingName = training.Name;
+            string htmlBody = GenerateDeclineBody(declineEnrollmentRequest.EnrollmentId, trainingName, declineEnrollmentRequest.DeclineReason);
+            await _notificationManager.NotifyHandlers("Enrollment Declined", htmlBody, enrollement.UserId);
+            return await _enrollementRepository.DeclineEnrollement(declineEnrollmentRequest.EnrollmentId, declineEnrollmentRequest.DeclineReason);
+        }
+        private async Task ProcessTrainingAsync(Training training)
+        {
+            string htmlBody = GenerateSelectedUserBody(training.Name);
+            IEnumerable<SelectedUserDTO> selectedUsers = await _enrollementRepository.GetAllSelectedUsersAsync(training.Id);
+            foreach (var selectedUser in selectedUsers)
+            {
+                await _notificationManager.NotifyHandlers("Enrollment Successful", htmlBody, selectedUser.UserId);
+            }
+        }
+        private string GenerateApprovalBody(int enrollmentId, string trainingName)
+        {
+            StringBuilder plainTextContent = new StringBuilder();
+            plainTextContent.AppendLine($"Enrollment Approved for {trainingName}.");
+            plainTextContent.AppendLine();
+            plainTextContent.AppendLine($"Your enrollment with ID {enrollmentId} for the training '{trainingName}' has been approved.");
+            return plainTextContent.ToString();
+        }
+        private string GenerateDeclineBody(int enrollmentId, string trainingName, string declineReason)
+        {
+            StringBuilder plainTextContent = new StringBuilder();
+            plainTextContent.AppendLine($"Enrollment Declined for {trainingName}");
+            plainTextContent.AppendLine();
+            plainTextContent.AppendLine($"Your enrollment with ID {enrollmentId} for the training '{trainingName}' has been declined.");
+            plainTextContent.AppendLine($"Reason for Decline: {declineReason}");
+            return plainTextContent.ToString();
+        }
+
+        private string GenerateSelectedUserBody(string trainingName)
+        {
+            StringBuilder plainTextContent = new StringBuilder();
+            plainTextContent.AppendLine($"Enrollment Successful for {trainingName}");
+            plainTextContent.AppendLine();
+            plainTextContent.AppendLine($"Congratulations! You have successfully been enrolled in the training '{trainingName}' and have been Selected.");
+            return plainTextContent.ToString();
+        }
+
+        public async Task<IEnumerable<EnrollmentDetailsDto>> GetEnrollmentDetailsByUserIdAsync(short userId)
+        {
+            return await _enrollementRepository.GetEnrollmentDetailsByUserIdAsync(userId);
         }
     }
 }

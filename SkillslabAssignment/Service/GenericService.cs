@@ -10,10 +10,21 @@ namespace SkillslabAssignment.Interface
     {
         protected readonly IGenericRepository<T, TId> _repository;
         public GenericService(IGenericRepository<T, TId> repository) => _repository = repository;
-        Task<T> IGenericService<T, TId>.AddAsync(T entity) => _repository.AddAsync(entity);
-        Task<bool> IGenericService<T, TId>.DeleteAsync(TId id) => _repository.DeleteAsync(id);
-        Task<IEnumerable<T>> IGenericService<T, TId>.GetAllAsync() => _repository.GetAllAsync();
-        Task<T> IGenericService<T, TId>.GetByIdAsync(TId id) => _repository.GetByIdAsync(id);
-        Task<bool> IGenericService<T, TId>.UpdateAsync(T entity) => _repository.UpdateAsync(entity);
+        public async Task<IEnumerable<T>> GetPaginatedDataAsync(int pageSize, int pageNumber)
+        {
+            return await _repository.GetPaginatedDataAsync(pageSize, pageNumber);
+        }
+
+        public async Task<int> GetTotalRowCountAsync()
+        {
+            return await _repository.GetTotalRowCountAsync();
+        }
+
+        async Task<T> IGenericService<T, TId>.AddAsync(T entity) => await _repository.AddAsync(entity);
+        async Task<bool> IGenericService<T, TId>.DeleteAsync(TId id) => await _repository.DeleteAsync(id);
+        async Task<IEnumerable<T>> IGenericService<T, TId>.GetAllAsync() => await _repository.GetAllAsync();
+        async Task<T> IGenericService<T, TId>.GetByIdAsync(TId id) => await _repository.GetByIdAsync(id);
+        async Task<bool> IGenericService<T, TId>.UpdateAsync(T entity) => await _repository.UpdateAsync(entity);
+
     }
 }

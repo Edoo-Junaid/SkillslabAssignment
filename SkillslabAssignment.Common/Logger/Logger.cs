@@ -11,7 +11,6 @@ namespace SkillslabAssignment.Common.Logger
     public class Logger : ILogger
     {
         private readonly string filePath;
-
         public Logger(string filePath)
         {
             this.filePath = filePath;
@@ -40,7 +39,7 @@ namespace SkillslabAssignment.Common.Logger
                 using (StreamWriter writer = new StreamWriter(filePath, true))
                 {
                     await writer.WriteLineAsync(logEntry);
-                    await writer.WriteLineAsync(new string('-', 80)); // Adjusted the line length
+                    await writer.WriteLineAsync(new string('-', 80));
                 }
             }
             catch (Exception ex)

@@ -10,6 +10,7 @@ namespace SkillslabAssignment.Interface
     public interface ITrainingService : IGenericService<Training, short>
     {
         Task<IEnumerable<TrainingDTO>> GetAllTrainingDTOAsync();
+        Task<IEnumerable<Training>> GetAllWithSearchAsync(string searchValue);
         Task<TrainingDetailsDTO> GetTrainingDetailsAsync(short id);
         Task<IEnumerable<Training>> GetAllEnrolledTrainingAsync(short userId);
         Task<bool> CreteTrainingAsync(CreateTrainingRequestDTO training);

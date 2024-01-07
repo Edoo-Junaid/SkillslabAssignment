@@ -11,5 +11,7 @@ namespace SkillslabAssigment.DAL.Interface
         Task<T> AddAsync(T entity);
         Task<bool> UpdateAsync(T entity);
         Task<bool> DeleteAsync(TId id);
+        Task<IEnumerable<T>> GetPaginatedDataAsync(int pageSize, int pageNumber);
+        Task<int> GetTotalRowCountAsync();
     }
 }

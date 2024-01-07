@@ -27,5 +27,13 @@ namespace SkillslabAssigment.DAL.DAL
             await _connection.UpdateByIdAsync<T>(entity.Id, entity);
             return true;
         }
+        public async Task<IEnumerable<T>> GetPaginatedDataAsync(int pageSize, int pageNumber)
+        {
+            return await _connection.GetPaginatedDataAsync<T>(pageSize, pageNumber);
+        }
+        public async Task<int> GetTotalRowCountAsync()
+        {
+            return await _connection.GetRowCountAsync<T>();
+        }
     }
 }

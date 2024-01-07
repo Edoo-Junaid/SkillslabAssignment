@@ -47,8 +47,11 @@
     <Compile Include="DAL\AttachmentRepository.cs" />
     <Compile Include="DAL\EnrollmentRepository.cs" />
     <Compile Include="DAL\GenericRepository.cs" />
+    <Compile Include="DAL\InAppNotificationRepository.cs" />
     <Compile Include="DAL\PermissionRepository.cs" />
     <Compile Include="DAL\RoleRepository.cs" />
+    <Compile Include="DAL\WebPageElementRepository.cs" />
+    <Compile Include="Interface\IInAppNotificationRepository.cs" />
     <Compile Include="Interface\IPendingAccountRepository.cs" />
     <Compile Include="DAL\PrerequisiteRepository.cs" />
     <Compile Include="DAL\TrainingRepository.cs" />
@@ -63,6 +66,8 @@
     <Compile Include="Interface\ITrainingRepository.cs" />
     <Compile Include="Interface\IUserRepository.cs" />
     <Compile Include="DAL\PendingAccountRepository.cs" />
+    <Compile Include="Interface\IWebPageElementRepositoty.cs" />
+    <Compile Include="Interface\IWebPageRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

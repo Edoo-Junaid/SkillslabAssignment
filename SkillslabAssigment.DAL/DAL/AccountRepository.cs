@@ -20,6 +20,17 @@ namespace SkillslabAssigment.DAL.DAL
                 .SelectWhereAsync<Account>("email = @Email", new { Email = email }))
                 .FirstOrDefault();
         }
+
+        public Task<string> GetEmailByUserIdAsync(short userId)
+        {
+            const string GET_USER_ID_BY_EMAIL_QUERY = @"
+                SELECT a.email FROM account a 
+                INNER JOIN [user] u ON a.id = u.account_id
+                WHERE u.id = @UserId
+                ";
+            return _connection.ExecuteScalarAsync<string>(GET_USER_ID_BY_EMAIL_QUERY, new { UserId = userId });
+        }
+
         public async Task<bool> IsAuthenticated(string email, string password)
         {
             const string AUTHENTICATION_QUERY = @"

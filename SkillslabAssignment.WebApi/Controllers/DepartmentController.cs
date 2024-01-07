@@ -45,5 +45,12 @@ namespace SkillslabAssignment.WebApi.Controllers
         // DELETE: api/Department/5
         [Permission(Permissions.DeleteDepartment)]
         public async Task Delete(byte id) => await _departmentService.DeleteAsync(id);
+
+        [HttpGet]
+        [Route("api/department/paginated/{pageSize:int}/{pageNumber:int}")]
+        public async Task<IHttpActionResult> GetPaginatedDepartment(int pageSize, int pageNumber)
+        {
+            return Ok(await _departmentService.GetPaginatedDataAsync(pageSize, pageNumber));
+        }
     }
 }

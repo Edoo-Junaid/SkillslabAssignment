@@ -58,5 +58,10 @@ namespace SkillslabAssignment.Service
             }
             return await _trainingRepository.DeleteTrainingAndPrerequisiteAsync(trainingId);
         }
+
+        public Task<IEnumerable<Training>> GetAllWithSearchAsync(string searchValue)
+        {
+            return _trainingRepository.GetAllWithSearchAsync("name", searchValue);
+        }
     }
 }

@@ -48,7 +48,7 @@ namespace SkillslabAssigment.DAL.DAL
                     JOIN [account] a ON u.account_id = a.id
                     JOIN [enrollment] e ON e.user_id = u.id
                     JOIN training t ON e.training_id = t.id
-                    WHERE t.id = 1 AND e.[status]='Approved'
+                    WHERE t.id = @TrainingId AND e.[status]='Approved'
 	                ORDER BY
 	                  IIF(u.department_id = t.department_id, 0, 1),
 	                  e.date
@@ -72,6 +72,17 @@ namespace SkillslabAssigment.DAL.DAL
         public async Task<bool> DeclineEnrollement(int enrollmentId, string declineReason)
         {
             return await _connection.UpdateByIdAsync<Enrollement>(enrollmentId, new { status = EnrollementStatus.Declined.ToString(), decline_reason = declineReason });
+        }
+
+        public async Task<IEnumerable<EnrollmentDetailsDto>> GetEnrollmentDetailsByUserIdAsync(short userId)
+        {
+            const string GET_ENROLLMENT_DETAILS_BY_USER_ID = @"
+                SELECT t.id AS training_id, t.name AS training_name, t.date AS training_start_date, e.status AS enrollment_status
+                FROM enrollment e
+                JOIN training t ON e.training_id = t.id
+                WHERE e.user_id = @UserId
+            ";
+            return await _connection.ExecuteQueryAsync<EnrollmentDetailsDto>(GET_ENROLLMENT_DETAILS_BY_USER_ID, new { UserId = userId });
         }
     }
 }

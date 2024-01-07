@@ -11,10 +11,12 @@ namespace SkillslabAssignment.Service
     {
         public IAttachmentRepository _attachmentRepository;
         public IPrerequisiteRepository _prerequisiteRepository;
-        public AttachmentService(IAttachmentRepository attachmentRepository, IPrerequisiteRepository prerequisiteRepository) : base(attachmentRepository)
+        public IStorrageService _storrageService;
+        public AttachmentService(IAttachmentRepository attachmentRepository, IPrerequisiteRepository prerequisiteRepository, IStorrageService storrageService) : base(attachmentRepository)
         {
             _attachmentRepository = attachmentRepository;
             _prerequisiteRepository = prerequisiteRepository;
+            _storrageService = storrageService;
         }
         public async Task<IEnumerable<AttachementDTO>> GetAllByEnrollmentIdAsync(int enrollmentId)
         {
@@ -27,7 +29,7 @@ namespace SkillslabAssignment.Service
                     AttachmentId = attachment.Id,
                     EnrollmentId = attachment.EnrollmentId,
                     Prerequisite = await _prerequisiteRepository.GetByIdAsync(attachment.PrerequisiteId),
-                    Url = attachment.Url
+                    Url = await _storrageService.GetSignedUrlByObjectNameAsync(attachment.FileId.ToString())
                 });
             }
             return attachementDTOs;

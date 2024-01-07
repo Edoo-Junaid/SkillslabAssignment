@@ -20,11 +20,13 @@ namespace SkillslabAssignment.WebApi.Controllers
         {
             _trainingService = trainingService;
         }
+
         // GET: api/training
         [HttpGet]
         [Route("")]
         [Permission(Permissions.ViewTraining)]
         public async Task<IHttpActionResult> Get() => Ok(await _trainingService.GetAllAsync());
+
         // GET: api/training/5
         [HttpGet]
         [Route("{id:int}")]
@@ -39,6 +41,7 @@ namespace SkillslabAssignment.WebApi.Controllers
             return Created(Request.RequestUri + "/" +
               training.Id, await _trainingService.CreteTrainingAsync(training));
         }
+
         // PUT: api/training/5
         [HttpPut]
         [Route("{id:int}")]
@@ -54,6 +57,7 @@ namespace SkillslabAssignment.WebApi.Controllers
                 return BadRequest();
             }
         }
+
         // DELETE: api/training/5
         [HttpDelete]
         [Route("{id:int}")]
@@ -68,6 +72,7 @@ namespace SkillslabAssignment.WebApi.Controllers
                 return BadRequest("Cannot Delete. Users already Registered to training");
             }
         }
+
         // GET: api/training/trainingDetails/5
         [HttpGet]
         [Route("trainingDetails/{id:int}")]
@@ -76,12 +81,34 @@ namespace SkillslabAssignment.WebApi.Controllers
         {
             return Ok(await _trainingService.GetTrainingDetailsAsync(id));
         }
+
         // GET: api/training/getEnrolledTrainingIds/5
         [HttpGet]
         [Route("getEnrolledTrainingIds/{userId:int}")]
         public async Task<IHttpActionResult> GetAllEnrolledTrainingId(short userId)
         {
             return Ok(await _trainingService.GetAllEnrolledTrainingAsync(userId));
+        }
+
+        [HttpGet]
+        [Route("search/{searchValue}")]
+        public async Task<IHttpActionResult> GetAllWithSearch(string searchValue)
+        {
+            return Ok(await _trainingService.GetAllWithSearchAsync(searchValue));
+        }
+
+        [HttpGet]
+        [Route("count")]
+        public async Task<IHttpActionResult> GetCount()
+        {
+            return Ok(await _trainingService.GetTotalRowCountAsync());
+        }
+
+        [HttpGet]
+        [Route("paginated/{pageSize:int}/{pageNumber:int}")]
+        public async Task<IHttpActionResult> GetPaginatedDepartment(int pageSize, int pageNumber)
+        {
+            return Ok(await _trainingService.GetPaginatedDataAsync(pageSize, pageNumber));
         }
     }
 }
