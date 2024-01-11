@@ -21,6 +21,7 @@ namespace SkillslabAssignment.WebApi
         {
             System.Web.Http.GlobalConfiguration.Configure(WebApiConfig.Register);
             HangfireAspNet.Use(GetHangfireServers);
+
             //BackgroundJob.Schedule<IEnrollementService>(x => x.RunAutomaticProcessing(), TimeSpan.FromMinutes(1));
         }
 

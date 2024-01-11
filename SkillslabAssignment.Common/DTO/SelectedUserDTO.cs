@@ -13,5 +13,9 @@ namespace SkillslabAssignment.Common.DTO
         public short UserId { get; set; }
         [Column("email")]
         public string Email { get; set; }
+        [Column("name")]
+        public string Name { get; set; }
+        [Column("manager_name")]
+        public string ManagerName { get; set; }
     }
 }

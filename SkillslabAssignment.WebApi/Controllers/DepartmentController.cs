@@ -24,7 +24,7 @@ namespace SkillslabAssignment.WebApi.Controllers
         public async Task<IEnumerable<Department>> GetAll() => await _departmentService.GetAllAsync();
 
         // GET: api/Department/5
-        //[Permission(PermissionEnum.ViewDepartment)]
+        [Permission(Permissions.ViewDepartment)]
         public async Task<Department> Get(byte id) => await _departmentService.GetByIdAsync(id);
 
         // POST: api/Department

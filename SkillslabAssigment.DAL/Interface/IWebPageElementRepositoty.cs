@@ -9,6 +9,7 @@ namespace SkillslabAssigment.DAL.Interface
 {
     public interface IWebPageElementRepositoty : IGenericRepository<WebPageElement, int>
     {
-        Task<IEnumerable<WebPageElement>> GetAllByUserIdAndWebPageIdAsync(short userId, int webPageId);
+        Task<IEnumerable<WebPageElement>> GetAllByUserIdAndWebPageNameAsync(short userId, string webPageName);
+        Task<IEnumerable<WebPageElement>> GetAllByWebPageIdAsync(int webPageId);
     }
 }

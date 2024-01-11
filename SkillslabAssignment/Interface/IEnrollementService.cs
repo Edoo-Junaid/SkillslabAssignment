@@ -2,6 +2,7 @@
 using SkillslabAssignment.Common.Entities;
 using SkillslabAssignment.Service;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -16,5 +17,6 @@ namespace SkillslabAssignment.Interface
         Task<bool> ApproveEnrollementAsync(int enrollmentId);
         Task<bool> DeclineEnrollementAsync(DeclineEnrollmentRequestDTO declineEnrollmentRequestDTO);
         Task<IEnumerable<EnrollmentDetailsDto>> GetEnrollmentDetailsByUserIdAsync(short userId);
+        Task<MemoryStream> ExportSelectedUsers(short trainingId);
     }
 }

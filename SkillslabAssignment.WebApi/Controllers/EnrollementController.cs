@@ -3,7 +3,9 @@ using SkillslabAssignment.Common.Permission;
 using SkillslabAssignment.Interface;
 using SkillslabAssignment.WebApi.App_Start;
 using SkillslabAssignment.WebApi.Attribute;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -79,5 +81,25 @@ namespace SkillslabAssignment.WebApi.Controllers
             IEnumerable<EnrollmentDetailsDto> enrollmentDetails = await _enrollementService.GetEnrollmentDetailsByUserIdAsync(userId);
             return Ok(enrollmentDetails);
         }
+
+
+        [HttpGet]
+        [Route("exportSelectedUsers/{trainingId:int}")]
+        public async Task<IHttpActionResult> ExportSelectedUsers(short trainingId)
+        {
+            var stream = await _enrollementService.ExportSelectedUsers(trainingId);
+            string fileName = $"Export_{DateTime.Now:yyyyMMdd}_TrainingID_{trainingId}.xlsx";
+            var result = new HttpResponseMessage(System.Net.HttpStatusCode.OK)
+            {
+                Content = new StreamContent(stream)
+            };
+            result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")
+            {
+                FileName = fileName
+            };
+            result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+            return ResponseMessage(result);
+        }
     }
+
 }

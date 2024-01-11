@@ -1,4 +1,5 @@
-﻿using SkillslabAssigment.DAL.Interface;
+﻿using OfficeOpenXml;
+using SkillslabAssigment.DAL.Interface;
 using SkillslabAssignment.Common.DTO;
 using SkillslabAssignment.Common.Entities;
 using SkillslabAssignment.Common.Enums;
@@ -138,7 +139,7 @@ namespace SkillslabAssignment.Service
         private async Task ProcessTrainingAsync(Training training)
         {
             string htmlBody = GenerateSelectedUserBody(training.Name);
-            IEnumerable<SelectedUserDTO> selectedUsers = await _enrollementRepository.GetAllSelectedUsersAsync(training.Id);
+            IEnumerable<SelectedUserDTO> selectedUsers = await _enrollementRepository.SelectUsersAsync(training.Id);
             foreach (var selectedUser in selectedUsers)
             {
                 await _notificationManager.NotifyHandlers("Enrollment Successful", htmlBody, selectedUser.UserId);
@@ -175,5 +176,31 @@ namespace SkillslabAssignment.Service
         {
             return await _enrollementRepository.GetEnrollmentDetailsByUserIdAsync(userId);
         }
+
+        public async Task<MemoryStream> ExportSelectedUsers(short trainingId)
+        {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            IEnumerable<SelectedUserDTO> selectedUsers = await _enrollementRepository.GetAllUsersByTrainingIdAndEnrollmentStatus(trainingId, EnrollementStatus.Selected);
+            using (var package = new ExcelPackage())
+            {
+                ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Sheet1");
+                worksheet.Cells["A1"].Value = "User Id";
+                worksheet.Cells["B1"].Value = "Name";
+                worksheet.Cells["C1"].Value = "Email";
+                worksheet.Cells["D1"].Value = "Manager Name";
+                int row = 2;
+                foreach (var user in selectedUsers)
+                {
+                    worksheet.Cells[row, 1].Value = user.UserId;
+                    worksheet.Cells[row, 2].Value = user.Name;
+                    worksheet.Cells[row, 3].Value = user.Email;
+                    worksheet.Cells[row, 4].Value = user.ManagerName;
+                    row++;
+                }
+                MemoryStream stream = new MemoryStream(await package.GetAsByteArrayAsync());
+                return stream;
+            }
+        }
+
     }
 }

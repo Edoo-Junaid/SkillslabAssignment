@@ -50,7 +50,9 @@
     <Compile Include="DAL\InAppNotificationRepository.cs" />
     <Compile Include="DAL\PermissionRepository.cs" />
     <Compile Include="DAL\RoleRepository.cs" />
+    <Compile Include="DAL\UiComponentRepository.cs" />
     <Compile Include="DAL\WebPageElementRepository.cs" />
+    <Compile Include="DAL\WebPageRepository.cs" />
     <Compile Include="Interface\IInAppNotificationRepository.cs" />
     <Compile Include="Interface\IPendingAccountRepository.cs" />
     <Compile Include="DAL\PrerequisiteRepository.cs" />
@@ -64,6 +66,7 @@
     <Compile Include="Interface\IPrerequisiteRepository.cs" />
     <Compile Include="Interface\IRoleRepository.cs" />
     <Compile Include="Interface\ITrainingRepository.cs" />
+    <Compile Include="Interface\IUiComponentRepository.cs" />
     <Compile Include="Interface\IUserRepository.cs" />
     <Compile Include="DAL\PendingAccountRepository.cs" />
     <Compile Include="Interface\IWebPageElementRepositoty.cs" />

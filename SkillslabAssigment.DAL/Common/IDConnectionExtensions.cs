@@ -14,23 +14,17 @@ namespace SkillslabAssigment.DAL.Common
 {
     public static class IDConnectionExtensions
     {
-        public static async Task ExecuteNonQueryAsync(this DbConnection connection, string query, object parameters = null)
+        public static async Task ExecuteNonQueryAsync(this DbConnection connection, string query, DbTransaction transaction, object parameters = null)
         {
             using (var command = connection.CreateCommand())
             {
-                try
-                {
-                    await connection.OpenAsync();
-                    command.CommandText = query;
-                    AddParametersToCommand(command, parameters);
-                    await command.ExecuteNonQueryAsync();
-                }
-                finally
-                {
-                    connection.Close();
-                }
+                command.Transaction = transaction;
+                command.CommandText = query;
+                AddParametersToCommand(command, parameters);
+                await command.ExecuteNonQueryAsync();
             }
         }
+
         public static bool ExecuteTransaction(this IDbConnection connection, string transactionQuery, object parameters = null)
         {
             using (var command = connection.CreateCommand())
@@ -145,6 +139,22 @@ namespace SkillslabAssigment.DAL.Common
                 }
             }
         }
+
+        public async static Task<T> ExecuteInsertQueryAsync<T>(this DbConnection connection, T parameters, DbTransaction transaction)
+        {
+            using (var command = connection.CreateCommand())
+            {
+                command.Transaction = transaction;
+                Type type = parameters.GetType();
+                var insertQuery = CreateInsertQuery(type, parameters, command);
+                command.CommandText = insertQuery;
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    return ReadResultSet<T>(type, reader).FirstOrDefault();
+                }
+            }
+        }
+
         public static IEnumerable<T> GetAll<T>(this IDbConnection connection)
         {
             using (var command = connection.CreateCommand())
@@ -494,6 +504,20 @@ namespace SkillslabAssigment.DAL.Common
                 }
             }
         }
+        public async static Task<IEnumerable<T>> ExecuteQueryAsync<T>(this DbConnection connection, string sqlQuery, DbTransaction transaction, object parameters = null)
+        {
+            using (var command = connection.CreateCommand())
+            {
+                command.Transaction = transaction;
+                command.CommandText = sqlQuery;
+                AddParametersToCommand(command, parameters);
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    return ReadResultSet<T>(typeof(T), reader);
+                }
+            }
+        }
+
         public async static Task<T> ExecuteScalarAsync<T>(this DbConnection connection, string sqlQuery, object parameters = null)
         {
             using (var command = connection.CreateCommand())
@@ -568,6 +592,22 @@ namespace SkillslabAssigment.DAL.Common
                 finally
                 {
                     connection.Close();
+                }
+            }
+        }
+        public async static Task<IEnumerable<T>> SelectWhereAsync<T>(this DbConnection connection, string whereClause, DbTransaction transaction, object parameters = null)
+        {
+            using (var command = connection.CreateCommand())
+            {
+                command.Transaction = transaction;
+                Type type = typeof(T);
+                string selectQuery = new StringBuilder($"SELECT * FROM [{GetTableName(type)}] WHERE {whereClause}").ToString();
+                AddParametersToCommand(command, parameters);
+                command.CommandText = selectQuery;
+
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    return ReadResultSet<T>(type, reader);
                 }
             }
         }
@@ -694,7 +734,7 @@ namespace SkillslabAssigment.DAL.Common
         {
             var parameter = command.CreateParameter();
             parameter.ParameterName = $"@{parameterName}";
-            if(value==null)
+            if (value == null)
             {
                 parameter.Value = DBNull.Value;
             }

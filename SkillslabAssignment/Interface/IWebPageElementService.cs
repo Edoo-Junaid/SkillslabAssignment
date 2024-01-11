@@ -10,6 +10,7 @@ namespace SkillslabAssignment.Interface
 {
     public interface IWebPageElementService : IGenericService<WebPageElement, int>
     {
-        Task<IEnumerable<WebPageElement>> GetAllByUserIdAndWebPageIdAsync(short userId, int webPageId);
+        Task<IEnumerable<WebPageElement>> GetAllByUserIdAndWebPageNameAsync(short userId, string webPageName);
+        Task<IEnumerable<WebPageElement>> GetAllByWebPageIdAsync(int webPageId);
     }
 }

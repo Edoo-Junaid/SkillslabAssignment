@@ -1,89 +1,17 @@
-2024-01-04 17:16:51 - ERROR: Exception: System.Data.SqlClient.SqlException (0x80131904): Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding. ---> System.ComponentModel.Win32Exception (0x80004005): The wait operation timed out
-   at System.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__180_0(Task`1 result)
-   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
-   at System.Threading.Tasks.Task.Execute()
+2024-01-09 10:21:53 - ERROR: Exception: System.InvalidOperationException: This SqlTransaction has completed; it is no longer usable.
+   at System.Data.SqlClient.SqlTransaction.ZombieCheck()
+   at System.Data.SqlClient.SqlTransaction.Rollback()
+   at SkillslabAssigment.DAL.DAL.RoleRepository.<CreateRoleWithPageAndPageElementPermission>d__1.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssigment.DAL\DAL\RoleRepository.cs:line 62
 --- End of stack trace from previous location where exception was thrown ---
    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
    at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
-   at SkillslabAssigment.DAL.Common.IDConnectionExtensions.<ExecuteQueryAsync>d__17`1.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssigment.DAL\Common\IDConnectionExtensions.cs:line 489
+   at SkillslabAssignment.Service.RoleService.<CreateRoleWithPageAndPageElementPermissionAsync>d__2.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssignment\Service\RoleService.cs:line 23
 --- End of stack trace from previous location where exception was thrown ---
    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
    at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
-   at SkillslabAssigment.DAL.DAL.EnrollmentRepository.<GetAllByManagerIdAsync>d__2.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssigment.DAL\DAL\EnrollmentRepository.cs:line 34
---- End of stack trace from previous location where exception was thrown ---
-   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
-   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
-   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
-   at SkillslabAssignment.Service.EnrollmentService.<GetAllByManagerIdAsync>d__6.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssignment\Service\EnrollmentService.cs:line 41
---- End of stack trace from previous location where exception was thrown ---
-   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
-   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
-   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
-   at SkillslabAssignment.WebApi.Controllers.EnrollementController.<GetAllByManagerId>d__3.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssignment.WebApi\Controllers\EnrollementController.cs:line 36
---- End of stack trace from previous location where exception was thrown ---
-   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
-   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
-   at System.Threading.Tasks.TaskHelpersExtensions.<CastToObject>d__1`1.MoveNext()
---- End of stack trace from previous location where exception was thrown ---
-   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
-   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
-   at System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__1.MoveNext()
---- End of stack trace from previous location where exception was thrown ---
-   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
-   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
-   at System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__5.MoveNext()
---- End of stack trace from previous location where exception was thrown ---
-   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
-   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
-   at System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__6.MoveNext()
-ClientConnectionId:911c5d09-b87a-4508-acc7-3e116043c66c
-Error Number:-2,State:0,Class:11
---------------------------------------------------------------------------------
-2024-01-05 14:51:09 - ERROR: Exception: System.OperationCanceledException: The operation was canceled.
-   at System.Threading.CancellationToken.ThrowOperationCanceledException()
-   at System.Web.Http.Filters.ActionFilterAttribute.<CallOnActionExecutedAsync>d__6.MoveNext()
---- End of stack trace from previous location where exception was thrown ---
-   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
-   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
-   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
-   at System.Web.Http.Filters.ActionFilterAttribute.<ExecuteActionFilterAsyncCore>d__5.MoveNext()
---- End of stack trace from previous location where exception was thrown ---
-   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
-   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
-   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
-   at System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__5.MoveNext()
---- End of stack trace from previous location where exception was thrown ---
-   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
-   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
-   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
-   at System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__6.MoveNext()
---------------------------------------------------------------------------------
-2024-01-06 23:16:24 - ERROR: Exception: System.Data.SqlClient.SqlException (0x80131904): Invalid column name 'start_date'.
-   at System.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__180_0(Task`1 result)
-   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
-   at System.Threading.Tasks.Task.Execute()
---- End of stack trace from previous location where exception was thrown ---
-   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
-   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
-   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
-   at SkillslabAssigment.DAL.Common.IDConnectionExtensions.<ExecuteQueryAsync>d__17`1.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssigment.DAL\Common\IDConnectionExtensions.cs:line 489
---- End of stack trace from previous location where exception was thrown ---
-   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
-   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
-   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
-   at SkillslabAssigment.DAL.DAL.EnrollmentRepository.<GetEnrollmentDetailsByUserIdAsync>d__6.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssigment.DAL\DAL\EnrollmentRepository.cs:line 85
---- End of stack trace from previous location where exception was thrown ---
-   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
-   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
-   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
-   at SkillslabAssignment.Service.EnrollmentService.<GetEnrollmentDetailsByUserIdAsync>d__18.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssignment\Service\EnrollmentService.cs:line 174
---- End of stack trace from previous location where exception was thrown ---
-   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
-   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
-   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
-   at SkillslabAssignment.WebApi.Controllers.EnrollementController.<GetEnrollmentDetailsByUserId>d__7.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssignment.WebApi\Controllers\EnrollementController.cs:line 79
+   at SkillslabAssignment.WebApi.Controllers.RoleController.<CreateRole>d__7.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssignment.WebApi\Controllers\RoleController.cs:line 43
 --- End of stack trace from previous location where exception was thrown ---
    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
@@ -111,16 +39,93 @@ Error Number:-2,State:0,Class:11
    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
    at System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__6.MoveNext()
-ClientConnectionId:e059a004-4585-44d8-81e6-717e3da999d1
-Error Number:207,State:1,Class:16
 --------------------------------------------------------------------------------
-2024-01-07 15:41:56 - ERROR: Exception: System.NullReferenceException: Object reference not set to an instance of an object.
-   at SkillslabAssignment.Service.EnrollmentService.<ProcessMultipartContentAsync>d__9.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssignment\Service\EnrollmentService.cs:line 78
+2024-01-09 15:09:44 - ERROR: Exception: System.Data.SqlClient.SqlException (0x80131904): The INSERT statement conflicted with the FOREIGN KEY constraint "FK__role_page__web_p__787EE5A0". The conflict occurred in database "assignment", table "dbo.web_page", column 'id'.
+   at SkillslabAssigment.DAL.DAL.RoleRepository.<CreateRoleWithPageAndPageElementPermission>d__1.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssigment.DAL\DAL\RoleRepository.cs:line 63
 --- End of stack trace from previous location where exception was thrown ---
    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
    at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
-   at SkillslabAssignment.WebApi.Controllers.EnrollementController.<Enroll>d__2.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssignment.WebApi\Controllers\EnrollementController.cs:line 30
+   at SkillslabAssignment.Service.RoleService.<CreateRoleWithPageAndPageElementPermissionAsync>d__2.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssignment\Service\RoleService.cs:line 23
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at SkillslabAssignment.WebApi.Controllers.RoleController.<CreateRole>d__7.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssignment.WebApi\Controllers\RoleController.cs:line 43
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Threading.Tasks.TaskHelpersExtensions.<CastToObject>d__1`1.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__1.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Filters.ActionFilterAttribute.<CallOnActionExecutedAsync>d__6.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Web.Http.Filters.ActionFilterAttribute.<CallOnActionExecutedAsync>d__6.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Filters.ActionFilterAttribute.<ExecuteActionFilterAsyncCore>d__5.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__5.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__6.MoveNext()
+ClientConnectionId:9c30bd3f-7b72-4208-99f7-c50d20c98e6c
+Error Number:547,State:0,Class:16
+--------------------------------------------------------------------------------
+2024-01-09 15:55:04 - ERROR: Exception: System.Data.SqlClient.SqlException (0x80131904): The INSERT statement conflicted with the FOREIGN KEY constraint "FK__role_page__web_p__787EE5A0". The conflict occurred in database "assignment", table "dbo.web_page", column 'id'.
+   at SkillslabAssigment.DAL.DAL.RoleRepository.<CreateRoleWithPageAndPageElementPermission>d__1.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssigment.DAL\DAL\RoleRepository.cs:line 63
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at SkillslabAssignment.Service.RoleService.<CreateRoleWithPageAndPageElementPermissionAsync>d__2.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssignment\Service\RoleService.cs:line 23
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at SkillslabAssignment.WebApi.Controllers.RoleController.<CreateRole>d__7.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssignment.WebApi\Controllers\RoleController.cs:line 43
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Threading.Tasks.TaskHelpersExtensions.<CastToObject>d__1`1.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__1.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Filters.ActionFilterAttribute.<CallOnActionExecutedAsync>d__6.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Web.Http.Filters.ActionFilterAttribute.<CallOnActionExecutedAsync>d__6.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Filters.ActionFilterAttribute.<ExecuteActionFilterAsyncCore>d__5.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__5.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__6.MoveNext()
+ClientConnectionId:8b3e5118-8916-4867-ab6b-0c6be9cbd8b0
+Error Number:547,State:0,Class:16
+--------------------------------------------------------------------------------
+2024-01-10 16:56:05 - ERROR: Exception: System.NullReferenceException: Object reference not set to an instance of an object.
+   at SkillslabAssignment.WebApi.Controllers.RoleController.<GetAllWithPermissionDetailsByRoleId>d__9.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssignment.WebApi\Controllers\RoleController.cs:line 58
 --- End of stack trace from previous location where exception was thrown ---
    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
@@ -138,36 +143,157 @@ Error Number:207,State:1,Class:16
    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
    at System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__6.MoveNext()
 --------------------------------------------------------------------------------
-2024-01-07 17:27:38 - ERROR: Exception: System.InvalidOperationException: The connection was not closed. The connection's current state is connecting.
-   at System.Data.ProviderBase.DbConnectionClosedConnecting.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
-   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)
-   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)
-   at System.Data.SqlClient.SqlConnection.OpenAsync(CancellationToken cancellationToken)
+2024-01-10 16:56:21 - ERROR: Exception: System.NullReferenceException: Object reference not set to an instance of an object.
+   at SkillslabAssignment.WebApi.Controllers.RoleController.<GetAllWithPermissionDetailsByRoleId>d__9.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssignment.WebApi\Controllers\RoleController.cs:line 58
 --- End of stack trace from previous location where exception was thrown ---
    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
-   at System.Runtime.CompilerServices.TaskAwaiter.GetResult()
-   at SkillslabAssigment.DAL.Common.IDConnectionExtensions.<ExecuteScalarAsync>d__18`1.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssigment.DAL\Common\IDConnectionExtensions.cs:line 512
+   at System.Threading.Tasks.TaskHelpersExtensions.<CastToObject>d__1`1.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__1.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__5.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__6.MoveNext()
+--------------------------------------------------------------------------------
+2024-01-10 17:37:09 - ERROR: Exception: System.NullReferenceException: Object reference not set to an instance of an object.
+   at SkillslabAssignment.WebApi.Controllers.RoleController.<GetAllWithPermissionDetailsByRoleId>d__9.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssignment.WebApi\Controllers\RoleController.cs:line 58
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Threading.Tasks.TaskHelpersExtensions.<CastToObject>d__1`1.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__1.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__5.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__6.MoveNext()
+--------------------------------------------------------------------------------
+2024-01-11 18:13:24 - ERROR: Exception: System.Threading.Tasks.TaskCanceledException: A task was canceled.
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__1.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__5.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__6.MoveNext()
+--------------------------------------------------------------------------------
+2024-01-11 18:13:24 - ERROR: Exception: System.Data.SqlClient.SqlException (0x80131904): Column 'access_right.id' is invalid in the select list because it is not contained in either an aggregate function or the GROUP BY clause.
+   at System.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__180_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.Tasks.Task.Execute()
 --- End of stack trace from previous location where exception was thrown ---
    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
    at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
-   at SkillslabAssignment.Notification.EmailNotificationHandler.<HandleNotificationAsync>d__2.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssignment\Notification\EmailNotificationHandler.cs:line 20
---- End of stack trace from previous location where exception was thrown ---
-   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
-   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
-   at System.Runtime.CompilerServices.TaskAwaiter.GetResult()
-   at SkillslabAssignment.Notification.NotificationManager.<NotifyHandlers>d__4.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssignment\Notification\NotificationManager.cs:line 30
---- End of stack trace from previous location where exception was thrown ---
-   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
-   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
-   at System.Runtime.CompilerServices.TaskAwaiter.GetResult()
-   at SkillslabAssignment.Service.EnrollmentService.<ApproveEnrollementAsync>d__12.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssignment\Service\EnrollmentService.cs:line 126
+   at SkillslabAssigment.DAL.Common.IDConnectionExtensions.<SelectWhereAsync>d__22`1.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssigment.DAL\Common\IDConnectionExtensions.cs:line 590
 --- End of stack trace from previous location where exception was thrown ---
    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
    at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
-   at SkillslabAssignment.WebApi.Controllers.EnrollementController.<ApproveEnrollement>d__5.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssignment.WebApi\Controllers\EnrollementController.cs:line 55
+   at SkillslabAssigment.DAL.DAL.RoleRepository.<MapRoleToDTO>d__3.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssigment.DAL\DAL\RoleRepository.cs:line 95
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at SkillslabAssigment.DAL.DAL.RoleRepository.<GetAllRolePagePermission>d__2.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssigment.DAL\DAL\RoleRepository.cs:line 79
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at SkillslabAssignment.Service.RoleService.<GetAllRolePagePermission>d__3.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssignment\Service\RoleService.cs:line 28
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at SkillslabAssignment.WebApi.Controllers.RoleController.<GetAllWithPermissionDetails>d__8.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssignment.WebApi\Controllers\RoleController.cs:line 52
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Threading.Tasks.TaskHelpersExtensions.<CastToObject>d__1`1.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__1.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__5.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__6.MoveNext()
+ClientConnectionId:323da228-7354-445d-ac16-059c800fab78
+Error Number:8120,State:1,Class:16
+--------------------------------------------------------------------------------
+2024-01-11 18:14:19 - ERROR: Exception: System.Data.SqlClient.SqlException (0x80131904): Column 'access_right.id' is invalid in the select list because it is not contained in either an aggregate function or the GROUP BY clause.
+   at System.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__180_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.Tasks.Task.Execute()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at SkillslabAssigment.DAL.Common.IDConnectionExtensions.<SelectWhereAsync>d__22`1.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssigment.DAL\Common\IDConnectionExtensions.cs:line 590
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at SkillslabAssigment.DAL.DAL.RoleRepository.<MapRoleToDTO>d__3.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssigment.DAL\DAL\RoleRepository.cs:line 95
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at SkillslabAssigment.DAL.DAL.RoleRepository.<GetAllRolePagePermission>d__2.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssigment.DAL\DAL\RoleRepository.cs:line 79
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at SkillslabAssignment.Service.RoleService.<GetAllRolePagePermission>d__3.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssignment\Service\RoleService.cs:line 28
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at SkillslabAssignment.WebApi.Controllers.RoleController.<GetAllWithPermissionDetails>d__8.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssignment.WebApi\Controllers\RoleController.cs:line 52
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Threading.Tasks.TaskHelpersExtensions.<CastToObject>d__1`1.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__1.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__5.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__6.MoveNext()
+ClientConnectionId:323da228-7354-445d-ac16-059c800fab78
+Error Number:8120,State:1,Class:16
+--------------------------------------------------------------------------------
+2024-01-11 18:21:26 - ERROR: Exception: System.NullReferenceException: Object reference not set to an instance of an object.
+   at SkillslabAssignment.WebApi.Controllers.RoleController.<GetAllWithPermissionDetailsByRoleId>d__9.MoveNext() in C:\Users\P12AD74\skillslab\final\SkillslabAssignment\SkillslabAssignment.WebApi\Controllers\RoleController.cs:line 58
 --- End of stack trace from previous location where exception was thrown ---
    at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)

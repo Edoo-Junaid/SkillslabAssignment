@@ -13,7 +13,7 @@ using System.Web.Http.Cors;
 namespace SkillslabAssignment.WebApi
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    [RoutePrefix("api/webpage")]
+    [RoutePrefix("api/webPage")]
     public class WebPageController : ApiController
     {
         private readonly IWebPageService _webPageService;
@@ -28,6 +28,14 @@ namespace SkillslabAssignment.WebApi
         {
             short userId = JwtManager.GetUserIdFromToken(Request.Headers.Authorization.Parameter);
             return Ok(await _webPageService.GetAllByUserIdAsync(userId));
+        }
+
+        [HttpGet]
+        [Route("")]
+        [Permission(Permissions.Test)]
+        public async Task<IHttpActionResult> GetAll()
+        {
+            return Ok(await _webPageService.GetAllAsync());
         }
     }
 }

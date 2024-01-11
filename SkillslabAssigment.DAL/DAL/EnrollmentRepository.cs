@@ -34,7 +34,7 @@ namespace SkillslabAssigment.DAL.DAL
             return await _connection.ExecuteQueryAsync<EnrollementDTO>(GET_ALL_ENROLLMENTS_BY_MANAGER_ID, new { ManagerId = managerId });
         }
 
-        public async Task<IEnumerable<SelectedUserDTO>> GetAllSelectedUsersAsync(short trainingId)
+        public async Task<IEnumerable<SelectedUserDTO>> SelectUsersAsync(short trainingId)
         {
             const string GET_ALL_SELECTED_USERS = @"
                 DECLARE @SelectedRows TABLE (
@@ -83,6 +83,31 @@ namespace SkillslabAssigment.DAL.DAL
                 WHERE e.user_id = @UserId
             ";
             return await _connection.ExecuteQueryAsync<EnrollmentDetailsDto>(GET_ENROLLMENT_DETAILS_BY_USER_ID, new { UserId = userId });
+        }
+
+        public async Task<IEnumerable<SelectedUserDTO>> GetAllUsersByTrainingIdAndEnrollmentStatus(short trainingId, EnrollementStatus enrollementStatus)
+        {
+            const string GET_ALL_USERS_BY_TRAINING_AND_ENROLLEMENT_STATUS = @"
+                SELECT 
+                    [user].id AS user_id,
+                    [user].first_name AS name,
+	                [account].email,
+                    manager.first_name AS manager_name
+                FROM enrollment
+                INNER JOIN training ON enrollment.training_id = training.id
+                INNER JOIN [user] ON [user].id = enrollment.user_id
+                INNER JOIN [account] on account.id = [user].account_id
+                LEFT JOIN [user] AS manager ON [user].manager_id = manager.id
+                WHERE training.id = @TrainingId AND enrollment.status = @EnrollmentStatus;
+            ";
+            return await _connection.ExecuteQueryAsync<SelectedUserDTO>(
+                GET_ALL_USERS_BY_TRAINING_AND_ENROLLEMENT_STATUS,
+                new
+                {
+                    TrainingId = trainingId,
+                    EnrollmentStatus = enrollementStatus.ToString()
+                }
+            );
         }
     }
 }

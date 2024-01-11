@@ -202,6 +202,7 @@
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\TrainingController.cs" />
     <Compile Include="Controllers\TrialController.cs" />
+    <Compile Include="Controllers\UiComponentController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\WebPageElementController.cs" />
     <Compile Include="Global.asax.cs">

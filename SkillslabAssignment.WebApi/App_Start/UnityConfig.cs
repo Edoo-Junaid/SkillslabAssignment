@@ -47,11 +47,14 @@ namespace SkillslabAssignment.WebApi
             container.RegisterType<ICacheService, MemoryCacheService>();
             container.RegisterType<IPermissionService, PermissionService>();
             container.RegisterType<IAccountRepository, AccountRepository>();
+            container.RegisterType<IUiComponentRepository, UiComponentRepository>();
+            container.RegisterType<IUiComponentService, UiComponentService>();
             container.RegisterType<IAccountService, AccountService>();
             container.RegisterType<IUserRepository, UserRepository>();
             container.RegisterType<IPendingAccountService, PendingAccountService>();
             container.RegisterType<IDepartmentService, DepartmentService>();
             container.RegisterType<IUserService, UserService>();
+            container.RegisterType<IRoleService, RoleService>();
             container.RegisterType<ITrainingService, TrainingService>();
             container.RegisterType<IPrerequisiteService, PrerequisiteService>();
             container.RegisterType<IPrerequisiteRepository, PrerequisiteRepository>();
@@ -61,6 +64,10 @@ namespace SkillslabAssignment.WebApi
             container.RegisterType<IAttachmentRepository, AttachmentRepository>();
             container.RegisterType<ITrainingRepository, TrainingRepository>();
             container.RegisterType<IRoleRepository, RoleRepository>();
+            container.RegisterType<IWebPageElementRepositoty, WebPageElementRepository>();
+            container.RegisterType<IWebPageElementService, WebPageElementService>();
+            container.RegisterType<IWebPageRepository, WebPageRepository>();
+            container.RegisterType<IWebPageService, WebPageService>();
             container.RegisterType<IPendingAccountRepository, PendingAccountRepository>();
             container.RegisterType<IInAppNotificationRepository, InAppNotificationRepository>();
             container.RegisterType<IInAppNotificationService, InAppNotificationService>();
